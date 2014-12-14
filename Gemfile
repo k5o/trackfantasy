@@ -19,6 +19,8 @@ gem 'spring', group: :development
 gem 'figaro'
 gem 'font-awesome-sass', '~> 4.2.0'
 gem 'thin'
+gem 'nokogiri'
+gem 'httparty'
 
 group :production do
   gem 'rails_12factor'
