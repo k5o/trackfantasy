@@ -8,7 +8,7 @@ class DashboardController < ApplicationController
   def fetch_dashboard_data
     # Asychronously load this data on page ready
     # TODO: Ensure request/return are clean, email notify admins if not (exception email)
-    @analytics = DashboardDecorator.new(@user, @date_range)
+    @analytics = AnalyticsCalculator.new(@user, @date_range)
 
     render json: @analytics
   end

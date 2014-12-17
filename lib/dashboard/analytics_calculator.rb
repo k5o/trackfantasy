@@ -1,6 +1,6 @@
 # TODO: Cache this return, or its individual calculations
 # but invalidate once user uploads new file, OR date_range changes
-class AnalyticsDecorator
+class AnalyticsCalculator
   attr_reader :user, :date_range
 
   # TODO: there's probably a better way to set beginning of time)

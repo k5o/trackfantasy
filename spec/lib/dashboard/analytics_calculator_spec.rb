@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe AnalyticsDecorator do
+describe AnalyticsCalculator do
   context 'initialize' do
     before :each do
       @user = FactoryGirl.create(:user)
