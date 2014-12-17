@@ -6,4 +6,5 @@ Rails.application.routes.draw do
 
   get '/login', to: 'sessions#new', as: 'login'
   get '/signup', to: 'users#new', as: 'signup'
+  get '/dashboard', to: 'dashboard#index', as: 'dashboard'
 end
