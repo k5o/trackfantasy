@@ -1,0 +1,17 @@
+.page
+  .container
+    .signup-panel
+      %h1 Log in to TrackFantasy
+      = render partial: 'partials/flash'
+      = form_tag sessions_path, method: 'post', class: 'signup-form' do
+        = label_tag :email, 'Email:'
+        = text_field_tag :email, nil, placeholder: 'Email', autofocus: true
+        = label_tag :password, 'Password:'
+        = password_field_tag :password, nil, placeholder: 'Password'
+        = submit_tag 'Log In', class: 'btn btn-action'
+
+      %p.alternative-actions
+        .helper-action Don't have an account?
+        = link_to "Sign up to start investing", signup_path
+        .helper-action Forgot your password?
+        = link_to "Reset it here", '#'
