@@ -2,7 +2,7 @@
   .container
     %h1 Sign up in seconds to begin tracking
 
-    = form_for @user, html: { class: 'signuo-form' } do |f|
+    = form_for @user, html: { class: 'signup-form' } do |f|
       - if @user.errors.any?
         .error-messages
           %ul
