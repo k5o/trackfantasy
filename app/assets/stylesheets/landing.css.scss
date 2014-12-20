@@ -17,9 +17,7 @@
   }
 
   .cta {
-    margin: auto;
-    text-align: center;
-    width: 200px;
+    @include btn(#444);
   }
 
   .callout {

@@ -1,6 +1,9 @@
 %header
-  .logo
-    = link_to 'TrackFantasy', root_path
-  %ul.nav
-    %li= link_to 'Pricing/Signup', '#'
-    %li= link_to 'Login', '#', class: 'login-link'
+  .container
+    = link_to root_path, class: 'logo' do
+      %span.track Track
+      %span.fantasy Fantasy
+
+    %ul.nav
+      %li= link_to 'Pricing/Signup', '#'
+      %li= link_to 'Login', '#', class: 'login-link'

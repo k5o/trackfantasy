@@ -1,0 +1,21 @@
+@mixin btn($color: #7aabe0, $font-color: #fff) {
+  color: $font-color;
+  margin: auto;
+  text-align: center;
+  width: 200px;
+  background: $color;
+  line-height: 40px;
+  border-radius: 3px;
+  box-shadow: 0 4px 0px darken($color, 5%);
+  position: relative;
+
+  &:hover {
+    cursor: pointer;
+    background: lighten($color, 2%);
+  }
+
+  &:active {
+    top: 2px;
+    box-shadow: 0 2px 0px darken($color, 5%);
+  }
+}

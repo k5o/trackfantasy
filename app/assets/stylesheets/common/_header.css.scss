@@ -1,0 +1,28 @@
+header {
+  height: 68px;
+  padding: 20px 0;
+  line-height: 28px;
+
+  .logo {
+    @include span-columns(3 of 12);
+    color: #000;
+    text-decoration: none;
+    font-family: 'Hammersmith One', 'Helvetica', Arial;
+    letter-spacing: -2px;
+    font-size: 28px;
+
+    .fantasy {
+      margin-left: -5px;
+    }
+  }
+
+  ul.nav {
+    @include span-columns(9 of 12);
+    text-align: right;
+
+    li {
+      display: inline;
+    }
+  }
+}
+
