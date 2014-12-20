@@ -1,0 +1,61 @@
+.splash {
+  padding-top: 10%;
+  height: 545px;
+  background: #ccc;
+
+  h1, h2 {
+    text-align: center;
+    color: #fff;
+  }
+
+  h1 {
+    font-size: 2.4em;
+  }
+
+  h2 {
+    font-size: 1.8em;
+  }
+
+  .cta {
+    margin: auto;
+    text-align: center;
+    width: 200px;
+  }
+
+  .callout {
+    text-align: center;
+  }
+}
+
+.details {
+  background: #eee;
+
+  p {
+    text-align: center;
+  }
+
+  %ul {
+    li {
+      display: inline;
+    }
+  }
+}
+
+.pricing {
+  background: #888;
+
+  h1, p {
+    text-align: center;
+  }
+
+  .pricing-cards {
+    margin: auto;
+    text-align: center;
+    @include shift(3);
+
+    .card {
+      @include span-columns (3 of 12);
+      text-align: left;
+    }
+  }
+}
