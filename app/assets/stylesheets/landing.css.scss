@@ -11,16 +11,21 @@
   }
 
   h1 {
-    font-size: 2.4em;
+    font-size: 2.5em;
+    margin-bottom: 32px;
+    font-weight: 700;
   }
 
   h2 {
     font-size: 1.8em;
+    margin: 0 0 28px 0;
+    font-weight: 300;
   }
 
   .cta {
     color: #fff;
     margin: auto;
+    margin-top: 50px;
     text-align: center;
     width: 360px;
     background: #888;
@@ -61,16 +66,20 @@
 
 .details {
   padding: 20px 0;
-
   background: #3e3e3e;
 
   p {
+    font-family: 'Open Sans';
     text-align: center;
-    font-size: 20px;
-    line-height: 24px;
+    font-size: 24px;
+    line-height: 36px;
+    margin-bottom: 40px;
   }
 
   ul {
+    @include span-columns(12 of 12);
+    margin-bottom: 40px;
+
     li {
       @include span-columns(8 of 12);
       @include shift(2);
@@ -84,14 +93,16 @@
       .vp-content {
         @include span-columns(6 of 8);
 
-        .strong {
+        .vp-header {
           font-weight: 700;
           font-size: 20px;
           margin-bottom: 16px;
+          font-family: 'Open Sans';
         }
 
         .sub-vp {
           font-size: 16px;
+          line-height: 28px;
         }
       }
     }
@@ -100,45 +111,118 @@
 
 .pricing {
   background: #888;
-  padding: 20px 0;
+  padding: 40px 0;
 
   h1, p {
     text-align: center;
   }
 
+  p {
+    font-family: 'Open Sans';
+    font-size: 16px;
+  }
+
   .pricing-cards {
     margin: auto;
+    margin-top: 24px;
     text-align: center;
     @include shift(1);
 
     .card {
       @include span-columns (5 of 12);
       text-align: left;
-      border-radius: 12px;
+      border-radius: 6px;
       background: #fff;
-      padding: 20px;
+      margin-bottom: 20px;
 
-      h3 {
+      .card-title {
         margin-top: 0;
+        padding: 12px 0;
+        font-weight: 700;
+        background: #444;
+        border-radius: 6px 6px 0 0;
+
+        h3 {
+          text-align: center;
+          color: #fff;
+          font-size: 20px;
+        }
       }
 
-      p {
-        text-align: left;
-        margin-bottom: 8px;
+      .card-pricing {
+        background: #eee;
+        padding: 20px 0;
+        text-align: center;
+
+        .dollar-figure {
+          font-family: 'Open Sans';
+          font-weight: 300;
+          font-style: italic;
+          position: relative;
+          bottom: 11px;
+          font-size: 16px;
+        }
+
+        .dollar-amount {
+          font-family: 'Open Sans';
+          font-weight: 300;
+          font-style: italic;
+          font-size: 36px;
+        }
+
+        .interval {
+          margin-top: 8px;
+          text-transform: uppercase;
+        }
       }
 
-      .dollar-figure {
-        font-size: 32px;
+      .card-details {
+        padding: 20px;
       }
 
-      .interval {
-        color: #777;
-        font-size: 14px;
+      .line-item {
+        margin-bottom: 16px;
+        font-size: 16px;
       }
 
       .cta {
         @include btn(#888, #fff, 100%);
+        margin-top: 20px;
       }
+    }
+  }
+}
+
+.faq {
+  padding: 40px 0;
+
+  h1, p {
+    text-align: center;
+  }
+
+  p {
+    font-family: 'Open Sans';
+    font-size: 16px;
+  }
+
+  .q-a {
+    @include span-columns(6 of 12);
+    @include omega(2n);
+    font-size: 14px;
+    line-height: 28px;
+    margin: 24px 0;
+    padding: 0 24px;
+
+    .q {
+      margin-bottom: 16px;
+      text-align: left;
+      font-weight: 700;
+      font-family: 'Roboto';
+    }
+
+    .a {
+      text-align: left;
+      font-family: 'Roboto';
     }
   }
 }
