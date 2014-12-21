@@ -17,7 +17,6 @@ gem 'therubyracer', platforms: :ruby
 gem 'react-rails', git: 'git://github.com/reactjs/react-rails.git'
 gem 'spring', group: :development
 gem 'figaro'
-gem 'font-awesome-sass', '~> 4.2.0'
 gem 'thin'
 
 group :production do
