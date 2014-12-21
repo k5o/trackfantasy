@@ -21,31 +21,31 @@ header {
     }
   }
 
-  ul.nav {
-    @include span-columns(6 of 12);
-    text-align: right;
-
-    li {
-      display: inline;
-      padding-right: 16px;
-
-      &:last-child {
-        padding-right: 0;
-      }
-
-      .login-link {
-        font-weight: 700;
-      }
-    }
-
-    @include media($small) {
-      text-align: center;
-      @include span-columns(12 of 12);
-    }
-  }
-
   @include media($small) {
     padding: 12px 0;
   }
 }
 
+ul.nav {
+  @include span-columns(6 of 12);
+  text-align: right;
+  text-transform: uppercase;
+
+  li {
+    display: inline;
+    padding-right: 16px;
+
+    &:last-child {
+      padding-right: 0;
+    }
+
+    .login-link {
+      font-weight: 700;
+    }
+  }
+
+  @include media($small) {
+    text-align: center;
+    @include span-columns(12 of 12);
+  }
+}

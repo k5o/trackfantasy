@@ -1,4 +1,15 @@
 footer {
-  padding: 40px 0px 80px 0px;
+  margin-top: 120px;
+  padding: 20px 0px;
   background: #999;
+
+  .copyright {
+    @include span-columns(6 of 12);
+
+    @include media($small) {
+      text-align: center;
+      margin-bottom: 12px;
+      @include span-columns(12 of 12);
+    }
+  }
 }
