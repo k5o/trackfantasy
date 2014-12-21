@@ -8,6 +8,7 @@ class InitialMigrations < ActiveRecord::Migration
     create_table :dfs_accounts do |t|
       t.references :user, :site
       t.string :username
+      t.integer :site_user_id
       t.timestamps
     end
 

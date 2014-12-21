@@ -36,6 +36,7 @@ ActiveRecord::Schema.define(version: 20141212080633) do
     t.integer  "user_id"
     t.integer  "site_id"
     t.string   "username"
+    t.integer  "site_user_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end

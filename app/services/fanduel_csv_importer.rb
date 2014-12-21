@@ -5,7 +5,7 @@ class FanduelCsvImporter
   end
 
   def import
-    CSV.foreach(@file).first(10).each do |row|
+    CSV.foreach(@file).each do |row|
       next if row[2] == "Date"
       site = Site.where(name: "fanduel").first_or_create
       user = User.where(username: "yudarvish").first_or_create
@@ -38,6 +38,8 @@ class FanduelCsvImporter
           opponent_username: player.username,
         )
       end
+
+      # FanduelContestImporter
     end
   end
 
