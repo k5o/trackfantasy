@@ -4,7 +4,7 @@ header {
   line-height: 28px;
 
   .logo {
-    @include span-columns(3 of 12);
+    @include span-columns(6 of 12);
     color: #000;
     text-decoration: none;
     font-family: 'Hammersmith One', 'Helvetica', Arial;
@@ -14,15 +14,38 @@ header {
     .fantasy {
       margin-left: -5px;
     }
+
+    @include media($small) {
+      text-align: center;
+      @include span-columns(12 of 12);
+    }
   }
 
   ul.nav {
-    @include span-columns(9 of 12);
+    @include span-columns(6 of 12);
     text-align: right;
 
     li {
       display: inline;
+      padding-right: 16px;
+
+      &:last-child {
+        padding-right: 0;
+      }
+
+      .login-link {
+        font-weight: 700;
+      }
     }
+
+    @include media($small) {
+      text-align: center;
+      @include span-columns(12 of 12);
+    }
+  }
+
+  @include media($small) {
+    padding: 12px 0;
   }
 }
 

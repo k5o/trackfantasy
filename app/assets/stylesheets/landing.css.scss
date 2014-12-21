@@ -78,20 +78,34 @@
 
   ul {
     @include span-columns(12 of 12);
-    margin-bottom: 40px;
 
     li {
       @include span-columns(8 of 12);
       @include shift(2);
       @include omega;
-      margin-bottom: 20px;
+      margin-bottom: 40px;
+
+      @include media($medium) {
+        @include span-columns(12 of 12);
+        @include shift(0);
+      }
 
       .vp-image {
         @include span-columns(2 of 8);
+
+        @include media($medium) {
+          text-align: center;
+          @include span-columns(12 of 12);
+        }
       }
 
       .vp-content {
         @include span-columns(6 of 8);
+
+        @include media($medium) {
+          text-align: center;
+          @include span-columns(12 of 12);
+        }
 
         .vp-header {
           font-weight: 700;
@@ -105,6 +119,11 @@
           line-height: 28px;
         }
       }
+
+      @include media($medium) {
+        @include span-columns(12 of 12);
+        @include shift(0);
+      }
     }
   }
 }
@@ -112,6 +131,7 @@
 .pricing {
   background: #888;
   padding: 40px 0;
+  @include span-columns(12 of 12);
 
   h1, p {
     text-align: center;
@@ -120,20 +140,22 @@
   p {
     font-family: 'Open Sans';
     font-size: 16px;
+    line-height: 24px;
   }
 
   .pricing-cards {
     margin: auto;
     margin-top: 24px;
     text-align: center;
-    @include shift(1);
 
     .card {
-      @include span-columns (5 of 12);
+      display: inline-block;
+      margin-right: 40px;
+      @include omega(2n);
       text-align: left;
       border-radius: 6px;
       background: #fff;
-      margin-bottom: 20px;
+      margin-bottom: 40px;
 
       .card-title {
         margin-top: 0;
@@ -189,6 +211,17 @@
         @include btn(#888, #fff, 100%);
         margin-top: 20px;
       }
+
+      @include media($medium) {
+        @include span-columns(8 of 12);
+        @include shift(2);
+        @include omega-reset(2n);
+      }
+
+      @include media($small) {
+        @include span-columns(12 of 12);
+        @include shift(0);
+      }
     }
   }
 }
@@ -203,6 +236,7 @@
   p {
     font-family: 'Open Sans';
     font-size: 16px;
+    line-height: 24px;
   }
 
   .q-a {
@@ -212,6 +246,11 @@
     line-height: 28px;
     margin: 24px 0;
     padding: 0 24px;
+
+    @include media($medium) {
+      @include span-columns(12 of 12);
+      @include omega-reset(2n);
+    }
 
     .q {
       margin-bottom: 16px;
