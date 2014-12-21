@@ -5,8 +5,8 @@ html {
 
 body {
   margin: 0;
-  // font-family: 'Lato', 'Helvetica', 'Arial';
-  font-weight: 300;
+  font-family: 'Roboto', 'Arial';
+  font-weight: 400;
   font-size: 14px;
   line-height: 20px;
   // background-color: $off-white;
@@ -52,4 +52,8 @@ a {
   &:hover {
     color: #ddd;
   }
+}
+
+p {
+  margin-top: 0;
 }

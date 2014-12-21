@@ -1,8 +1,8 @@
-@mixin btn($color: #7aabe0, $font-color: #fff) {
+@mixin btn($color: #7aabe0, $font-color: #fff, $width: 200px) {
   color: $font-color;
   margin: auto;
   text-align: center;
-  width: 200px;
+  width: $width;
   background: $color;
   line-height: 40px;
   border-radius: 3px;
