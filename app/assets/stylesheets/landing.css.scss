@@ -28,10 +28,10 @@
     margin-top: 50px;
     text-align: center;
     width: 360px;
-    background: $accent;
+    background: lighten($accent, 6%);
     padding: 12px 20px;
     border-radius: 3px;
-    box-shadow: 0 4px 0px darken($accent, 5%);
+    box-shadow: 0 4px 0px $accent;
     position: relative;
 
     .cta-header {
@@ -47,12 +47,12 @@
 
     &:hover {
       cursor: pointer;
-      background: lighten($accent, 2%);
+      background: lighten($accent, 8%);
     }
 
     &:active {
       top: 2px;
-      box-shadow: 0 2px 0px darken($accent, 5%);
+      box-shadow: 0 2px 0px $accent;
     }
 
     margin-bottom: 10%;
@@ -82,7 +82,7 @@
   background: $off-white;
 
   p {
-    font-family: 'Open Sans';
+    font-family: $secondary-font;
     text-align: center;
     font-size: 22px;
     line-height: 36px;
@@ -124,7 +124,7 @@
           font-weight: 700;
           font-size: 20px;
           margin-bottom: 16px;
-          font-family: 'Open Sans';
+          font-family: $secondary-font;
         }
 
         .sub-vp {
@@ -152,7 +152,7 @@
   }
 
   p {
-    font-family: 'Open Sans';
+    font-family: $secondary-font;
     font-size: 16px;
     line-height: 24px;
 
@@ -200,7 +200,7 @@
         text-align: center;
 
         .dollar-figure {
-          font-family: 'Open Sans';
+          font-family: $secondary-font;
           font-weight: 300;
           font-style: italic;
           position: relative;
@@ -209,7 +209,7 @@
         }
 
         .dollar-amount {
-          font-family: 'Open Sans';
+          font-family: $secondary-font;
           font-weight: 300;
           font-style: italic;
           font-size: 36px;
@@ -262,7 +262,7 @@
   }
 
   p {
-    font-family: 'Open Sans';
+    font-family: $secondary-font;
     font-size: 16px;
     line-height: 24px;
   }
@@ -284,12 +284,12 @@
       margin-bottom: 16px;
       text-align: left;
       font-weight: 700;
-      font-family: 'Roboto';
+      font-family: $primary-font;
     }
 
     .a {
       text-align: left;
-      font-family: 'Roboto';
+      font-family: $primary-font;
     }
   }
 }
