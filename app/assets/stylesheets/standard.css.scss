@@ -9,14 +9,9 @@ body {
   font-weight: 400;
   font-size: 14px;
   line-height: 20px;
-  // background-color: $off-white;
+  background-color: $off-white;
   -webkit-font-smoothing: antialiased;
   -webkit-text-size-adjust: 100%;
-}
-
-.page {
-  // padding-top: 68px;
-  // padding-bottom: 0px;
 }
 
 .container {
@@ -42,11 +37,11 @@ h1 {
 }
 
 a {
-  color: #ccc;
+  color: $primary-saturated;
   text-decoration: none;
 
   &:hover {
-    color: #ddd;
+    color: darken($primary-saturated, 8%);
   }
 }
 

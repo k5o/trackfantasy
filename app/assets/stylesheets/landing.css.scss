@@ -2,7 +2,7 @@
   padding-top: 5%;
   height: 60%;
   max-height: 545px;
-  background: #a3a3a3;
+  background: $primary;
   position: relative;
 
   h1, h2 {
@@ -28,10 +28,10 @@
     margin-top: 50px;
     text-align: center;
     width: 360px;
-    background: #888;
+    background: $accent;
     padding: 12px 20px;
     border-radius: 3px;
-    box-shadow: 0 4px 0px darken(#888, 5%);
+    box-shadow: 0 4px 0px darken($accent, 5%);
     position: relative;
 
     .cta-header {
@@ -47,12 +47,12 @@
 
     &:hover {
       cursor: pointer;
-      background: lighten(#888, 2%);
+      background: lighten($accent, 2%);
     }
 
     &:active {
       top: 2px;
-      box-shadow: 0 2px 0px darken(#888, 5%);
+      box-shadow: 0 2px 0px darken($accent, 5%);
     }
 
     margin-bottom: 10%;
@@ -60,19 +60,31 @@
 
   .learn-more {
     text-align: center;
-    margin-bottom: 12px;
-    font-size: 16px;
+    margin-bottom: 24px;
+    text-transform: uppercase;
+    font-size: 14px;
+    font-weight: 700;
+
+    img {
+      display: block;
+      margin: auto;
+      margin-top: 6px;
+    }
+
+    a {
+      color: $off-white;
+    }
   }
 }
 
 .details {
   padding: 20px 0;
-  background: #3e3e3e;
+  background: $off-white;
 
   p {
     font-family: 'Open Sans';
     text-align: center;
-    font-size: 24px;
+    font-size: 22px;
     line-height: 36px;
     margin-bottom: 40px;
   }
@@ -130,7 +142,8 @@
 }
 
 .pricing {
-  background: #888;
+  background: $primary-saturated;
+  color: $off-white;
   padding: 40px 0;
   @include span-columns(12 of 12);
 
@@ -142,38 +155,47 @@
     font-family: 'Open Sans';
     font-size: 16px;
     line-height: 24px;
+
+    a {
+      color: $off-white;
+
+      &:hover {
+        color: darken($off-white, 10%);
+      }
+    }
   }
 
   .pricing-cards {
     margin: auto;
     margin-top: 24px;
     text-align: center;
+    color: $fill-saturated;
 
     .card {
       display: inline-block;
       margin-right: 40px;
       @include omega(2n);
       text-align: left;
-      border-radius: 6px;
-      background: #fff;
+      border-radius: 8px;
+      background: $off-white;
       margin-bottom: 40px;
 
       .card-title {
         margin-top: 0;
         padding: 12px 0;
         font-weight: 700;
-        background: #444;
+        background: $primary;
         border-radius: 6px 6px 0 0;
 
         h3 {
           text-align: center;
-          color: #fff;
+          color: $off-white;
           font-size: 20px;
         }
       }
 
       .card-pricing {
-        background: #eee;
+        background: $off-white-saturated;
         padding: 20px 0;
         text-align: center;
 
@@ -204,13 +226,15 @@
       }
 
       .line-item {
+        text-align: left;
         margin-bottom: 16px;
         font-size: 16px;
       }
 
       .cta {
-        @include btn(#888, #fff, 100%);
+        @include btn($accent, #fff, 100%);
         margin-top: 20px;
+        font-size: 18px;
       }
 
       @include media($medium) {
@@ -228,6 +252,8 @@
 }
 
 .faq {
+  background: $off-white;
+  color: $fill-saturated;
   padding: 40px 0;
   @include span-columns(12 of 12);
 

@@ -2,10 +2,11 @@ footer {
   @include span-columns(12 of 12);
   margin-top: 100px;
   padding: 20px 0px;
-  background: #999;
+  background: $fill-saturated;
 
   .copyright {
     @include span-columns(6 of 12);
+    color: $off-white;
 
     @include media($small) {
       text-align: center;
