@@ -10,11 +10,3 @@ $max-width: em(1088);
 $container-max: new-breakpoint(max-width 1280px 12);
 $medium: new-breakpoint(max-width 768px 8);
 $small: new-breakpoint(max-width 480px 4);
-
-$primary: #586994;
-$primary-saturated: #426994;
-$accent: #15A560;
-$fill: #60677A;
-$fill-saturated: #373D4B;
-$off-white: #F4F3F1;
-$off-white-saturated: #DFEBE9;
