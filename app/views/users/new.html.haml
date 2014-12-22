@@ -1,19 +1,20 @@
-.page
+.page.new-user
   .container
-    %h1 Sign Up
-    %h3 Nice! Let's get you set up.
+    .info-card
+      .info-card-title
+        %h1 Sign Up
+      .info-card-content
+        %h3 Nice! Let's get you set up.
 
-    = form_tag html: { class: 'signup-form' } do
-      / - if @user.errors.any?
-      /   .error-messages
-      /     %ul
-      /       - for message in @user.errors.full_messages
-      /         %li= message
-      .text-field-container
-        = label_tag :email, 'Email:', class: 'submit-label'
-        = text_field_tag :email, '', placeholder: 'kingjames@example.com', id: 'email'
-      .text-field-container
-        = label_tag :password, 'Password:', class: 'submit-label'
-        = password_field_tag :password, '', id: 'password', placeholder: 'At least 5 characters', class: 'submit-input'
-      = hidden_field_tag :plan, @plan
-      = submit_tag 'Next', class: 'btn'
+        = form_tag '', class: 'signup-form' do
+          / - if @user.errors.any?
+          /   .error-messages
+          /     %ul
+          /       - for message in @user.errors.full_messages
+          /         %li= message
+          .text-field-container
+            = email_field_tag :email, '', placeholder: 'Email', id: 'email', autofocus: true
+          .text-field-container
+            = password_field_tag :password, '', placeholder: 'Password', id: 'password', class: 'submit-input'
+          = hidden_field_tag :plan, @plan
+          = submit_tag 'Next', class: 'btn'
