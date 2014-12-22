@@ -14,6 +14,8 @@
     %meta{property: "og:image", content: ""}
   %body
     = render partial: 'partials/flash'
-    = render partial: 'partials/header'
+    - unless @no_layout
+      = render partial: 'partials/header'
     = yield
-    = render partial: 'partials/footer'
+    - unless @no_layout
+      = render partial: 'partials/footer'

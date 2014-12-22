@@ -76,7 +76,7 @@
             %p.line-item
               60-day money back guarantee
 
-            .cta Select Plan
+            = link_to 'Select Plan', signup_path(plan: 'monthly'), class: 'cta'
         .card
           .card-title
             %h3 Yearly Subscription
@@ -98,7 +98,7 @@
             %p.line-item
               60-day money back guarantee
 
-            .cta Select Plan
+            = link_to 'Select Plan', signup_path(plan: 'annual'), class: 'cta'
 
       %p
         Questions? Email us at

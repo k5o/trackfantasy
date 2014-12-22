@@ -1,4 +1,5 @@
-@mixin btn($color: #7aabe0, $font-color: #fff, $width: 200px) {
+@mixin btn($color: $accent, $font-color: #fff, $width: 200px) {
+  display: block;
   color: $font-color;
   margin: auto;
   text-align: center;
@@ -18,6 +19,10 @@
     top: 2px;
     box-shadow: 0 2px 0px darken($color, 5%);
   }
+}
+
+.btn {
+  @include btn;
 }
 
 @mixin omega-reset($nth) {

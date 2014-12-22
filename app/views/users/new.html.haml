@@ -1,19 +1,19 @@
 .page
   .container
-    %h1 Sign up in seconds to begin tracking
+    %h1 Sign Up
+    %h3 Nice! Let's get you set up.
 
-    = form_for @user, html: { class: 'signup-form' } do |f|
-      - if @user.errors.any?
-        .error-messages
-          %ul
-            - for message in @user.errors.full_messages
-              %li= message
+    = form_tag html: { class: 'signup-form' } do
+      / - if @user.errors.any?
+      /   .error-messages
+      /     %ul
+      /       - for message in @user.errors.full_messages
+      /         %li= message
       .text-field-container
-        = label :email, 'Email:', class: 'submit-label'
+        = label_tag :email, 'Email:', class: 'submit-label'
         = text_field_tag :email, '', placeholder: 'kingjames@example.com', id: 'email'
       .text-field-container
-        = label :password, 'Password:', class: 'submit-label'
+        = label_tag :password, 'Password:', class: 'submit-label'
         = password_field_tag :password, '', id: 'password', placeholder: 'At least 5 characters', class: 'submit-input'
-      = f.submit 'Create Account', class: 'btn btn-action'
-    %p.alternative-actions
-      = link_to 'Click here log in if you already have an account', login_path
+      = hidden_field_tag :plan, @plan
+      = submit_tag 'Next', class: 'btn'
