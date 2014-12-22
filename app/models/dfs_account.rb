@@ -5,4 +5,8 @@ class DfsAccount < ActiveRecord::Base
 
   has_many :entries
 
+  def has_username?
+    username
+  end
+
 end

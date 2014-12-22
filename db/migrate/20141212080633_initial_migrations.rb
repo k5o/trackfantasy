@@ -21,7 +21,7 @@ class InitialMigrations < ActiveRecord::Migration
       t.references :site
       t.integer :entrants, :max_entrants
       t.decimal :average_score, :buy_in, :total_prizes_paid
-      t.string :sport, :title, :game_type, :link
+      t.string :sport, :title, :game_type, :link, :site_contest_id
       t.date :completed_on
       t.timestamps
     end

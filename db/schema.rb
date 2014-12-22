@@ -16,7 +16,7 @@ ActiveRecord::Schema.define(version: 20141212080633) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
-  create_table "contests", force: true do |t|
+  create_table "contests", force: :cascade do |t|
     t.integer  "site_id"
     t.integer  "entrants"
     t.integer  "max_entrants"
@@ -27,12 +27,13 @@ ActiveRecord::Schema.define(version: 20141212080633) do
     t.string   "title"
     t.string   "game_type"
     t.string   "link"
+    t.string   "site_contest_id"
     t.date     "completed_on"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
-  create_table "dfs_accounts", force: true do |t|
+  create_table "dfs_accounts", force: :cascade do |t|
     t.integer  "user_id"
     t.integer  "site_id"
     t.string   "username"
@@ -41,7 +42,7 @@ ActiveRecord::Schema.define(version: 20141212080633) do
     t.datetime "updated_at"
   end
 
-  create_table "entries", force: true do |t|
+  create_table "entries", force: :cascade do |t|
     t.integer  "contest_id"
     t.integer  "dfs_account_id"
     t.integer  "position"
@@ -56,14 +57,14 @@ ActiveRecord::Schema.define(version: 20141212080633) do
     t.datetime "updated_at"
   end
 
-  create_table "sites", force: true do |t|
+  create_table "sites", force: :cascade do |t|
     t.string   "name"
     t.string   "domain"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
-  create_table "users", force: true do |t|
+  create_table "users", force: :cascade do |t|
     t.string   "username"
     t.string   "email"
     t.datetime "created_at"
