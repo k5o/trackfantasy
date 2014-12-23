@@ -8,7 +8,7 @@
         %h3 
           = "#{@plan.titleize} Plan, nice! Now let's get you set up:"
 
-        = form_tag '', class: 'signup-form' do
+        = form_tag users_path, method: 'post', class: 'signup-form' do
           - if @user.errors.any?
             .error-messages
               %ul
