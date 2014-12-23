@@ -14,7 +14,11 @@
           /         %li= message
           .text-field-container
             = email_field_tag :email, '', placeholder: 'Email', id: 'email', autofocus: true
+            = icon('at', '', class: 'fa-fw input-embedded-icon')
           .text-field-container
             = password_field_tag :password, '', placeholder: 'Password', id: 'password', class: 'submit-input'
+            = icon('lock', '', class: 'fa-fw input-embedded-icon')
           = hidden_field_tag :plan, @plan
-          = submit_tag 'Next', class: 'btn'
+          = button_to '', class: 'btn' do
+            = 'Next'
+            = icon('chevron-right', '', class: 'fa-fw')

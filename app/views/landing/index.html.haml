@@ -11,7 +11,7 @@
       .learn-more
         = link_to '#', id: 'js-learn-more' do
           = 'Learn more'
-          = image_tag('downarrow.png')
+          = icon('angle-double-down', '', class: 'fa-2x')
 
   #js-details.details
     .container
@@ -64,17 +64,17 @@
             .interval Per Month
           .card-details
             %p.line-item
-              No-hassle cancellation
+              = icon('check', 'No hassle cancellation', class: 'fa-fw')
             %p.line-item
-              Personalized statistics
+              = icon('check', 'Personalized statistics', class: 'fa-fw')
             %p.line-item
-              Revenue graphs
+              = icon('check', 'Revenue graphs', class: 'fa-fw')
             %p.line-item
-              Visualized trends
+              = icon('check', 'Visualized trends', class: 'fa-fw')
             %p.line-item
-              Same-day support
+              = icon('check', 'Same-day support', class: 'fa-fw')
             %p.line-item
-              60-day money back guarantee
+              = icon('check', '60-day money back guarantee', class: 'fa-fw')
 
             = link_to 'Select Plan', signup_path(plan: 'monthly'), class: 'cta'
         .card
@@ -86,17 +86,17 @@
             .interval Per Year
           .card-details
             %p.line-item.strong
-              3 Months Free!
+              = icon('check', '3 Months Free!', class: 'fa-fw fa-lg')
             %p.line-item
-              Personalized statistics
+              = icon('check', 'Personalized statistics', class: 'fa-fw')
             %p.line-item
-              Revenue graphs
+              = icon('check', 'Revenue graphs', class: 'fa-fw')
             %p.line-item
-              Visualized trends
+              = icon('check', 'Visualized trends', class: 'fa-fw')
             %p.line-item
-              Same-day support
+              = icon('check', 'Same-day support', class: 'fa-fw')
             %p.line-item
-              60-day money back guarantee
+              = icon('check', '60-day money back guarantee', class: 'fa-fw')
 
             = link_to 'Select Plan', signup_path(plan: 'annual'), class: 'cta'
 
