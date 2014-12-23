@@ -44,7 +44,6 @@
   @include span-columns(6 of 12);
   @include shift(3);
   box-shadow: 0 2px 2px 0 rgba(0,0,0,.2);
-  margin-top: 10%;
   border: 1px solid #bbb;
   border-radius: 4px;
   background: #fff;
@@ -69,11 +68,21 @@
       font-size: 20px;
     }
   }
+
+  @include media($medium) {
+    @include span-columns(8 of 12);
+    @include shift(2);
+  }
+
+  @include media($small) {
+    @include span-columns(12 of 12);
+    @include shift(0);
+  }
 }
 
 .signup-form {
   input {
-    padding: 8px 10px;
+    padding: 12px 16px;
     font-size: 16px;
     margin-bottom: 20px;
     width: 100%;
@@ -88,9 +97,25 @@
 
     .input-embedded-icon {
       position: absolute;
-      top: 12px;
+      top: 14px;
       right: 10px;
       font-size: 18px;
+      color: $fill-saturated;
     }
+  }
+}
+
+.logo {
+  font-family: $logo-font, 'Helvetica', Arial;
+  letter-spacing: -2px;
+  font-size: 28px;
+
+  .fantasy {
+    margin-left: -5px;
+  }
+
+  @include media($small) {
+    text-align: center;
+    @include span-columns(12 of 12);
   }
 }
