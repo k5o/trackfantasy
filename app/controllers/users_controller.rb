@@ -16,7 +16,7 @@ class UsersController < ApplicationController
 
     if @user.save
       session[:user_id] = @user.id
-      redirect_to payment_path
+      redirect_to payments_path(plan: params[:plan])
     else
       render :new
     end

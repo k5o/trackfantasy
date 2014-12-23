@@ -3,8 +3,8 @@ Rails.application.routes.draw do
 
   resources :users
   resources :sessions
+  resources :payments
 
   get '/login', to: 'sessions#new', as: 'login'
   get '/signup', to: 'users#new', as: 'signup'
-  get '/payment', to: 'landing#payment', as: 'payment'
 end
