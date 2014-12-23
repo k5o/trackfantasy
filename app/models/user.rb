@@ -1,4 +1,8 @@
 class User < ActiveRecord::Base
+
+  has_many :accounts
+  has_many :entries
+
   EMAIL_REGEXP = /\S+@\S+/
 
   validates_presence_of :email, :password
