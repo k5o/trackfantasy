@@ -1,17 +1,24 @@
-.page
+.page.new-user
   .container
-    .signup-panel
-      %h1 Log in to TrackFantasy
-      = render partial: 'partials/flash'
-      = form_tag sessions_path, method: 'post', class: 'signup-form' do
-        = label_tag :email, 'Email:'
-        = text_field_tag :email, nil, placeholder: 'Email', autofocus: true
-        = label_tag :password, 'Password:'
-        = password_field_tag :password, nil, placeholder: 'Password'
-        = submit_tag 'Log In', class: 'btn btn-action'
+    = render 'partials/logo'
+    .info-card
+      .info-card-title
+        %h1 Log In
+      .info-card-content
+        = form_tag sessions_path, method: 'post', class: 'signup-form' do
+          .text-field-container
+            = email_field_tag :email, '', placeholder: 'Email', id: 'email', autofocus: true
+            = icon('at', '', class: 'fa-fw input-embedded-icon')
+          .text-field-container
+            = password_field_tag :password, '', placeholder: 'Password', id: 'password', class: 'submit-input'
+            = icon('lock', '', class: 'fa-fw input-embedded-icon')
+          = button_to '', class: 'btn' do
+            = 'Show me the money!'
 
-      %p.alternative-actions
-        .helper-action Don't have an account?
-        = link_to "Sign up to start tracking", signup_path
-        .helper-action Forgot your password?
-        = link_to "Reset it here", '#'
+        .alternative-actions
+          %p.helper-action
+            Don't have an account?
+            = link_to "Sign up to start tracking", "#{root_url}#pricing"
+          %p.helper-action
+            Forgot your password?
+            = link_to "Reset it here", '#'

@@ -1,4 +1,5 @@
 class SessionsController < ApplicationController
+  before_filter :no_layout, only: [:new, :create]
   def new
   end
 

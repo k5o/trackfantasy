@@ -1,9 +1,14 @@
 class UsersController < ApplicationController
+  before_filter :no_layout, only: [:new, :create]
   def show
   end
 
   def new
-    @user = User.new
+    @plan = params[:plan]
+    # TODO: Do not hardcode plan string values
+    redirect_to root_path unless @plan && (@plan == 'monthly' || @plan == 'annual')
+
+    # @user = User.new
   end
 
   def create
@@ -11,9 +16,8 @@ class UsersController < ApplicationController
 
     if @user.save
       session[:user_id] = @user.id
-      redirect_to dashboard_path
+      redirect_to payment_path
     else
-      flash.now[:error] = "Signup error, please try again."
       render :new
     end
   end
