@@ -9,9 +9,9 @@ class FanduelCsvImporter
       next if row[2] == "Date"
       site = Site.where(name: "fanduel").first_or_create
       user = User.where(username: "yudarvish").first_or_create
-      player = DfsAccount.where( username: "yudarvish", site: site ).first_or_create
+      player = Account.where( username: "yudarvish", site: site ).first_or_create
       if row[9]
-        opponent = DfsAccount.where( username: row[9], site: site ).first_or_create
+        opponent = Account.where( username: row[9], site: site ).first_or_create
       end
       url = HTTParty.get(row[12]).request.last_uri.to_s
       contest = Contest.where(site: site, sport: row[1].downcase, site_contest_id: url.scan(/\d+/).last ).first_or_create

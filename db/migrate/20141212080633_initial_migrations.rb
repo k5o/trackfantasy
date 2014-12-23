@@ -5,7 +5,7 @@ class InitialMigrations < ActiveRecord::Migration
       t.timestamps
     end
 
-    create_table :dfs_accounts do |t|
+    create_table :accounts do |t|
       t.references :user, :site
       t.string :username
       t.integer :site_user_id
@@ -27,8 +27,8 @@ class InitialMigrations < ActiveRecord::Migration
     end
 
     create_table :entries do |t|
-      t.references :contest, :dfs_account
-      t.integer :position, :opponent_dfs_account_id
+      t.references :contest, :account
+      t.integer :position, :opponent_account_id
       t.decimal :score, :entry_fee, :winnings
       t.string :site_entry_id, :opponent_username, :link
       t.timestamps
