@@ -1,6 +1,6 @@
 class User < ActiveRecord::Base
 
-  has_many :dfs_accounts
+  has_many :accounts
   has_many :entries
 
   EMAIL_REGEXP = /\S+@\S+/
