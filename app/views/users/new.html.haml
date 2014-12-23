@@ -9,11 +9,11 @@
           = "#{@plan.titleize} Plan, nice! Now let's get you set up:"
 
         = form_tag '', class: 'signup-form' do
-          / - if @user.errors.any?
-          /   .error-messages
-          /     %ul
-          /       - for message in @user.errors.full_messages
-          /         %li= message
+          - if @user.errors.any?
+            .error-messages
+              %ul
+                - for message in @user.errors.full_messages
+                  %li= message
           .text-field-container
             = email_field_tag :email, '', placeholder: 'Email', id: 'email', autofocus: true
             = icon('at', '', class: 'fa-fw input-embedded-icon')
