@@ -78,4 +78,19 @@
     margin-bottom: 20px;
     width: 100%;
   }
+
+  .btn {
+    margin-top: 30px;
+  }
+
+  .text-field-container {
+    position: relative;
+
+    .input-embedded-icon {
+      position: absolute;
+      top: 12px;
+      right: 10px;
+      font-size: 18px;
+    }
+  }
 }
