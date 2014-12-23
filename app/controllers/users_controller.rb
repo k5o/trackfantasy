@@ -5,6 +5,9 @@ class UsersController < ApplicationController
 
   def new
     @plan = params[:plan]
+    # TODO: Do not hardcode plan string values
+    redirect_to root_path unless @plan && (@plan == 'monthly' || @plan == 'annual')
+
     # @user = User.new
   end
 

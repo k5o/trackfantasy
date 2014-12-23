@@ -6,7 +6,7 @@ $(document).ready(function (){
     return false;
   });
 
-  $("#js-cta").click(function() {
+  $(".js-cta").click(function() {
     $('html, body').animate({
       scrollTop: $("#js-pricing").offset().top
     }, 600);
