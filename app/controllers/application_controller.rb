@@ -15,6 +15,6 @@ class ApplicationController < ActionController::Base
 
   def parse_plan
     @plan = params[:plan]
-    @plan_exists = @plan == 'monthly' || @plan == 'annual'
+    @plan_exists = PaymentPlan::PLAN_NAMES.include?(@plan)
   end
 end

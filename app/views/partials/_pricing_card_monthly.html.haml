@@ -18,4 +18,4 @@
       = icon('check', 'Same-day support', class: 'fa-fw')
     %p.line-item
       = icon('check', '60-day money back guarantee', class: 'fa-fw')
-    = link_to 'Select Plan', signup_path(plan: 'monthly'), class: 'cta', id: 'monthly-subscribe-cta'
+    = link_to 'Select Plan', signup_path(plan: PaymentPlan::MONTHLY_PLAN_NAME), class: 'cta', id: 'monthly-subscribe-cta'

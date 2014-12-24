@@ -55,11 +55,22 @@
             = "Signed in as #{current_user.email}. Not you?"
             = link_to "Log Out", session_path(current_user), method: :delete, class: 'strong'
 
+= form_tag payments_path, id: 'stripe-form' do
+  = hidden_field_tag :token, ''
+  = hidden_field_tag :plan, ''
+  = hidden_field_tag :amount, ''
+
 %script{src: "https://checkout.stripe.com/checkout.js"}
 
 :javascript
   var handlerMonthly = StripeCheckout.configure({
     key: "pk_test_1MCYLYHQDa4DwnBoKd5CqoaP",
+    token: function(token) {
+      $('#stripe-form input[name="token"]').val(token.id);
+      $('#stripe-form input[name="plan"]').val('monthly');
+      $('#stripe-form input[name="amount"]').val('1900');
+      $('#stripe-form').submit();
+    },
     image: "https://stripe.com/img/documentation/checkout/marketplace.png",
     name: "TrackFantasy",
     description: "Monthly Plan ($19 per month)",
@@ -70,6 +81,12 @@
 
   var handlerAnnual = StripeCheckout.configure({
     key: "pk_test_1MCYLYHQDa4DwnBoKd5CqoaP",
+    token: function(token) {
+      $('#stripe-form input[name="token"]').val(token.id);
+      $('#stripe-form input[name="plan"]').val('annual');
+      $('#stripe-form input[name="amount"]').val('17900');
+      $('#stripe-form').submit();
+    },
     image: "https://stripe.com/img/documentation/checkout/marketplace.png",
     name: "TrackFantasy",
     description: "Annual Plan ($179 per year)",
