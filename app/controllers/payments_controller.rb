@@ -1,4 +1,5 @@
 class PaymentsController < ApplicationController
+  before_filter :auth_user, only: [:new, :create]
   before_filter :parse_plan, only: :new
   before_filter :no_layout, only: :new
 
@@ -36,7 +37,7 @@ class PaymentsController < ApplicationController
 
   private
 
-  def parse_plan
-    @plan_exists = @plan == 'monthly' || @plan == 'annual'
+  def auth_user
+    redirect_to root_path unless current_user
   end
 end

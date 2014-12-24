@@ -12,4 +12,9 @@ class ApplicationController < ActionController::Base
   def no_layout
     @no_layout = true
   end
+
+  def parse_plan
+    @plan = params[:plan]
+    @plan_exists = @plan == 'monthly' || @plan == 'annual'
+  end
 end

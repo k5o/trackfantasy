@@ -119,3 +119,7 @@
     @include span-columns(12 of 12);
   }
 }
+
+.error-messages {
+  color: red;
+}
