@@ -15,6 +15,7 @@
   &:hover {
     cursor: pointer;
     background: lighten($color, 2%);
+    color: $font-color;
   }
 
   &:active {
