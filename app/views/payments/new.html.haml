@@ -1,2 +1,52 @@
-= form_tag payments_path do
-  %script{src: "https://checkout.stripe.com/checkout.js", class: "stripe-button", :"data-key" => "#{Rails.configuration.stripe[:publishable_key]}", :"data-description" => "A month's subscription", :"data-amount" => "500"}
+%script{src: "https://checkout.stripe.com/checkout.js"}
+
+- if @plan_exists
+  
+- else
+  -# Users arrive here if no plan is selected, usually as a result of coming back after dropping out of the signup flow
+  .page.new-payment
+    .container
+      .pricing
+        .container
+          %h1 Choose a Plan
+          %p Welcome back! Select a plan for instant access.
+          %p Decide risk-free with our 60-day money back guarantee!
+
+          .pricing-cards
+            = render 'partials/pricing_card_monthly'
+            = render 'partials/pricing_card_annual'
+
+          %p
+            Questions? Email us at
+            = link_to 'support@trackfantasy.com', 'mailto:support@trackfantasy.com', class: 'strong'
+
+:javascript
+  var handlerMonthly = StripeCheckout.configure({
+    key: "pk_test_1MCYLYHQDa4DwnBoKd5CqoaP",
+    image: "https://stripe.com/img/documentation/checkout/marketplace.png",
+    name: "TrackFantasy",
+    description: "Monthly Plan ($19 per month)",
+    panelLabel: "Subscribe",
+    allowRememberMe: false,
+    email: "#{current_user.email}"
+  });
+
+  var handlerAnnual = StripeCheckout.configure({
+    key: "pk_test_1MCYLYHQDa4DwnBoKd5CqoaP",
+    image: "https://stripe.com/img/documentation/checkout/marketplace.png",
+    name: "TrackFantasy",
+    description: "Yearly Plan ($19 per month)",
+    panelLabel: "Subscribe",
+    allowRememberMe: false,
+    email: "#{current_user.email}"
+  });
+
+  document.getElementById('monthly-subscribe-cta').addEventListener('click', function(e) {
+    handlerMonthly.open();
+    e.preventDefault();
+  });
+
+  document.getElementById('annual-subscribe-cta').addEventListener('click', function(e) {
+    handlerAnnual.open();
+    e.preventDefault();
+  });

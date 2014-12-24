@@ -53,50 +53,8 @@
       %p Sign up today risk-free with our 60-day money back guarantee
 
       .pricing-cards
-        .card
-          .card-title
-            %h3 Monthly Subscription
-          .card-pricing
-            %span.dollar-figure $
-            %span.dollar-amount 19
-            .interval Per Month
-          .card-details
-            %p.line-item
-              = icon('check', 'No hassle cancellation', class: 'fa-fw')
-            %p.line-item
-              = icon('check', 'Personalized statistics', class: 'fa-fw')
-            %p.line-item
-              = icon('check', 'Revenue graphs', class: 'fa-fw')
-            %p.line-item
-              = icon('check', 'Visualized trends', class: 'fa-fw')
-            %p.line-item
-              = icon('check', 'Same-day support', class: 'fa-fw')
-            %p.line-item
-              = icon('check', '60-day money back guarantee', class: 'fa-fw')
-
-            = link_to 'Select Plan', signup_path(plan: 'monthly'), class: 'cta'
-        .card
-          .card-title
-            %h3 Yearly Subscription
-          .card-pricing
-            %span.dollar-figure $
-            %span.dollar-amount 179
-            .interval Per Year
-          .card-details
-            %p.line-item.strong
-              = icon('check', '3 Months Free!', class: 'fa-fw fa-lg')
-            %p.line-item
-              = icon('check', 'Personalized statistics', class: 'fa-fw')
-            %p.line-item
-              = icon('check', 'Revenue graphs', class: 'fa-fw')
-            %p.line-item
-              = icon('check', 'Visualized trends', class: 'fa-fw')
-            %p.line-item
-              = icon('check', 'Same-day support', class: 'fa-fw')
-            %p.line-item
-              = icon('check', '60-day money back guarantee', class: 'fa-fw')
-
-            = link_to 'Select Plan', signup_path(plan: 'annual'), class: 'cta'
+        = render 'partials/pricing_card_monthly'
+        = render 'partials/pricing_card_annual'
 
       %p
         Questions? Email us at

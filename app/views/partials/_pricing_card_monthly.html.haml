@@ -1,0 +1,21 @@
+.card
+  .card-title
+    %h3 Monthly Subscription
+  .card-pricing
+    %span.dollar-figure $
+    %span.dollar-amount 19
+    .interval Per Month
+  .card-details
+    %p.line-item
+      = icon('check', 'No hassle cancellation', class: 'fa-fw')
+    %p.line-item
+      = icon('check', 'Personalized statistics', class: 'fa-fw')
+    %p.line-item
+      = icon('check', 'Revenue graphs', class: 'fa-fw')
+    %p.line-item
+      = icon('check', 'Visualized trends', class: 'fa-fw')
+    %p.line-item
+      = icon('check', 'Same-day support', class: 'fa-fw')
+    %p.line-item
+      = icon('check', '60-day money back guarantee', class: 'fa-fw')
+    = link_to 'Select Plan', signup_path(plan: 'monthly'), class: 'cta', id: 'monthly-subscribe-cta'

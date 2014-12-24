@@ -1,0 +1,9 @@
+.new-payment {
+  background: $primary-saturated;
+
+  button.stripe-button-el {
+    width: 100%;
+    text-align: center;
+    margin-top: 20px;
+  }
+}

@@ -1,5 +1,6 @@
 class PaymentsController < ApplicationController
   before_filter :parse_plan, only: :new
+  before_filter :no_layout, only: :new
 
   def new
     @plan = params[:plan]
@@ -36,7 +37,6 @@ class PaymentsController < ApplicationController
   private
 
   def parse_plan
-    @plan = params[:plan]
-    @plan = 'monthly' unless @plan == 'monthly' || 'annual'
+    @plan_exists = @plan == 'monthly' || @plan == 'annual'
   end
 end
