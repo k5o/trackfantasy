@@ -5,8 +5,8 @@ class UsersController < ApplicationController
   end
 
   def new
-    redirect_to new_payment_path(plan: params[:plan]) if current_user && current_user.uninitiated? and return
-    redirect_to root_path if current_user and return
+    redirect_to new_payment_path(plan: params[:plan]) and return if current_user && current_user.uninitiated?
+    redirect_to root_path  and return if current_user
 
     @user = User.new
   end
