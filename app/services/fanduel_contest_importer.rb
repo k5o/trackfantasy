@@ -1,7 +1,7 @@
 require 'open-uri'
 class FanduelContestImporter
 
-  def initialize url = "https://www.fanduel.com/contest/8708446/scoring/lineup/96601070/"
+  def initialize url
     @game_id, @entry_id = url.scan(/\d+/)
     @api_game_url = "https://livescoring.fanduel.com/table/#{@game_id}?start="
     @doc ||= HTTParty.get("#{@api_game_url}0")
@@ -28,8 +28,7 @@ class FanduelContestImporter
   end
 
   def iterations_needed
-    3
-    # (@number_of_seats / 10)
+    (@number_of_seats / 10)
   end
 
   def page_at_index i

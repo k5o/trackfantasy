@@ -5,10 +5,13 @@ class FanduelCsvImporter
   end
 
   def import
-    CSV.foreach(@file).first(10).each do |row|
+    CSV.foreach(@file).each do |row|
       next if row[2] == "Date"
       site = Site.where(name: "fanduel").first_or_create
-      user = User.where(username: "yudarvish").first_or_create
+
+      #this will be some passed in user or current_user or something in the future
+      user = User.where(email: "yudarvish@dykstra.xxx").first_or_create
+
       player = Account.where( username: "yudarvish", site: site ).first_or_create
       if row[9]
         opponent = Account.where( username: row[9], site: site ).first_or_create
@@ -23,7 +26,7 @@ class FanduelCsvImporter
         site_entry_id: row[0],
         score: row[5],
         position: row[7],
-        opponent_username: opponent.username,
+        opponent_username: opponent.username if opponent,
         entry_fee: row[10],
         winnings: row[11],
         link: row[12],
