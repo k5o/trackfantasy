@@ -67,8 +67,8 @@
     key: "#{Rails.application.secrets.STRIPE_PUBLISHABLE_KEY}",
     token: function(token) {
       $('#stripe-form input[name="token"]').val(token.id);
-      $('#stripe-form input[name="plan"]').val('monthly');
-      $('#stripe-form input[name="amount"]').val('1900');
+      $('#stripe-form input[name="plan"]').val("#{PaymentPlan::MONTHLY_PLAN_NAME}");
+      $('#stripe-form input[name="amount"]').val("#{PaymentPlan::MONTHLY_PLAN_AMOUNT_IN_CENTS}");
       $('#stripe-form').submit();
     },
     image: "https://stripe.com/img/documentation/checkout/marketplace.png",
@@ -83,8 +83,8 @@
     key: "#{Rails.application.secrets.STRIPE_PUBLISHABLE_KEY}",
     token: function(token) {
       $('#stripe-form input[name="token"]').val(token.id);
-      $('#stripe-form input[name="plan"]').val('annual');
-      $('#stripe-form input[name="amount"]').val('17900');
+      $('#stripe-form input[name="plan"]').val("#{PaymentPlan::ANNUAL_PLAN_NAME}");
+      $('#stripe-form input[name="amount"]').val("#{PaymentPlan::ANNUAL_PLAN_AMOUNT_IN_CENTS}");
       $('#stripe-form').submit();
     },
     image: "https://stripe.com/img/documentation/checkout/marketplace.png",

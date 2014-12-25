@@ -25,7 +25,7 @@ class PaymentsController < ApplicationController
 
     current_user.stripe_customer_id = customer.id
     current_user.activate!
-    current_user.set_active_until(@plan)!
+    current_user.set_active_until!(@plan)
 
     # redirect_to root_path
   end
