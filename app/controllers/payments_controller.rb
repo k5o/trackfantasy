@@ -33,5 +33,6 @@ class PaymentsController < ApplicationController
 
   def auth_user
     redirect_to root_path unless current_user
+    redirect_to dashboard_path if current_user.active?
   end
 end
