@@ -12,19 +12,20 @@ class PaymentsController < ApplicationController
 
     render :new unless @payment_plan
 
-    customer = Stripe::Customer.create(
-      email: current_user.email,
-      card: params[:token],
-      plan: @payment_plan.name
-    )
+    begin
+      customer = Stripe::Customer.create(
+        email: current_user.email,
+        card: params[:token],
+        plan: @payment_plan.name
+      )
+    rescue Stripe::CardError => e
+      flash[:error] = e.message
+      redirect_to new_payment_path(@plan) and return
+    end
 
     current_user.stripe_customer_id = customer.id
     current_user.activate!
-
-    # rescue Stripe::CardError => e
-    #   flash[:error] = e.message
-    #   redirect_to new_payment_path(@plan)
-    # end
+    current_user.set_active_until(@plan)!
 
     # redirect_to root_path
   end

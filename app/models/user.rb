@@ -28,4 +28,21 @@ class User < ActiveRecord::Base
     self.status = STATUSES[:active]
     self.save!
   end
+
+  def inactivate!
+    self.status = STATUSES[:inactive]
+    self.save!
+  end
+
+  def set_active_until!(plan)
+    return unless plan
+
+    if plan.name == PaymentPlan::MONTHLY_PLAN_NAME
+      self.active_until = 1.month.from_now
+    elsif plan.name == PaymentPlan::ANNUAL_PLAN_NAME
+      self.active_until = 1.year.from_now
+    end
+
+    self.save!
+  end
 end
