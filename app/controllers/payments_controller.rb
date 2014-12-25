@@ -12,16 +12,6 @@ class PaymentsController < ApplicationController
 
     render :new unless @payment_plan
 
-    # Warning: Likely only needed once, or not at all if built through the Stripe dashboard
-    Stripe::Plan.create(
-      amount: @payment_plan.amount_in_cents,
-      interval: @payment_plan.interval,
-      interval_count: @payment_plan.interval_count,
-      name: @payment_plan.name,
-      id: @payment_plan.name,
-      currency: 'usd'
-    )
-
     customer = Stripe::Customer.create(
       email: current_user.email,
       card: params[:token],
@@ -29,13 +19,14 @@ class PaymentsController < ApplicationController
     )
 
     current_user.stripe_customer_id = customer.id
+    current_user.activate!
 
     # rescue Stripe::CardError => e
     #   flash[:error] = e.message
     #   redirect_to new_payment_path(@plan)
     # end
 
-    # redirect_to dashboard_path
+    # redirect_to root_path
   end
 
   private

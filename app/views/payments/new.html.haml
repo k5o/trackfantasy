@@ -64,7 +64,7 @@
 
 :javascript
   var handlerMonthly = StripeCheckout.configure({
-    key: "pk_test_1MCYLYHQDa4DwnBoKd5CqoaP",
+    key: "#{Rails.application.secrets.STRIPE_PUBLISHABLE_KEY}",
     token: function(token) {
       $('#stripe-form input[name="token"]').val(token.id);
       $('#stripe-form input[name="plan"]').val('monthly');
@@ -80,7 +80,7 @@
   });
 
   var handlerAnnual = StripeCheckout.configure({
-    key: "pk_test_1MCYLYHQDa4DwnBoKd5CqoaP",
+    key: "#{Rails.application.secrets.STRIPE_PUBLISHABLE_KEY}",
     token: function(token) {
       $('#stripe-form input[name="token"]').val(token.id);
       $('#stripe-form input[name="plan"]').val('annual');

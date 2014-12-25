@@ -21,6 +21,11 @@ class User < ActiveRecord::Base
   end
 
   def inactive?
-    status = STATUSES[:inactive]
+    status == STATUSES[:inactive]
+  end
+
+  def activate!
+    self.status = STATUSES[:active]
+    self.save!
   end
 end
