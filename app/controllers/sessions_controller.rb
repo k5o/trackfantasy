@@ -8,7 +8,12 @@ class SessionsController < ApplicationController
 
     if @user && @user.authenticate(params[:password])
       session[:user_id] = @user.id
-      redirect_to user_path(@user)
+
+      if @user.uninitiated?
+        redirect_to new_payment_path and return
+      else
+        redirect_to dashboard_path and return
+      end
     else
       flash.now[:error] = "Invalid username/email or password combination"
       render :new
@@ -17,7 +22,7 @@ class SessionsController < ApplicationController
 
   def destroy
     reset_session
-    flash[:success] = "Signed out successfully!"
+    flash[:success] = "Signed out successfully."
     redirect_to root_path
   end
 end
