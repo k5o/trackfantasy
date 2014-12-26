@@ -1,0 +1,127 @@
+@mixin btn($color: $accent, $font-color: #fff, $width: 200px) {
+  display: block;
+  color: $font-color;
+  margin: auto;
+  text-align: center;
+  width: $width;
+  background: $color;
+  line-height: 40px;
+  border-radius: 3px;
+  box-shadow: 0 4px 0px darken($color, 5%);
+  position: relative;
+  border: 0;
+  font-size: 16px;
+
+  &:hover {
+    cursor: pointer;
+    background: lighten($color, 2%);
+    color: $font-color;
+  }
+
+  &:active {
+    top: 2px;
+    box-shadow: 0 2px 0px darken($color, 5%);
+  }
+
+  &:focus {
+    outline: 0;
+  }
+}
+
+.btn {
+  @include btn;
+}
+
+@mixin omega-reset($nth) {
+  &:nth-child(#{$nth}) { margin-right: flex-gutter(); }
+  &:nth-child(#{$nth}+1) { clear: none }
+}
+
+.strong {
+  font-weight: 700;
+}
+
+.info-card {
+  @include span-columns(6 of 12);
+  @include shift(3);
+  box-shadow: 0 2px 2px 0 rgba(0,0,0,.5);
+  border-radius: 6px;
+  background: #fff;
+
+  .info-card-title {
+    background: $primary-saturated;
+    color: $off-white;
+    padding: 12px 20px;
+    border-radius: 6px 6px 0 0;
+
+    h1 {
+      margin: 0;
+      font-size: 24px;
+      font-family: $secondary-font;
+      font-weight: 400;
+    }
+  }
+
+  .info-card-content {
+    padding: 20px;
+
+    h3 {
+      margin: 0 0 20px 0;
+      font-size: 20px;
+    }
+  }
+
+  @include media($medium) {
+    @include span-columns(8 of 12);
+    @include shift(2);
+  }
+
+  @include media($small) {
+    @include span-columns(12 of 12);
+    @include shift(0);
+  }
+}
+
+.signup-form {
+  input {
+    padding: 12px 16px;
+    font-size: 16px;
+    margin-bottom: 20px;
+    width: 100%;
+  }
+
+  .btn {
+    margin-top: 20px;
+  }
+
+  .text-field-container {
+    position: relative;
+
+    .input-embedded-icon {
+      position: absolute;
+      top: 14px;
+      right: 10px;
+      font-size: 18px;
+      color: $fill-saturated;
+    }
+  }
+}
+
+.logo {
+  font-family: $logo-font, 'Helvetica', Arial;
+  letter-spacing: -2px;
+  font-size: 28px;
+
+  .fantasy {
+    margin-left: -5px;
+  }
+
+  @include media($small) {
+    text-align: center;
+    @include span-columns(12 of 12);
+  }
+}
+
+.error-messages {
+  color: red;
+}

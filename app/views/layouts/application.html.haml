@@ -1,0 +1,21 @@
+!!!
+%html
+  %head
+    %title TrackFantasy
+    = stylesheet_link_tag 'application', media: 'all'
+    = javascript_include_tag 'application'
+    = csrf_meta_tags
+    %link{href: 'http://fonts.googleapis.com/css?family=Roboto:400,300,700,400italic,300italic|Hammersmith+One|Lato:300,300italic,400,700', rel: 'stylesheet', type: 'text/css'}
+    %meta{name: "Description", content: "Performance Analytics for Daily Fantasy Sports Players. Valuable winrate and scoring metrics at your fingertips."}
+    %meta{name: "viewport", content: "width=device-width, initial-scale=1.0, maximum-scale=1.0"}
+    %meta{property: "og:url", content: request.url}
+    %meta{property: "og:type", content: "website"}
+    %meta{property: "og:description", content: "Performance Analytics for Daily Fantasy Sports Players. Valuable winrate and scoring metrics at your fingertips."}
+    %meta{property: "og:image", content: ""}
+  %body
+    = render partial: 'partials/flash'
+    - unless @no_layout
+      = render partial: 'partials/header'
+    = yield
+    - unless @no_layout
+      = render partial: 'partials/footer'

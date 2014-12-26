@@ -1,0 +1,65 @@
+header {
+  height: 68px;
+  padding: 20px 0;
+  line-height: 28px;
+  background: $fill-saturated;
+
+  .logo {
+    @include span-columns(6 of 12);
+    color: $off-white;
+    text-decoration: none;
+    font-family: $logo-font, 'Helvetica', Arial;
+    letter-spacing: -2px;
+    font-size: 28px;
+
+    .fantasy {
+      margin-left: -5px;
+    }
+
+    @include media($small) {
+      text-align: center;
+      @include span-columns(12 of 12);
+    }
+  }
+
+  @include media($small) {
+    padding: 12px 0;
+  }
+}
+
+ul.nav {
+  @include span-columns(6 of 12);
+  text-align: right;
+  text-transform: uppercase;
+
+  .uninitiated-nav {
+    text-transform: none;
+  }
+
+  li {
+    display: inline;
+    padding-right: 16px;
+    color: $off-white;
+
+    &:last-child {
+      padding-right: 0;
+    }
+
+    .login-link {
+      font-weight: 700;
+    }
+
+    a {
+      color: $off-white;
+
+      &:hover {
+        color: darken($off-white, 10%);
+      }
+    }
+  }
+
+  @include media($small) {
+    text-align: center;
+    @include span-columns(12 of 12);
+  }
+}

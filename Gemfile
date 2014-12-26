@@ -2,7 +2,7 @@ source 'https://rubygems.org'
 
 ruby "2.1.2"
 
-gem 'rails', '4.2.0.rc2'
+gem 'rails', '4.2.0'
 gem 'pg'
 gem 'sass-rails', '~> 5.0.0.beta1'
 gem 'uglifier', '>= 1.3.0'
@@ -17,8 +17,11 @@ gem 'therubyracer', platforms: :ruby
 gem 'react-rails', git: 'git://github.com/reactjs/react-rails.git'
 gem 'spring', group: :development
 gem 'figaro'
-gem 'font-awesome-sass', '~> 4.2.0'
 gem 'thin'
+gem 'font-awesome-sass', '~> 4.2.0'
+gem 'nokogiri'
+gem 'httparty'
+gem 'stripe', :git => 'https://github.com/stripe/stripe-ruby'
 
 group :production do
   gem 'rails_12factor'

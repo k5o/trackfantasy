@@ -1,0 +1,24 @@
+.page.new-user
+  .container
+    = render 'partials/logo'
+    .info-card
+      .info-card-title
+        %h1 Log In
+      .info-card-content
+        = form_tag sessions_path, method: 'post', class: 'signup-form' do
+          .text-field-container
+            = email_field_tag :email, '', placeholder: 'Email', id: 'email', autofocus: true
+            = icon('at', '', class: 'fa-fw input-embedded-icon')
+          .text-field-container
+            = password_field_tag :password, '', placeholder: 'Password', id: 'password', class: 'submit-input'
+            = icon('lock', '', class: 'fa-fw input-embedded-icon')
+          = button_to '', class: 'btn' do
+            = 'Show me the money!'
+
+        .alternative-actions
+          %p.helper-action
+            Don't have an account?
+            = link_to "Sign up to start tracking", "#{root_url}#pricing"
+          %p.helper-action
+            Forgot your password?
+            = link_to "Reset it here", '#'

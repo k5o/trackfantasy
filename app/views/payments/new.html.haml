@@ -1,0 +1,110 @@
+- if @plan_exists
+  .page.new-payment
+    .container
+      %ul.signup-breadcrumbs
+        %li
+          = icon('check', 'Sign Up', class: 'fa-fw')
+        %li.active
+          = icon('shopping-cart', 'Check Out', class: 'fa-fw')
+        %li
+          = icon('dashboard', 'Import to Dashboard', class: 'fa-fw')
+
+      .info-card
+        .info-card-title
+          %h1
+            = "TrackFantasy #{@plan.titleize} Plan"
+        .info-card-content
+          %ul.checkout-details
+            %li
+              = icon('user')
+              %p= current_user.email
+              = link_to "(Incorrect?)", '#', class: 'alternate-action', id: 'change-email'
+            %li
+              = icon('trophy')
+              %p= "#{@plan.titleize} Plan"
+              = link_to "(Change)", new_payment_path(plan: other_plan_name(@plan)), class: 'alternate-action'
+
+          %p Click the button below to finalize your subscription.
+
+          = link_to '#', class: 'btn', id: 'annual-subscribe-cta' do
+            = icon('lock', 'Secure Payment', class: 'fa-fw')
+- else
+  -# Users arrive here if no plan is selected, usually as a result of coming back after dropping out of the signup flow
+  .page.new-payment-no-plan
+    .container
+      .pricing
+        .container
+          %ul.signup-breadcrumbs
+            %li
+              = icon('check', 'Sign Up', class: 'fa-fw')
+            %li.active
+              = icon('shopping-cart', 'Check Out', class: 'fa-fw')
+            %li
+              = icon('dashboard', 'Import to Dashboard', class: 'fa-fw')
+          %h1 Welcome back! Select a plan for instant access.
+          %p Decide risk-free with our 60-day money back guarantee!
+
+          .pricing-cards
+            = render 'partials/pricing_card_monthly'
+            = render 'partials/pricing_card_annual'
+
+          %p
+            Questions? Email us at
+            = link_to 'support@trackfantasy.com', 'mailto:support@trackfantasy.com', class: 'strong'
+          %p
+            = "Signed in as #{current_user.email}. Not you?"
+            = link_to "Log Out", session_path(current_user), method: :delete, class: 'strong'
+
+= form_tag payments_path, id: 'stripe-form' do
+  = hidden_field_tag :token, ''
+  = hidden_field_tag :plan, ''
+  = hidden_field_tag :amount, ''
+
+%script{src: "https://checkout.stripe.com/checkout.js"}
+
+:javascript
+  var handlerMonthly = StripeCheckout.configure({
+    key: "#{Rails.application.secrets.STRIPE_PUBLISHABLE_KEY}",
+    token: function(token) {
+      $('#stripe-form input[name="token"]').val(token.id);
+      $('#stripe-form input[name="plan"]').val("#{PaymentPlan::MONTHLY_PLAN_NAME}");
+      $('#stripe-form input[name="amount"]').val("#{PaymentPlan::MONTHLY_PLAN_AMOUNT_IN_CENTS}");
+      $('#stripe-form').submit();
+    },
+    image: "https://stripe.com/img/documentation/checkout/marketplace.png",
+    name: "TrackFantasy",
+    description: "Monthly Plan ($19 per month)",
+    panelLabel: "Subscribe",
+    allowRememberMe: false,
+    email: "#{current_user.email}"
+  });
+
+  var handlerAnnual = StripeCheckout.configure({
+    key: "#{Rails.application.secrets.STRIPE_PUBLISHABLE_KEY}",
+    token: function(token) {
+      $('#stripe-form input[name="token"]').val(token.id);
+      $('#stripe-form input[name="plan"]').val("#{PaymentPlan::ANNUAL_PLAN_NAME}");
+      $('#stripe-form input[name="amount"]').val("#{PaymentPlan::ANNUAL_PLAN_AMOUNT_IN_CENTS}");
+      $('#stripe-form').submit();
+    },
+    image: "https://stripe.com/img/documentation/checkout/marketplace.png",
+    name: "TrackFantasy",
+    description: "Annual Plan ($179 per year)",
+    panelLabel: "Subscribe",
+    allowRememberMe: false,
+    email: "#{current_user.email}"
+  });
+
+  if ($('#monthly-subscribe-cta')) {
+    $('#monthly-subscribe-cta').on('click', function(e) {
+      handlerMonthly.open();
+      e.preventDefault();
+    });
+  }
+  
+  if ($('#annual-subscribe-cta')) {
+    $('#annual-subscribe-cta').on('click', function(e) {
+      handlerAnnual.open();
+      e.preventDefault();
+    });
+  }
