@@ -6,7 +6,7 @@ class Account < ActiveRecord::Base
   has_many :entries
 
   def has_username?
-    username
+    !! username
   end
 
 end
