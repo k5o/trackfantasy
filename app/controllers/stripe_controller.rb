@@ -10,7 +10,6 @@ class StripeController < ApplicationController
 
         user.set_active_until!(plan)
       if event_json[:type] = 'invoice.payment_failed'
-        user.inactivate!
         # Send charge failed email
       end
     end

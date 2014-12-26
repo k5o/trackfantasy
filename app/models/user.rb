@@ -4,7 +4,6 @@ class User < ActiveRecord::Base
   has_many :entries
 
   EMAIL_REGEXP = /\S+@\S+/
-  STATUSES = { uninitiated: 0, active: 1, inactive: 2 }
 
   has_secure_password
   validates_presence_of :email, :password
@@ -13,25 +12,15 @@ class User < ActiveRecord::Base
   validates :password, length: { minimum: 5 }
 
   def uninitiated?
-    status == STATUSES[:uninitiated]
+    !!stripe_customer_id
   end
 
   def active?
-    status == STATUSES[:active]
+    Time.current <= active_until
   end
 
   def inactive?
-    status == STATUSES[:inactive]
-  end
-
-  def activate!
-    self.status = STATUSES[:active]
-    self.save!
-  end
-
-  def inactivate!
-    self.status = STATUSES[:inactive]
-    self.save!
+    !!active_until || Time.current >= active_until
   end
 
   def set_active_until!(plan)

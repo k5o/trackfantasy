@@ -4,7 +4,6 @@ class PaymentsController < ApplicationController
   before_filter :no_layout
 
   def new
-    @plan = params[:plan]
   end
 
   def create
@@ -24,7 +23,6 @@ class PaymentsController < ApplicationController
     end
 
     current_user.stripe_customer_id = customer.id
-    current_user.activate!
     current_user.set_active_until!(@plan)
 
     # redirect_to root_path
