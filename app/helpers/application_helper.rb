@@ -14,4 +14,14 @@ module ApplicationHelper
       PaymentPlan::MONTHLY_PLAN_AMOUNT_IN_CENTS
     end
   end
+
+  def money_class(amount)
+    if amount > 0
+      'in-the-black'
+    elsif amount < 0
+      'in-the-red'
+    else
+      'even'
+    end
+  end
 end

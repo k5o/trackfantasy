@@ -3,12 +3,13 @@ class DashboardController < ApplicationController
   before_filter :scope_dates
 
   def index
+    @analytics = Dashboard::AnalyticsCalculator.new(@user)
   end
 
   def fetch_dashboard_data
     # Asychronously load this data on page ready
     # TODO: Ensure request/return are clean, email notify admins if not (exception email)
-    @analytics = AnalyticsCalculator.new(@user, @date_range)
+    @analytics = Dashboard::AnalyticsCalculator.new(@user)
 
     render json: @analytics
   end

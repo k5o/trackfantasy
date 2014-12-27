@@ -27,7 +27,7 @@ class Dashboard::AnalyticsCalculator
       all_contests = Contest.where("id in (?)", contests).sort_by(&:completed_on)
       first_contest = all_contests.last.completed_on
       last_contest = all_contests.first.completed_on
-      @date_range = (first_contest..last_contest).map {|d| d}
+      @date_range = (first_contest..last_contest).map {|d| d} # TODO: Probably a better way
     end
   end
 
@@ -55,7 +55,32 @@ class Dashboard::AnalyticsCalculator
     winnings - entry_fees
   end
 
-  def running_revenue_list
+  # def running_revenue_list_by_date
+  #   entries = []
+
+  #   @accounts.each do |account|
+  #     # entries << account.entries.where("entry.entered_on BETWEEN #{@date_range}")
+  #     entries = account.entries
+  #   end
+
+  #   dates_and_entry_profits = entries.sort_by(&:entered_on).reduce({}) do |result, entry|
+  #     result[entry.entered_on.to_s] ||= []
+  #     result[entry.entered_on.to_s] << entry.profit
+
+  #     result
+  #   end
+
+  #   running_count = 0
+
+  #   revenue_list_by_date = dates_and_entry_profits.each do |date, profits|
+  #     running_count += profits.inject(:+)
+  #     dates_and_entry_profits[date] = running_count
+  #   end
+
+  #   revenue_list_by_date
+  # end
+
+  def running_revenue_list_by_entry
     entries = []
 
     @accounts.each do |account|
@@ -63,24 +88,31 @@ class Dashboard::AnalyticsCalculator
       entries = account.entries
     end
 
-    dates_and_entry_profits = entries.sort_by(&:entered_on).reduce({}) do |result, entry|
-      result[entry.entered_on] ||= []
-      result[entry.entered_on] << entry.profit
+    entry_profits = entries.sort_by(&:entered_on).map(&:profit)
+
+    running_count = []
+
+    entry_profits.reduce(0) do |result, profit|
+      result = profit + result
+      running_count << result
 
       result
     end
 
-    revenue_list_by_date = dates_and_entry_profits.each do |date, profits|
-      dates_and_entry_profits[date] = profits.inject(:+)
-    end
-
-    binding.pry
-
-    revenue_list_by_date
+    running_count
   end
 
-  def graph_points
-    running_revenue_list
+  # def graph_points_by_date
+  #   running_revenue_list_by_date
+  # end
+
+  def graph_y_axis
+    running_revenue_list_by_entry.unshift(0)
+  end
+
+  def graph_x_axis
+    length = running_revenue_list_by_entry.length
+    (0..length).select {|d| d} # TODO: Probably a better way
   end
 
   def roi

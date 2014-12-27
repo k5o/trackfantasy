@@ -1,0 +1,45 @@
+.page.dashboard
+  .container
+    %h1 Your Dashboard
+    / %h6 Last Updated: (update)
+
+    .primary-figure
+      %div{class: "amount"}
+        = @analytics.total_entries
+      %div.label Entries
+
+    .primary-figure
+      %div{class: "amount #{money_class(@analytics.revenue_amount)}"}
+        = number_to_currency(@analytics.revenue_amount)
+      %span.label Bottom Line
+
+    .primary-figure
+      %div{class: "amount #{money_class(@analytics.revenue_amount)}"}
+        = number_to_percentage(@analytics.roi, precision: 2)
+      %div.label ROI
+
+    .graph
+      %canvas#canvas{:height => "450", :width => "900"}
+
+:javascript
+  var data = {
+    labels: #{@analytics.graph_x_axis},
+    datasets: [
+      {
+        label: "Profit by Entry",
+        fillColor: "rgba(220,220,220,0.2)",
+        strokeColor: "rgba(13,101,59,1)",
+        pointColor: "rgba(18,139,81,1)",
+        pointStrokeColor: "#fff",
+        pointHighlightFill: "#fff",
+        pointHighlightStroke: "rgba(220,220,220,1)",
+        data: #{@analytics.graph_y_axis},
+      }
+    ]
+  };
+
+  chart = new Chart($("#canvas").get(0).getContext("2d")).Line(data, {
+    bezierCurve: false,
+    datasetFill: false,
+    scaleGridLineColor: "rgba(0,0,0,.1)",
+  })

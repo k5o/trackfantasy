@@ -125,3 +125,11 @@
 .error-messages {
   color: red;
 }
+
+.in-the-red {
+  color: #A52715;
+}
+
+.in-the-black {
+  color: darken($accent, 5%)
+}

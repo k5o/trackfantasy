@@ -1,0 +1,26 @@
+.dashboard {
+  text-align: center;
+
+  .primary-figure {
+    display: inline-block;
+    text-align: center;
+    padding: 10px 20px;
+
+    .label {
+      text-transform: uppercase;
+    }
+  }
+}
+
+.amount {
+  font-weight: 700;
+  font-size: 32px;
+  margin-bottom: 12px;
+  font-family: $secondary-font;
+}
+
+.graph {
+  margin: auto;
+  padding: 20px;
+  max-width: 900px;
+}
