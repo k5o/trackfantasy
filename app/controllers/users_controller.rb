@@ -1,14 +1,14 @@
 class UsersController < ApplicationController
   before_filter :no_layout, only: [:new, :create]
+  before_filter :parse_plan, only: [:new, :create]
   def show
   end
 
   def new
-    @plan = params[:plan]
-    # TODO: Do not hardcode plan string values
-    redirect_to root_path unless @plan && (@plan == 'monthly' || @plan == 'annual')
+    redirect_to new_payment_path(plan: params[:plan]) and return if current_user && current_user.uninitiated?
+    redirect_to root_path and return if current_user
 
-    # @user = User.new
+    @user = User.new
   end
 
   def create
@@ -16,11 +16,13 @@ class UsersController < ApplicationController
 
     if @user.save
       session[:user_id] = @user.id
-      redirect_to payment_path
+      redirect_to new_payment_path(plan: params[:plan])
     else
       render :new
     end
   end
+
+  private
 
   def user_params
     params.permit(:email, :password)

@@ -21,6 +21,7 @@ gem 'thin'
 gem 'font-awesome-sass', '~> 4.2.0'
 gem 'nokogiri'
 gem 'httparty'
+gem 'stripe', :git => 'https://github.com/stripe/stripe-ruby'
 
 group :production do
   gem 'rails_12factor'

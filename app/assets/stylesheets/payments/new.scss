@@ -1,0 +1,133 @@
+.new-payment {
+  text-align: center;
+  display: block;
+  height: 100%;
+  min-height: 100%;
+  font-size: 18px;
+
+  .info-card {
+    @include span-columns(8 of 12);
+    @include shift(2);
+
+    @include media($medium) {
+      @include span-columns(12 of 12);
+      @include shift(0);
+    }
+  }
+
+  .btn {
+    line-height: 50px;
+    font-size: 20px;
+    width: 240px;
+    margin-bottom: 20px;
+  }
+
+  .checkout-details {
+    margin: 20px 20px 40px 20px;
+    border-radius: 6px;
+    display: inline-block;
+    background: #eee;
+    border: 1px solid $fill-saturated;
+    width: 80%;
+
+    li {
+      display: inline-block;
+      width: 48%;
+      color: $fill-saturated;
+      padding: 10px;
+
+      &:first-child {
+        border-right: 1px solid $fill-saturated;
+      }
+
+      i {
+        font-size: 40px;
+        display: block;
+      }
+
+      p {
+        font-size: 14px;
+        margin-bottom: 0px;
+      }
+
+      .alternate-action {
+        font-size: 12px;
+      }
+
+      @include media($small) {
+        width: 100%;
+
+        &:first-child {
+          border-right: 0;
+          border-bottom: 1px solid $fill-saturated;
+        }
+      }
+    }
+  }
+}
+
+.new-payment-no-plan {
+  text-align: center; 
+
+  .pricing {
+    background: $off-white;
+    color: $fill-saturated;
+    padding: 0;
+
+    .card {
+      border: 1px solid $fill-saturated;
+
+      .card-details {
+        padding: 20px;
+        background: $fill;
+        color: $off-white;
+        border-radius: 0 0 6px 6px;
+      }
+    }
+
+    p a {
+      color: $primary-saturated;
+    }
+  }
+}
+
+.signup-breadcrumbs {
+  border-bottom: 1px solid #bbb;
+  display: inline-block;
+  margin-bottom: 20px;
+
+  li {
+    display: inline-block;
+    font-size: 16px;
+    padding: 16px;
+    color: #999;
+    position: relative;
+
+    &.active {
+      color: $primary-saturated;
+      font-weight: 700;
+    }
+
+    &:after {
+      content: "\f054";
+      font-family: FontAwesome;
+      display: inline-block;
+      position: absolute;
+      top: 18px;
+      right: -9px;
+    }
+
+    &:last-child:after {
+      content: "";
+    }
+
+    @include media($small) {
+      font-size: 12px;
+      padding: 8px;
+
+      &:after {
+        top: 9px;
+      }
+    }
+  }
+}

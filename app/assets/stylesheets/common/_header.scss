@@ -32,9 +32,14 @@ ul.nav {
   text-align: right;
   text-transform: uppercase;
 
+  .uninitiated-nav {
+    text-transform: none;
+  }
+
   li {
     display: inline;
     padding-right: 16px;
+    color: $off-white;
 
     &:last-child {
       padding-right: 0;
