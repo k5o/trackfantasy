@@ -18,16 +18,16 @@ class Dashboard::AnalyticsCalculator
     if date_range
       @date_range = date_range
     else
-      contests = []
+      entries = []
 
       @accounts.each do |account|
-        contests += account.entries.map(&:contest_id)
+        entries += account.entries
       end
 
-      all_contests = Contest.where("id in (?)", contests).sort_by(&:completed_on)
-      first_contest = all_contests.last.completed_on
-      last_contest = all_contests.first.completed_on
-      @date_range = (first_contest..last_contest).map {|d| d} # TODO: Probably a better way
+      entries = entries.sort_by(&:entered_on)
+      first_contest = entries.last.entered_on
+      last_contest = entries.first.entered_on
+      @date_range = (first_contest..last_contest).to_a
     end
   end
 
@@ -111,8 +111,7 @@ class Dashboard::AnalyticsCalculator
   end
 
   def graph_x_axis
-    length = running_revenue_list_by_entry.length
-    (0..length).select {|d| d} # TODO: Probably a better way
+    (0..running_revenue_list_by_entry.length).to_a
   end
 
   def roi
