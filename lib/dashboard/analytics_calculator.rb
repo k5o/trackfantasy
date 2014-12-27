@@ -3,7 +3,6 @@
 class Dashboard::AnalyticsCalculator
   attr_reader :user, :date_range, :account, :accounts
 
-  # TODO: there's probably a better way to set beginning of time)
   def initialize(user, date_range = nil, account = nil)
     return false unless user.kind_of?(User)
 
@@ -27,7 +26,7 @@ class Dashboard::AnalyticsCalculator
       entries = entries.sort_by(&:entered_on)
       first_contest = entries.last.entered_on
       last_contest = entries.first.entered_on
-      @date_range = (first_contest..last_contest).to_a
+      @date_range = first_contest..last_contest
     end
   end
 
