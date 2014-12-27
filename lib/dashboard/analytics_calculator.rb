@@ -54,30 +54,30 @@ class Dashboard::AnalyticsCalculator
     winnings - entry_fees
   end
 
-  # def running_revenue_list_by_date
-  #   entries = []
+  def running_revenue_list_by_date
+    entries = []
 
-  #   @accounts.each do |account|
-  #     # entries << account.entries.where("entry.entered_on BETWEEN #{@date_range}")
-  #     entries = account.entries
-  #   end
+    @accounts.each do |account|
+      # entries << account.entries.where("entry.entered_on BETWEEN #{@date_range}")
+      entries = account.entries
+    end
 
-  #   dates_and_entry_profits = entries.sort_by(&:entered_on).reduce({}) do |result, entry|
-  #     result[entry.entered_on.to_s] ||= []
-  #     result[entry.entered_on.to_s] << entry.profit
+    dates_and_entry_profits = entries.sort_by(&:entered_on).reduce({}) do |result, entry|
+      result[entry.entered_on.to_s] ||= []
+      result[entry.entered_on.to_s] << entry.profit
 
-  #     result
-  #   end
+      result
+    end
 
-  #   running_count = 0
+    running_count = 0
 
-  #   revenue_list_by_date = dates_and_entry_profits.each do |date, profits|
-  #     running_count += profits.inject(:+)
-  #     dates_and_entry_profits[date] = running_count
-  #   end
+    revenue_list_by_date = dates_and_entry_profits.each do |date, profits|
+      running_count += profits.inject(:+)
+      dates_and_entry_profits[date] = running_count
+    end
 
-  #   revenue_list_by_date
-  # end
+    revenue_list_by_date
+  end
 
   def running_revenue_list_by_entry
     entries = []
@@ -101,9 +101,13 @@ class Dashboard::AnalyticsCalculator
     running_count
   end
 
-  # def graph_points_by_date
-  #   running_revenue_list_by_date
-  # end
+  def date_graph_y_axis
+    running_revenue_list_by_date.values.unshift(0)
+  end
+
+  def date_graph_x_axis
+    running_revenue_list_by_date.keys.unshift('')
+  end
 
   def graph_y_axis
     running_revenue_list_by_entry.unshift(0)

@@ -23,7 +23,7 @@
 
 :javascript
   var data = {
-    labels: #{@analytics.graph_x_axis},
+    labels: #{@analytics.date_graph_x_axis},
     datasets: [
       {
         label: "Profit by Entry",
@@ -33,7 +33,7 @@
         pointStrokeColor: "#fff",
         pointHighlightFill: "#fff",
         pointHighlightStroke: "rgba(220,220,220,1)",
-        data: #{@analytics.graph_y_axis},
+        data: #{@analytics.date_graph_y_axis},
       }
     ]
   };
@@ -42,4 +42,4 @@
     bezierCurve: false,
     datasetFill: false,
     scaleGridLineColor: "rgba(0,0,0,.1)",
-  })
+  });
