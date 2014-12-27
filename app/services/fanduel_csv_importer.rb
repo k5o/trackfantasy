@@ -1,6 +1,6 @@
 class FanduelCsvImporter
 
-  def initialize file_location = "db/seed/fanduel_example.csv"
+  def initialize file_location
     @file = File.open(file_location)
   end
 
@@ -20,14 +20,14 @@ class FanduelCsvImporter
       url = HTTParty.get(row[12]).request.last_uri.to_s
       contest = Contest.where(site: site, sport: row[1].downcase, site_contest_id: url.scan(/\d+/).last ).first_or_create
       unless contest.title
-        contest.update title: row[3], entrants: row[8], completed_on: Date.strptime(row[2], '%Y/%m/%d'), link: url, buy_in: row[10]
+        contest.update title: row[3], entrants: row[8], completed_on: Date.strptime(row[2], '%m/%d/%y'), link: url, buy_in: row[10]
       end
       player.entries.create!(
         contest: contest,
         site_entry_id: row[0],
         score: row[5],
         position: row[7],
-        opponent_username: opponent.username if opponent,
+        opponent_username: opponent ? opponent.username : nil,
         entry_fee: row[10],
         winnings: row[11],
         link: row[12],
