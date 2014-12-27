@@ -7,6 +7,7 @@ class FanduelCsvImporter
   def import
     CSV.foreach(@file).each do |row|
       next if row[2] == "Date"
+      next if Entry.find_by_site_entry_id row[0]
       site = Site.where(name: "fanduel").first_or_create
 
       #this will be some passed in user or current_user or something in the future
