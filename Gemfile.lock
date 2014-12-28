@@ -74,8 +74,6 @@ GEM
       rack (>= 1.0.0)
       rack-test (>= 0.5.4)
       xpath (~> 2.0)
-    chart-js-rails (0.0.7)
-      railties (> 3.1)
     childprocess (0.5.5)
       ffi (~> 1.0, >= 1.0.11)
     coderay (1.1.0)
@@ -109,6 +107,8 @@ GEM
       haml (>= 3.1, < 5.0)
       html2haml (>= 1.0.1)
       railties (>= 4.0.1)
+    highcharts-rails (3.0.10)
+      railties (>= 3.1)
     hike (1.2.3)
     hpricot (0.8.6)
     html2haml (1.0.1)
@@ -270,13 +270,13 @@ DEPENDENCIES
   binding_of_caller
   bourbon
   capybara
-  chart-js-rails
   database_cleaner
   execjs
   factory_girl_rails
   figaro
   font-awesome-sass (~> 4.2.0)
   haml-rails
+  highcharts-rails (~> 3.0.0)
   httparty
   jbuilder (~> 2.0)
   jquery-rails
