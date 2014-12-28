@@ -22,7 +22,7 @@ class Entry < ActiveRecord::Base
     (winnings - entry_fee).to_f
   end
 
-  def entered_on
-    contest.completed_on
-  end
+  # def entered_on
+  #   contest.completed_on
+  # end
 end
