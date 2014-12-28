@@ -23,7 +23,7 @@ class PaymentsController < ApplicationController
     end
 
     current_user.stripe_customer_id = customer.id
-    current_user.set_active_until!(@plan)
+    current_user.set_active_until!(@payment_plan)
 
     redirect_to dashboard_path
   end
