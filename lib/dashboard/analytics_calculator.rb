@@ -22,6 +22,8 @@ class Dashboard::AnalyticsCalculator
       @entries = @user.entries
       @date_range = (@entries.last..@entries.first)
     end
+
+    @entries = @entries.sort_by(&:entered_on)
   end
 
   def winnings
@@ -37,7 +39,7 @@ class Dashboard::AnalyticsCalculator
   end
 
   def running_revenue_list_by_date
-    dates_and_entry_profits = @entries.sort_by(&:entered_on).reduce({}) do |result, entry|
+    dates_and_entry_profits = @entries.reduce({}) do |result, entry|
       unix_time_datestamp_in_milliseconds = (entry.entered_on.to_time.to_f * 1000).to_i
       result[unix_time_datestamp_in_milliseconds] ||= []
       result[unix_time_datestamp_in_milliseconds] << entry.profit
@@ -56,7 +58,7 @@ class Dashboard::AnalyticsCalculator
   end
 
   def running_revenue_list_by_entry
-    entry_profits = @entries.sort_by(&:entered_on).map(&:profit)
+    entry_profits = @entries.map(&:profit)
 
     running_count = []
 
