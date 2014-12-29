@@ -63,8 +63,9 @@ class Dashboard::AnalyticsCalculator
     end
 
     dates_and_entry_profits = entries.sort_by(&:entered_on).reduce({}) do |result, entry|
-      result[entry.entered_on.to_s] ||= []
-      result[entry.entered_on.to_s] << entry.profit
+      unix_time_datestamp_in_milliseconds = (entry.entered_on.to_time.to_f * 1000).to_i
+      result[unix_time_datestamp_in_milliseconds] ||= []
+      result[unix_time_datestamp_in_milliseconds] << entry.profit
 
       result
     end
@@ -101,20 +102,12 @@ class Dashboard::AnalyticsCalculator
     running_count
   end
 
-  def date_graph_y_axis
-    running_revenue_list_by_date.values.unshift(0)
-  end
+  def graph_axes
+    dates_and_profits = running_revenue_list_by_date
+    x_axis = dates_and_profits.values
+    y_axis = dates_and_profits.keys
 
-  def date_graph_x_axis
-    running_revenue_list_by_date.keys.unshift('')
-  end
-
-  def graph_y_axis
-    running_revenue_list_by_entry.unshift(0)
-  end
-
-  def graph_x_axis
-    (0..running_revenue_list_by_entry.length).to_a
+    y_axis.zip(x_axis)
   end
 
   def roi

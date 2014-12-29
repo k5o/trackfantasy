@@ -1,7 +1,7 @@
 .page.dashboard
   .container
     %h1 Your Dashboard
-    / %h6 Last Updated: (update)
+    %h6 Last Updated: (update)
 
     .primary-figure
       %div{class: "amount"}
@@ -19,27 +19,69 @@
       %div.label ROI
 
   .graph
-    %canvas#canvas{:height => "450", :width => "900"}
+    #canvas{:width => "100%"}
 
 :javascript
-  var data = {
-    labels: #{@analytics.date_graph_x_axis},
-    datasets: [
-      {
-        label: "Profit by Entry",
-        fillColor: "rgba(220,220,220,0.2)",
-        strokeColor: "rgba(13,101,59,1)",
-        pointColor: "rgba(18,139,81,1)",
-        pointStrokeColor: "#fff",
-        pointHighlightFill: "#fff",
-        pointHighlightStroke: "rgba(220,220,220,1)",
-        data: #{@analytics.date_graph_y_axis},
-      }
-    ]
-  };
-
-  chart = new Chart($("#canvas").get(0).getContext("2d")).Line(data, {
-    bezierCurve: false,
-    datasetFill: false,
-    scaleGridLineColor: "rgba(0,0,0,.1)",
+  $(function () {
+    $('#canvas').highcharts({
+      chart: {
+        backgroundColor: '#F4F3F1',
+        type: 'line',
+      },
+      title: {
+        text: '',
+      },
+      credits: {
+        enabled: false
+      },
+      legend: {
+        enabled: false
+      },
+      plotOptions: {
+        line: {
+          marker: {
+            enabled: false
+          },
+        }
+      },
+      yAxis: {
+        title: {
+          text: 'Winnings',
+          style: { "color": "#666", "fontWeight": "bold" },
+        },
+        labels: {
+          format: '${value}',
+          style: {"color":"#666"}
+        },
+        maxPadding: 0.1,
+        minorGridLineColor: '#ededed',
+        minorTickInterval: 'auto',
+        lineColor: '#888',
+        gridLineColor: '#ddd',
+        lineWidth: 2,
+        plotLines: [{
+          value: 0,
+          width: 2,
+          color: '#999'
+        }]
+      },
+      xAxis: {
+        type: 'datetime',
+        lineWidth: 2,
+        lineColor: '#888',
+        gridLineColor: '#ddd',
+        gridLineDashStyle: 'solid',
+        gridLineWidth: 1,
+        minPadding: 0,
+        maxPadding: 0,
+        labels: {
+          style: {"color":"#666"}
+        }
+      },
+      series: [{
+        name: '$',
+        color: '#0D653B',
+        data: #{@analytics.graph_axes}
+      }],
+    });
   });
