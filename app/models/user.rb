@@ -12,7 +12,7 @@ class User < ActiveRecord::Base
   # validates :password, length: { minimum: 5 }
 
   def uninitiated?
-    !!stripe_customer_id
+    stripe_customer_id.nil?
   end
 
   def active?
