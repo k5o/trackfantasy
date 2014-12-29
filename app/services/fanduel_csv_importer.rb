@@ -32,6 +32,7 @@ class FanduelCsvImporter
         entry_fee_in_cents: row[10].to_i * 100,
         winnings_in_cents: row[11],
         link: row[12],
+        entered_on: Date.strptime(row[2], '%m/%d/%y'),
       )
       if row[9] == "Tournament"
         # FanduelContestImporter.new(url).import

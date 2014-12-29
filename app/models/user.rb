@@ -1,7 +1,8 @@
 class User < ActiveRecord::Base
 
   has_many :accounts
-  has_many :entries
+  has_many :entries, through: :accounts
+  has_many :date_stats
 
   EMAIL_REGEXP = /\S+@\S+/
 
@@ -33,5 +34,9 @@ class User < ActiveRecord::Base
     end
 
     self.save!
+  end
+
+  def stats_between start_date, end_date
+    date_stats.where('date > ? and date < ?', start_date, end_date).map{|ds| [ds.date, ds.stat_hash["total_in_cents"]] }
   end
 end

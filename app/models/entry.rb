@@ -2,6 +2,8 @@ class Entry < ActiveRecord::Base
   belongs_to :account
   belongs_to :contest
 
+  scope :unaggregated, -> { where(aggregated_for_user: false) }
+
   def self.create_from_fanduel_seat data, contest
     site = Site.where(name: "fanduel").first_or_create
     player = Account.where(site_user_id: data["user_id"], site: site).first_or_create
