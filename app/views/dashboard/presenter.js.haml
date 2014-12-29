@@ -1,0 +1,80 @@
+:plain
+  if (#{@analytics.revenue_amount} > 0) {
+    var colorClass = 'in-the-black';
+  }
+  else if (#{@analytics.revenue_amount} < 0) {
+    var colorClass = 'in-the-red';
+  }
+
+  // Seed data
+
+  $('#js-entries').html("#{(@analytics.total_entries)}");
+  $('#js-revenue-amount').html("#{number_to_currency(@analytics.revenue_amount)}");
+  $('#js-revenue-amount').addClass(colorClass);
+  $('#js-roi').html("#{number_to_percentage(@analytics.roi, precision: 2)}");
+  $('#js-roi').addClass(colorClass);
+  $('#canvas').html('');
+
+  // Draw graph
+
+  $('#canvas').highcharts({
+    chart: {
+      backgroundColor: '#F4F3F1',
+      type: 'line',
+    },
+    title: {
+      text: '',
+    },
+    credits: {
+      enabled: false
+    },
+    legend: {
+      enabled: false
+    },
+    plotOptions: {
+      line: {
+        marker: {
+          enabled: false
+        },
+      }
+    },
+    yAxis: {
+      title: {
+        text: 'Winnings',
+        style: { "color": "#666", "fontWeight": "bold" },
+      },
+      labels: {
+        format: '${value}',
+        style: {"color":"#666"}
+      },
+      maxPadding: 0.1,
+      minorGridLineColor: '#ededed',
+      minorTickInterval: 'auto',
+      lineColor: '#888',
+      gridLineColor: '#ddd',
+      lineWidth: 2,
+      plotLines: [{
+        value: 0,
+        width: 2,
+        color: '#999'
+      }]
+    },
+    xAxis: {
+      type: 'datetime',
+      lineWidth: 2,
+      lineColor: '#888',
+      gridLineColor: '#ddd',
+      gridLineDashStyle: 'solid',
+      gridLineWidth: 1,
+      minPadding: 0,
+      maxPadding: 0,
+      labels: {
+        style: {"color":"#666"}
+      }
+    },
+    series: [{
+      name: '$',
+      color: '#0D653B',
+      data: #{@analytics.graph_axes}
+    }],
+  });

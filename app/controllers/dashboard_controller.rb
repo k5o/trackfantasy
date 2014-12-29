@@ -3,7 +3,6 @@ class DashboardController < ApplicationController
   before_filter :scope_dates
 
   def index
-    @analytics = Dashboard::AnalyticsCalculator.new(@user)
   end
 
   def fetch_dashboard_data
@@ -11,7 +10,7 @@ class DashboardController < ApplicationController
     # TODO: Ensure request/return are clean, email notify admins if not (exception email)
     @analytics = Dashboard::AnalyticsCalculator.new(@user)
 
-    render json: @analytics
+    render 'presenter.js'
   end
 
   private
