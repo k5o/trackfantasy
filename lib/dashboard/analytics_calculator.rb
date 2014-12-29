@@ -14,40 +14,22 @@ class Dashboard::AnalyticsCalculator
       @accounts = @user.accounts
     end
 
+    # Get entries
     if date_range
+      @entries = @user.entries.where("entered_on >= ? AND entered_on <= ?", date_range.first, date_range.last)
       @date_range = date_range
     else
-      entries = []
-
-      @accounts.each do |account|
-        entries += account.entries
-      end
-
-      entries = entries.sort_by(&:entered_on)
-      first_contest = entries.last.entered_on
-      last_contest = entries.first.entered_on
-      @date_range = first_contest..last_contest
+      @entries = @user.entries
+      @date_range = (@entries.last..@entries.first)
     end
   end
 
   def winnings
-    total_winnings = 0
-
-    @accounts.each do |account|
-      total_winnings += account.entries.map(&:winnings).inject(:+)
-    end
-
-    total_winnings.to_f
+    @entries.map(&:winnings).inject(:+)
   end
 
   def entry_fees
-    total_entry_fees = 0
-
-    @accounts.each do |account|
-      total_entry_fees += account.entries.map(&:entry_fee).inject(:+)
-    end
-
-    total_entry_fees.to_f
+    @entries.map(&:entry_fee).inject(:+)
   end
 
   def revenue_amount
@@ -55,14 +37,7 @@ class Dashboard::AnalyticsCalculator
   end
 
   def running_revenue_list_by_date
-    entries = []
-
-    @accounts.each do |account|
-      # entries << account.entries.where("entry.entered_on BETWEEN #{@date_range}")
-      entries = account.entries
-    end
-
-    dates_and_entry_profits = entries.sort_by(&:entered_on).reduce({}) do |result, entry|
+    dates_and_entry_profits = @entries.sort_by(&:entered_on).reduce({}) do |result, entry|
       unix_time_datestamp_in_milliseconds = (entry.entered_on.to_time.to_f * 1000).to_i
       result[unix_time_datestamp_in_milliseconds] ||= []
       result[unix_time_datestamp_in_milliseconds] << entry.profit
@@ -81,14 +56,7 @@ class Dashboard::AnalyticsCalculator
   end
 
   def running_revenue_list_by_entry
-    entries = []
-
-    @accounts.each do |account|
-      # entries << account.entries.where("entry.entered_on BETWEEN #{@date_range}")
-      entries = account.entries
-    end
-
-    entry_profits = entries.sort_by(&:entered_on).map(&:profit)
+    entry_profits = @entries.sort_by(&:entered_on).map(&:profit)
 
     running_count = []
 
@@ -115,12 +83,6 @@ class Dashboard::AnalyticsCalculator
   end
 
   def total_entries
-    entries = 0
-
-    @accounts.each do |account|
-      entries += account.entries.count
-    end
-
-    entries
+    @entries.count
   end
 end
