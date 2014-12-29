@@ -39,6 +39,7 @@ class FanduelCsvImporter
       else
         opponent.entries.create!(
           contest: contest,
+          user: user,
           site_entry_id: row[0].gsub(/\D/, ''),
           score: row[5],
           opponent_username: player.username,
