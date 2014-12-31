@@ -9,13 +9,6 @@
         .uninitiated-nav
           %li= "Welcome Back!"
           %li= link_to 'Complete Your Signup', new_payment_path, class: 'strong'
-      - elsif current_user
-        %li
-          = link_to dashboard_path do
-            = icon('line-chart', 'Dashboard', class: 'fa-fw')
-        %li
-          = link_to user_path(current_user) do
-            = icon('user', 'Account', class: 'fa-fw')
       - else
         %li= link_to 'Pricing/Signup', '#', class: 'js-cta'
         %li= link_to 'Login', login_path, class: 'login-link'

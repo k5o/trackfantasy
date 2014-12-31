@@ -1,26 +1,31 @@
-.page.dashboard
-  .container
-    %h1 Your Dashboard
-    %h6 Last Updated: (update)
+.dashboard
+  %aside
+    = render partial: 'sidebar'
+  %main
+    .main-header
+      %p Date and Site Selection
+    .main-container
+      .date-selection
+      .site-selection
 
-    .primary-figure
-      %div{class: "amount", id: 'js-entries'}
-        = icon('cog', '', class: 'fa-spin')
-      %div.label Entries
+      .primary-figure
+        %div{class: "amount", id: 'js-entries'}
+          = icon('cog', '', class: 'fa-spin')
+        %div.label Entries
 
-    .primary-figure
-      %div{class: "amount", id: 'js-revenue-amount'}
-        = icon('cog', '', class: 'fa-spin')
-      %span.label Bottom Line
+      .primary-figure
+        %div{class: "amount", id: 'js-revenue-amount'}
+          = icon('cog', '', class: 'fa-spin')
+        %span.label Bottom Line
 
-    .primary-figure
-      %div{class: "amount", id: 'js-roi'}
-        = icon('cog', '', class: 'fa-spin')
-      %div.label ROI
+      .primary-figure
+        %div{class: "amount", id: 'js-roi'}
+          = icon('cog', '', class: 'fa-spin')
+        %div.label ROI
 
-  .graph
-    #canvas{:width => "100%"}
-      = icon('cog', '', class: 'fa-4x fa-spin')
+      .graph
+        #canvas{:width => "100%"}
+          = icon('cog', '', class: 'fa-4x fa-spin')
 
 :javascript
   $(function () {

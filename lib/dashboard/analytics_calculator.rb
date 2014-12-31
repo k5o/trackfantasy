@@ -15,7 +15,7 @@ class Dashboard::AnalyticsCalculator
     end
 
     # Get entries
-    if date_range
+    if date_range.first && date_range.last
       @entries = @user.entries.where("entered_on >= ? AND entered_on <= ?", date_range.first, date_range.last)
       @date_range = date_range
     else

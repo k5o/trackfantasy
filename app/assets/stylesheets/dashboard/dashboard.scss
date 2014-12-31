@@ -1,19 +1,6 @@
 .dashboard {
+  @include fill-parent();
   text-align: center;
-
-  .primary-figure {
-    display: inline-block;
-    text-align: center;
-    padding: 10px 20px;
-
-    .label {
-      text-transform: uppercase;
-    }
-
-    .fa {
-      font-size: 16px;
-    }
-  }
 }
 
 .amount {
@@ -25,8 +12,94 @@
 
 .graph {
   margin: auto;
-  padding: 20px;
-  width: 90%;
   max-width: 1600px;
   min-height: 400px;
+}
+
+aside {
+  background: #fff;
+  border-right: 1px solid $border;
+  text-align: left;
+  min-height: 100%;
+  position: fixed;
+  width: 220px;
+  font-size: 18px;
+  top: 0;
+
+  .dashboard-nav-header {
+    height: 40px;
+    padding: 10px;
+    text-align: center;
+    border-bottom: 1px solid $border;
+    background: #F6F5FA;
+
+    .logo {
+      color: $fill-saturated;
+      font-size: 24px;
+    }
+  }
+
+  ul {
+    li {
+      a {
+        display: block;
+        line-height: 32px;
+        width: 100%;
+        padding: 10px 12px;
+
+        &:hover {
+          background: #A3B5DE;
+        }
+
+        &:focus {
+          background: darken(#A3B5DE, 5%)
+        }
+
+        &.active {
+          font-weight: 700;
+        }
+      }
+    }
+  }
+}
+
+main {
+  margin-left: 220px;
+  background: $off-white;
+
+  .main-header {
+    height: 40px;
+    background: #E4E7EC;
+    border-bottom: 1px solid $border;
+    position: fixed;
+    width: 100%;
+    top: 0;
+    z-index: 999;
+
+    p {
+      text-align: left;
+      padding: 10px 20px;
+    }
+  }
+
+  .main-container {
+    margin: 60px 20px 20px 20px;
+    border: 1px solid $border;
+    background: #fff;
+    padding: 20px;
+  }
+}
+
+.primary-figure {
+  display: inline-block;
+  text-align: center;
+  padding: 10px 20px;
+
+  .label {
+    text-transform: uppercase;
+  }
+
+  .fa {
+    font-size: 16px;
+  }
 }

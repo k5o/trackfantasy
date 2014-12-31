@@ -1,6 +1,6 @@
 class DashboardController < ApplicationController
   before_filter :verify_user
-  caches_action :fetch_dashboard_data # TODO: invalidate cache when new csv is imported
+  # caches_action :fetch_dashboard_data, expires_in: 1.month # TODO: invalidate cache when new csv is imported
 
   def index
   end
