@@ -1,9 +1,9 @@
 # TODO: Cache this return, or its individual calculations
 # but invalidate once user uploads new file, OR date_range changes
 class Dashboard::AnalyticsCalculator
-  attr_reader :user, :date_range, :account, :accounts
+  attr_reader :user, :date_range, :account
 
-  def initialize(user, date_range = nil, account = nil)
+  def initialize(user, date_range = nil, site = nil)
     return false unless user.kind_of?(User)
 
     @user = user
@@ -55,21 +55,6 @@ class Dashboard::AnalyticsCalculator
     end
 
     revenue_list_by_date
-  end
-
-  def running_revenue_list_by_entry
-    entry_profits = @entries.map(&:profit)
-
-    running_count = []
-
-    entry_profits.reduce(0) do |result, profit|
-      result = profit + result
-      running_count << result
-
-      result
-    end
-
-    running_count
   end
 
   def graph_axes
