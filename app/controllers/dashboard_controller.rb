@@ -1,6 +1,7 @@
 class DashboardController < ApplicationController
   before_filter :verify_user
   before_filter :scope_dates
+  caches_action :fetch_dashboard_data
 
   def index
   end
