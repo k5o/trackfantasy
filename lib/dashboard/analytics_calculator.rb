@@ -10,10 +10,8 @@ class Dashboard::AnalyticsCalculator
     # Get entries
     if date_range.first.present? && date_range.last.present?
       @entries = @user.entries.where("entered_on >= ? AND entered_on <= ?", date_range.first, date_range.last).order(:entered_on)
-      @date_range = date_range
     else
-      @entries = @user.entries
-      @date_range = (@entries.last..@entries.first).order(:entered_on)
+      @entries = @user.entries.order(:entered_on)
     end
 
     if site
@@ -36,6 +34,7 @@ class Dashboard::AnalyticsCalculator
   end
 
   def day_profit
+    # TODO: Possibly a postgres window function (OVER) to speed up this operation
     dates_and_entry_profits = @entries.reduce({}) do |result, entry|
       unix_time_datestamp_in_milliseconds = (entry.entered_on.to_time.to_f * 1000).to_i
       result[unix_time_datestamp_in_milliseconds] ||= []
