@@ -9,35 +9,33 @@ class Dashboard::AnalyticsCalculator
 
     # Get entries
     if date_range.first.present? && date_range.last.present?
-      @entries = @user.entries.where("entered_on >= ? AND entered_on <= ?", date_range.first, date_range.last)
+      @entries = @user.entries.where("entered_on >= ? AND entered_on <= ?", date_range.first, date_range.last).order(:entered_on)
       @date_range = date_range
     else
       @entries = @user.entries
-      @date_range = (@entries.last..@entries.first)
+      @date_range = (@entries.last..@entries.first).order(:entered_on)
     end
 
     if site
-      site_id = Site.find_by_name(site).id # Site has been validated by this point
+      site_id = Site.find_by_name(site).try(:id)
 
       @entries.includes(:account).where(accounts: {site_id: site_id})
     end
-
-    @entries = @entries.sort_by(&:entered_on)
   end
 
   def winnings
-    @entries.map(&:winnings).inject(:+)
+    @entries.sum(:winnings)
   end
 
   def entry_fees
-    @entries.map(&:entry_fee).inject(:+)
+    @entries.sum(:entry_fee)
   end
 
   def revenue_amount
     winnings - entry_fees
   end
 
-  def running_revenue_list_by_date
+  def day_profit
     dates_and_entry_profits = @entries.reduce({}) do |result, entry|
       unix_time_datestamp_in_milliseconds = (entry.entered_on.to_time.to_f * 1000).to_i
       result[unix_time_datestamp_in_milliseconds] ||= []
@@ -46,14 +44,25 @@ class Dashboard::AnalyticsCalculator
       result
     end
 
-    running_count = 0
+    result = {}
 
-    revenue_list_by_date = dates_and_entry_profits.each do |date, profits|
-      running_count += profits.inject(:+)
-      dates_and_entry_profits[date] = running_count
+    dates_and_entry_profits.each do |date, profits|
+      result[date] = profits.inject(:+)
     end
 
-    revenue_list_by_date
+    result
+  end
+
+  def running_revenue_list_by_date
+    running_count = 0
+    result = {}
+
+    day_profit.each do |date, profit|
+      running_count += profit
+      result[date] = running_count
+    end
+
+    result
   end
 
   def graph_axes
@@ -65,7 +74,7 @@ class Dashboard::AnalyticsCalculator
   end
 
   def roi
-    ((winnings - entry_fees) / entry_fees) * 100
+    (revenue_amount / entry_fees) * 100
   end
 
   def total_entries
@@ -76,12 +85,32 @@ class Dashboard::AnalyticsCalculator
     @entries.first.entered_on
   end
 
+  def biggest_day_entry
+    day_profit.sort_by {|k,v| v}.last
+  end
+
+  def biggest_day
+    biggest_day_entry.last
+  end
+
+  def biggest_day_date
+    Time.at(biggest_day_entry.first / 1000).to_date
+  end
+
+  def biggest_score
+    @entries.maximum(:winnings)
+  end
+
+  def biggest_score_date
+    @entries.find_by_winnings(biggest_score).try(:entered_on)
+  end
+
   private
 
   def validate_input(user, date_range, site)
     raise 'Invalid entry' unless user.kind_of?(User)
 
-    if date_range.first.present? && date_range.last.present?
+    if date_range && date_range.first.present? && date_range.last.present?
       from_date = date_range.first.to_date
       to_date = date_range.last.to_date
 

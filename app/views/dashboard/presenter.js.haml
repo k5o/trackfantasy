@@ -13,6 +13,12 @@
   $('#js-revenue-amount').addClass(colorClass);
   $('#js-roi').html("#{number_to_percentage(@analytics.roi, precision: 2)}");
   $('#js-roi').addClass(colorClass);
+  $('#js-biggest-day').html("#{number_to_currency(@analytics.biggest_day)}");
+  $('#js-biggest-day').addClass('in-the-black');
+  $('#js-biggest-day-date').html("#{@analytics.biggest_day_date}");
+  $('#js-biggest-score').html("#{number_to_currency(@analytics.biggest_score)}");
+  $('#js-biggest-score').addClass('in-the-black');
+  $('#js-biggest-score-date').html("#{@analytics.biggest_score_date}");
   $('#canvas').html('');
 
   // Draw graph
