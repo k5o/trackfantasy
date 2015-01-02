@@ -67,24 +67,66 @@ main {
   margin-left: 220px;
   background: $off-white;
 
-  .main-header {
-    height: 40px;
-    background: #E4E7EC;
-    border-bottom: 1px solid $border;
-    position: fixed;
-    width: 100%;
-    top: 0;
-    z-index: 999;
-    padding: 10px 20px;
-    text-align: left;
-  }
-
   .main-container {
     margin: 60px 20px 20px 20px;
     border: 1px solid $border;
     background: #fff;
     padding: 20px;
   }
+}
+
+.main-header {
+  height: 40px;
+  background: #E4E7EC;
+  border-bottom: 1px solid $border;
+  position: fixed;
+  width: 100%;
+  top: 0;
+  z-index: 999;
+  padding: 10px 20px;
+  text-align: left;
+
+  input[type=date] {
+    font-family: $primary-font;
+    margin-right: 10px;
+  }
+
+  input[type=submit] {
+    color: #E4E7EC;
+    background: $primary-saturated;
+    border: 2px solid $primary-saturated;
+    border-radius: 3px;
+    font-size: 12px;
+    font-family: $secondary-font;
+    position: absolute;
+    line-height: 12px;
+
+    &:hover {
+      cursor: pointer;
+      background: darken($primary-saturated, 5%);
+      border: 2px solid darken($primary-saturated, 5%);
+    }
+
+    &:focus {
+      outline: none;
+    }
+  }
+
+  .js-filter-loader {
+    display: none;
+    margin-left: 12px;
+  }
+}
+
+.main-errors {
+  display: none;
+  color: $red;
+  background: #FAB6B6;
+  padding: 5px;
+  width: 100%;
+  border: 1px solid $red;
+  border-radius: 3px;
+  margin-bottom: 20px;
 }
 
 .primary-figure {

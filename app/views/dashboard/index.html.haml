@@ -4,14 +4,16 @@
   %main
     .main-header
       %span.date-selection
-        = form_tag '/dashboard/fetch_dashboard_data', method: 'get' do
+        = form_tag '/dashboard/fetch_dashboard_data', method: 'get', id: 'filter' do
           = label_tag 'From:'
           = date_field_tag 'from_date', @date_range.try(:first).try(:to_date)
           = label_tag 'To:'
           = date_field_tag 'to_date', @date_range.try(:last).try(:to_date) || Date.today
-          = submit_tag 'Filter'
+          = submit_tag 'Filter', id: 'js-filter-btn'
+          = icon('cog', '', class: 'fa-spin js-filter-loader')
       %span.site-selection
-    #main.main-container
+    .main-container
+      .main-errors
       .primary-figure
         %div{class: "amount", id: 'js-entries'}
           = icon('cog', '', class: 'fa-spin')
@@ -50,6 +52,6 @@
       data: {from_date: fromDate, to_date: toDate, site: site},
       type: 'GET',
     }).fail(function(data){
-      alert('Something broke.');
+      $('.main-errors').append('Something went wrong, please make sure your date input is valid. <a href="/dashboard">Refresh</a>').show();
     });
   });

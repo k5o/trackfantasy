@@ -1,7 +1,13 @@
 $(document).ready(function(){
-  var path = window.location.pathname.slice(1);
+  var pathname = window.location.pathname
+  var path = pathname.replace(/\//g, '')
 
   if ($('#nav-'+ path)) {
     $('#nav-'+ path).addClass('active');
   }
+
+  $('form#filter').on('submit', function(){
+    $('#js-filter-btn').hide().attr('disabled', 'disabled');
+    $('.js-filter-loader').show();
+  })
 })
