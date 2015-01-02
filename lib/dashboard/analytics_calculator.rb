@@ -5,11 +5,10 @@ class Dashboard::AnalyticsCalculator
 
   def initialize(user, date_range = nil, site = nil)
     validate_input(user, date_range, site)
-
     @user = user
 
     # Get entries
-    if date_range.first && date_range.last
+    if date_range.first.present? && date_range.last.present?
       @entries = @user.entries.where("entered_on >= ? AND entered_on <= ?", date_range.first, date_range.last)
       @date_range = date_range
     else
@@ -73,12 +72,16 @@ class Dashboard::AnalyticsCalculator
     @entries.count
   end
 
+  def date_of_first_entry
+    @entries.first.entered_on
+  end
+
   private
 
   def validate_input(user, date_range, site)
     raise 'Invalid entry' unless user.kind_of?(User)
 
-    if date_range
+    if date_range.first.present? && date_range.last.present?
       from_date = date_range.first.to_date
       to_date = date_range.last.to_date
 
