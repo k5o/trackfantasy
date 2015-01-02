@@ -4,15 +4,9 @@ class Dashboard::AnalyticsCalculator
   attr_reader :user, :date_range, :account
 
   def initialize(user, date_range = nil, site = nil)
-    return false unless user.kind_of?(User)
+    validate_input(user, date_range, site)
 
     @user = user
-
-    if account
-      @accounts = account
-    else
-      @accounts = @user.accounts
-    end
 
     # Get entries
     if date_range.first && date_range.last
@@ -21,6 +15,12 @@ class Dashboard::AnalyticsCalculator
     else
       @entries = @user.entries
       @date_range = (@entries.last..@entries.first)
+    end
+
+    if site
+      site_id = Site.find_by_name(site).id # Site has been validated by this point
+
+      @entries.includes(:account).where(accounts: {site_id: site_id})
     end
 
     @entries = @entries.sort_by(&:entered_on)
@@ -71,5 +71,22 @@ class Dashboard::AnalyticsCalculator
 
   def total_entries
     @entries.count
+  end
+
+  private
+
+  def validate_input(user, date_range, site)
+    raise 'Invalid entry' unless user.kind_of?(User)
+
+    if date_range
+      from_date = date_range.first.to_date
+      to_date = date_range.last.to_date
+
+      raise 'Invalid entry' unless from_date.kind_of?(Date) && to_date.kind_of?(Date) && to_date >= from_date
+    end
+
+    if site
+      raise 'Invalid entry' unless Site::NAMES.include?(site)
+    end
   end
 end

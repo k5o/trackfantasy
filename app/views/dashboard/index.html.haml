@@ -3,11 +3,15 @@
     = render partial: 'sidebar'
   %main
     .main-header
-      %p Date and Site Selection
-    .main-container
-      .date-selection
-      .site-selection
-
+      %span.date-selection
+        = form_tag '/dashboard/fetch_dashboard_data', method: 'get' do
+          = label_tag 'From:'
+          = date_field_tag 'from_date', @date_range.try(:first).try(:to_date)
+          = label_tag 'To:'
+          = date_field_tag 'to_date', @date_range.try(:last).try(:to_date) || Date.today
+          = submit_tag 'Filter'
+      %span.site-selection
+    #main.main-container
       .primary-figure
         %div{class: "amount", id: 'js-entries'}
           = icon('cog', '', class: 'fa-spin')
@@ -29,10 +33,23 @@
 
 :javascript
   $(function () {
+    function getUrlParameter(sParam) {
+      var sPageURL = window.location.search.substring(1);
+      var sURLVariables = sPageURL.split('&');
+      for (var i = 0; i < sURLVariables.length; i++) {
+        var sParameterName = sURLVariables[i].split('=');
+        if (sParameterName[0] == sParam) { return sParameterName[1]; }
+      }
+    }
+
+    var fromDate = getUrlParameter('from_date');
+    var toDate = getUrlParameter('to_date');
+    var site = getUrlParameter('site');
     $.ajax({
-      url: "/dashboard/fetch_dashboard_data",
-      type: "GET",
+      url: '/dashboard/fetch_dashboard_data',
+      data: {from_date: fromDate, to_date: toDate, site: site},
+      type: 'GET',
     }).fail(function(data){
-      alert("Something broke.");
+      alert('Something broke.');
     });
   });
