@@ -133,3 +133,27 @@
 .in-the-black {
   color: darken($accent, 5%)
 }
+
+.safety {
+  text-align: left;
+}
+
+.flash-error {
+  color: $red;
+  background: #FAB6B6;
+  padding: 5px;
+  width: 100%;
+  border: 1px solid $red;
+  border-radius: 3px;
+  margin-bottom: 20px;
+}
+
+.flash-success {
+  color: $money;
+  background: #79F281;
+  padding: 5px;
+  width: 100%;
+  border: 1px solid $money;
+  border-radius: 3px;
+  margin-bottom: 20px;
+}

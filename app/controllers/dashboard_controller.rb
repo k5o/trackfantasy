@@ -11,12 +11,14 @@ class DashboardController < ApplicationController
     begin
       @analytics = Dashboard::AnalyticsCalculator.new(@user, @date_range, @site)
     rescue
+      flash.now[:error] = "Something went wrong, please make sure your date input is valid. <a href='/dashboard'>Refresh</a>".html_safe
       render :index, status: 403 and return
     end
 
     if request.xhr?
       render 'presenter.js'
     else
+      flash[:error] = "Something went wrong, please make sure your date input is valid. <a href='/dashboard'>Refresh</a>".html_safe
       redirect_to dashboard_path(from_date: @date_range.first, to_date: @date_range.last, site: @site)
     end
   end

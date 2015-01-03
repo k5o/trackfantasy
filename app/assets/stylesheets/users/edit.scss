@@ -1,0 +1,38 @@
+.edit-user {
+  .user-breakdown {
+    float: left;
+    margin-right: 40px;
+
+    .primary-figure {
+      text-align: left;
+      float: none;
+      display: block;
+
+      .amount {
+        font-size: 24px;
+      }
+    }
+  }
+
+  .user-form {
+    float: left;
+
+    form {
+      width: 320px;
+
+      #credit_card_exp_month {
+        width: 32%;
+        margin-right: 1%;
+      }
+
+      #credit_card_exp_year {
+        width: 32%;
+        margin-right: 1%;
+      }
+
+      #credit_card_security {
+        width: 32%;
+      }
+    }
+  }
+}
