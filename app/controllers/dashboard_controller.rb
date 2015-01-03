@@ -23,6 +23,9 @@ class DashboardController < ApplicationController
     end
   end
 
+  def support
+  end
+
   private
 
   def verify_user
