@@ -27,7 +27,7 @@
           = 'Questions? Contact us at'
           %p= link_to 'support@trackfantasy.com', 'mailto:support@trackfantasy.com'
         .primary-figure
-          %div.label= link_to 'Logout', session_path(current_user), method: :delete
+          %div.label.strong= link_to 'Logout', session_path(current_user), method: :delete
 
       .user-form
         = form_tag "/users/#{current_user.id}", method: :put, class: 'signup-form', id: 'user-edit-form' do
