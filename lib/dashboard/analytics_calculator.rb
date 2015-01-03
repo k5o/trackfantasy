@@ -104,6 +104,14 @@ class Dashboard::AnalyticsCalculator
     @entries.find_by_winnings(biggest_score).try(:entered_on)
   end
 
+  def sports_and_data
+    # {:nfl => [1000, 299.99]}
+  end
+
+  def sites_and_data
+    # {:fanduel => [5000, 1299.99]}
+  end
+
   private
 
   def validate_input(user, date_range, site)

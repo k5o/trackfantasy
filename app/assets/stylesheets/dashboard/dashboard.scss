@@ -146,3 +146,26 @@ main {
     font-size: 16px;
   }
 }
+
+.detailed-breakdown {
+  h3 {
+    text-align: left;
+  }
+
+  .primary-figure {
+    float: left;
+
+    .amount {
+      font-size: 24px;
+      margin-bottom: 4px;
+    }
+
+    .sub-amount {
+      font-size: 12px;
+    }
+  }
+}
+
+.clearfloat {
+  clear: both;
+}
