@@ -17,12 +17,4 @@ class Entry < ActiveRecord::Base
       winnings: data["prize"],
     )
   end
-
-  def profit
-    (winnings - entry_fee).to_f
-  end
-
-  # def entered_on
-  #   contest.completed_on
-  # end
 end
