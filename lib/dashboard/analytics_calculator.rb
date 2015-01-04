@@ -46,7 +46,7 @@ class Dashboard::AnalyticsCalculator
     result = {}
 
     dates_and_entry_profits.each do |date, profits|
-      result[date] = profits.inject(:+)
+      result[date] = profits.inject(:+).to_f
     end
 
     result
