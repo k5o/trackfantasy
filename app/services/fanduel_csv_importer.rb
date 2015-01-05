@@ -19,19 +19,25 @@ class FanduelCsvImporter
         opponent = Account.where( username: row[9], site: site ).first_or_create
       end
       url = HTTParty.get(row[12]).request.last_uri.to_s
-      contest = Contest.where(site: site, sport: row[1].downcase, site_contest_id: url.scan(/\d+/).last ).first_or_create
+      contest = Contest.where(site: site, sport: row[1].downcase, site_contest_id: url.scan(/\d+/).first ).first_or_create
       unless contest.title
-        contest.update title: row[3], entrants: row[8], completed_on: Date.strptime(row[2], '%m/%d/%y'), link: url, buy_in: row[10]
+        contest.update title: row[3], entrants: row[8], completed_on: Date.strptime(row[2], '%m/%d/%y'), link: url, buy_in_in_cents: row[10].to_i * 100
       end
+      entry_fee = row[10].to_i * 100
+      winnings = row[11].to_i * 100
+      profit = winnings - entry_fee
+
       player.entries.create!(
         contest: contest,
         site_entry_id: row[0].gsub(/\D/, ''),
+        sport: row[1],
         score: row[5],
         position: row[7],
         opponent_username: opponent ? opponent.username : nil,
-        entry_fee: row[10],
-        winnings: row[11],
+        entry_fee_in_cents: entry_fee,
+        winnings_in_cents: winnings,
         link: row[12],
+        profit: profit
       )
       if row[9] == "Tournament"
         # FanduelContestImporter.new(url).import
@@ -40,6 +46,7 @@ class FanduelCsvImporter
           contest: contest,
           site_entry_id: row[0].gsub(/\D/, ''),
           score: row[5],
+          entry_fee_in_cents: row[10].to_i * 100,
           opponent_username: player.username,
         )
       end
