@@ -32,18 +32,30 @@
   // Seed Sports
   var sports = #{@analytics.sports_and_data};
 
+  function numToMoney(num) {
+    if (parseInt(num) < 0) {
+      newNum = Math.abs(num)
+      return '<span class="in-the-red">-$' + newNum + '</span>';
+    }
+    else {
+      return '<span class="in-the-black">$' + num + '</span>';
+    }
+  }
+
   if (sports) {
     $('#js-sport-breakdown').append('<h3>Sports</h3>')
     $.each(sports, function(sport, data_array) {
       t = ''
       t += '<div class="primary-figure">';
       t += '  <div class="amount">';
-      t += '    $' + data_array.profit;
+      t += '    ' + numToMoney(data_array.profit);
       t += '  </div>';
       t += '  <div class="sub-amount">';
       t += '    ' + data_array.count;
       t += '  <br>';
+      t += '  <div class="label">';
       t += '    ' + sport;
+      t += '  <br>';
       t += '  </div>';
       t += '</div>';
 

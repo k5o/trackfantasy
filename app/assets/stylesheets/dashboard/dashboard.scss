@@ -192,11 +192,11 @@ main {
   }
 
   .breakdown {
-    clear: both;
+    text-align: left;
   }
 
   .primary-figure {
-    float: left;
+    text-align: center;
 
     .amount {
       font-size: 24px;
@@ -207,8 +207,4 @@ main {
       font-size: 12px;
     }
   }
-}
-
-.clearfloat {
-  clear: both;
 }

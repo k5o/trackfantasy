@@ -116,14 +116,14 @@ class Dashboard::AnalyticsCalculator
     if @sport || @entries.blank?
       {}
     else
-      profit_by_sport = @entries.group(:sport).sum(:profit)
+      profit_by_sport = @entries.group(:sport).sum(:profit).sort_by(&:last).reverse
       count_by_sport = @entries.group(:sport).count
 
       count_and_profit_by_sport = {}
 
-      profit_by_sport.each_pair do |sport, profit|
-        count = count_by_sport[sport]
-        count_and_profit_by_sport[sport] = {count: count, profit: (profit / 100.0)}
+      profit_by_sport.each do |pair|
+        count = count_by_sport[pair.first]
+        count_and_profit_by_sport[pair.first] = {count: count, profit: (pair.last / 100.0)}
       end
 
       JSON(count_and_profit_by_sport)
