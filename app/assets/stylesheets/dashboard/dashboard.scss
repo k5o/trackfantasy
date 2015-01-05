@@ -50,9 +50,10 @@ aside {
         line-height: 32px;
         width: 100%;
         padding: 10px 12px;
+        color: #777;
 
         &:hover {
-          background: #A3B5DE;
+          background: lighten($primary, 40%);
         }
 
         &:focus {
@@ -60,6 +61,7 @@ aside {
         }
 
         &.active {
+          color: $primary-saturated;
           font-weight: 700;
         }
       }
