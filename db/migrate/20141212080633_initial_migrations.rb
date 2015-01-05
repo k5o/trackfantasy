@@ -31,9 +31,9 @@ class InitialMigrations < ActiveRecord::Migration
     create_table :entries do |t|
       t.references :contest, :account
       t.integer :position, :opponent_account_id, :winnings_in_cents
-      t.integer :entry_fee_in_cents, null: false
+      t.integer :entry_fee_in_cents, :profit, null: false
       t.decimal :score, null: false
-      t.string :site_entry_id, :opponent_username, :link
+      t.string :site_entry_id, :opponent_username, :link, :sport
       t.timestamps
     end
 
