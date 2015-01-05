@@ -21,20 +21,15 @@ class Dashboard::AnalyticsCalculator
     end
   end
 
-  def winnings
-    @entries.sum(:winnings)
-  end
-
   def entry_fees
-    @entries.sum(:entry_fee)
+    @entries.sum(:entry_fee_in_cents)
   end
 
   def revenue_amount
-    winnings - entry_fees
+    @entries.sum(:profit)
   end
 
   def day_profit
-    # TODO: Possibly a postgres window function (OVER) to speed up this operation
     dates_and_entry_profits = @entries.reduce({}) do |result, entry|
       unix_time_datestamp_in_milliseconds = (entry.entered_on.to_time.to_f * 1000).to_i
       result[unix_time_datestamp_in_milliseconds] ||= []
@@ -70,6 +65,13 @@ class Dashboard::AnalyticsCalculator
     y_axis = dates_and_profits.keys
 
     y_axis.zip(x_axis)
+
+    # results = @entries.group("entered_on").pluck <<-SQL
+    #   extract(epoch from entered_on) * 1000,
+    #   sum(sum(profit) / 100.0) over (order by entered_on)
+    # SQL
+
+    # results
   end
 
   def roi
@@ -85,27 +87,35 @@ class Dashboard::AnalyticsCalculator
   end
 
   def biggest_day_entry
-    day_profit.sort_by {|k,v| v}.last
+    @entries.sort_by(&:profit).last
   end
 
   def biggest_day
-    biggest_day_entry.last
+    biggest_day_entry.profit
   end
 
   def biggest_day_date
-    Time.at(biggest_day_entry.first / 1000).to_date
+    biggest_day_entry.entered_on
   end
 
   def biggest_score
-    @entries.maximum(:winnings)
+    @entries.maximum(:winnings_in_cents)
   end
 
   def biggest_score_date
-    @entries.find_by_winnings(biggest_score).try(:entered_on)
+    @entries.find_by_winnings_in_cents(biggest_score).try(:entered_on)
   end
 
   def sports_and_data
-    # {:nfl => [1000, 299.99]}
+    profit_by_sport = @entries.group(:sport).sum(:profit)
+    count_by_sport = @entries.group(:sport).count
+
+    count_and_profit_by_sport = {}
+
+    profit_by_sport.each_pair do |sport, profit|
+        count = count_by_sport[sport]
+        count_and_profit_by_sport[sport] = {count: count, profit: profit}
+    end
   end
 
   def sites_and_data
