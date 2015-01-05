@@ -11,7 +11,11 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
+<<<<<<< HEAD
 ActiveRecord::Schema.define(version: 20150104221331) do
+=======
+ActiveRecord::Schema.define(version: 20141212080633) do
+>>>>>>> master
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -29,9 +33,9 @@ ActiveRecord::Schema.define(version: 20150104221331) do
     t.integer  "site_id"
     t.integer  "entrants"
     t.integer  "max_entrants"
+    t.integer  "buy_in_in_cents"
+    t.integer  "total_prizes_paid_in_cents"
     t.decimal  "average_score"
-    t.decimal  "buy_in"
-    t.decimal  "total_prizes_paid"
     t.string   "sport"
     t.string   "title"
     t.string   "game_type"
@@ -45,14 +49,18 @@ ActiveRecord::Schema.define(version: 20150104221331) do
   create_table "entries", force: :cascade do |t|
     t.integer  "contest_id"
     t.integer  "account_id"
+    t.integer  "user_id"
     t.integer  "position"
     t.integer  "opponent_account_id"
-    t.decimal  "score"
-    t.decimal  "entry_fee"
-    t.decimal  "winnings"
+    t.integer  "winnings_in_cents"
+    t.integer  "entry_fee_in_cents",  null: false
+    t.integer  "profit",              null: false
+    t.decimal  "score",               null: false
     t.string   "site_entry_id"
     t.string   "opponent_username"
     t.string   "link"
+    t.string   "sport"
+    t.date     "entered_on"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.date     "entered_on"
@@ -81,12 +89,11 @@ ActiveRecord::Schema.define(version: 20150104221331) do
 
   create_table "users", force: :cascade do |t|
     t.string   "email"
+    t.string   "stripe_customer_id"
+    t.string   "password_digest",    null: false
+    t.date     "active_until"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "password_digest",                null: false
-    t.integer  "status",             default: 0
-    t.string   "stripe_customer_id"
-    t.date     "active_until"
   end
 
 end

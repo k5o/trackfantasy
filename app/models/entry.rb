@@ -17,4 +17,12 @@ class Entry < ActiveRecord::Base
       winnings: data["prize"],
     )
   end
+
+  def winnings
+    winnings_in_cents / 100.0
+  end
+
+  def entry_fee
+    entry_fee_in_cents / 100.0
+  end
 end
