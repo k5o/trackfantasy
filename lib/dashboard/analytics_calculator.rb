@@ -6,6 +6,7 @@ class Dashboard::AnalyticsCalculator
   def initialize(user, date_range = nil, site = nil)
     validate_input(user, date_range, site)
     @user = user
+    @site = site
 
     # Get entries
     if date_range.first.present? && date_range.last.present?
@@ -71,17 +72,19 @@ class Dashboard::AnalyticsCalculator
   end
 
   def sports_and_data
-    profit_by_sport = @entries.group(:sport).sum(:profit)
-    count_by_sport = @entries.group(:sport).count
+    unless @site
+      profit_by_sport = @entries.group(:sport).sum(:profit)
+      count_by_sport = @entries.group(:sport).count
 
-    count_and_profit_by_sport = {}
+      count_and_profit_by_sport = {}
 
-    profit_by_sport.each_pair do |sport, profit|
-      count = count_by_sport[sport]
-      count_and_profit_by_sport[sport] = {count: count, profit: (profit / 100.0)}
+      profit_by_sport.each_pair do |sport, profit|
+        count = count_by_sport[sport]
+        count_and_profit_by_sport[sport] = {count: count, profit: (profit / 100.0)}
+      end
+
+      JSON(count_and_profit_by_sport)
     end
-
-    JSON(count_and_profit_by_sport)
   end
 
   def sites_and_data

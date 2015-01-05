@@ -24,6 +24,29 @@
   $('#js-biggest-score-date').html("#{@analytics.biggest_score_date}");
   $('#canvas').html('');
 
+  // Seed Sports
+  var sports = #{@analytics.sports_and_data};
+
+  if (sports) {
+    $('#js-sport-breakdown').append('<h3>Sports</h3>')
+    $.each(sports, function(sport, data_array) {
+      t = ''
+      t += '<div class="primary-figure">';
+      t += '  <div class="amount">';
+      t += '    $' + data_array.profit;
+      t += '  </div>';
+      t += '  <div class="sub-amount">';
+      t += '    ' + data_array.count;
+      t += '  <br>';
+      t += '    ' + sport;
+      t += '  </div>';
+      t += '</div>';
+
+      $('#js-sport-breakdown').append(t)
+    });
+  }
+
+
   // Draw graph
 
   $('#canvas').highcharts({

@@ -34,42 +34,21 @@
           = icon('cog', '', class: 'fa-4x fa-spin')
 
       .detailed-breakdown
-        %h3 Sports
-        / Won/loss
-        / Entries
-        / Sport
-        / {:nfl => [1000, 299.99]}
-        / - sports_with_data.each do |sport, data|
-        /   .primary-figure
-        /     %div{class: 'amount', id: "js-sport-#{sport}"}
-        /       = icon('cog', '', class: 'fa-spin')
-        /     %div{class: 'sub-amount', id: "js-biggest-#{sport}-entries"}
-        /     %div.label= "#{sport}"
+        #js-sport-breakdown.breakdown
 
-        %h3 Sites
-        / Won/loss
-        / Entries
-        / Sport
-        / {:fanduel => [5000, 1299.99]}
-        / - sites_with_data.each do |sport, data|
-        /   .primary-figure
-        /     %div{class: 'amount', id: "js-site-#{site}"}
-        /       = icon('cog', '', class: 'fa-spin')
-        /     %div{class: 'sub-amount', id: "js-biggest-#{site}-entries"}
-        /     %div.label= "#{site}"
+        #wins-breakdown.breakdown
+          %h3 Wins
+          .primary-figure
+            %div{class: 'amount', id: 'js-biggest-day'}
+              = icon('cog', '', class: 'fa-spin')
+            %div{class: 'sub-amount', id: 'js-biggest-day-date'}
+            %div.label Biggest Day
 
-        %h3 Wins
-        .primary-figure
-          %div{class: 'amount', id: 'js-biggest-day'}
-            = icon('cog', '', class: 'fa-spin')
-          %div{class: 'sub-amount', id: 'js-biggest-day-date'}
-          %div.label Biggest Day
-
-        .primary-figure
-          %div{class: 'amount', id: 'js-biggest-score'}
-            = icon('cog', '', class: 'fa-spin')
-          %div{class: 'sub-amount', id: 'js-biggest-score-date'}
-          %div.label Biggest Score
+          .primary-figure
+            %div{class: 'amount', id: 'js-biggest-score'}
+              = icon('cog', '', class: 'fa-spin')
+            %div{class: 'sub-amount', id: 'js-biggest-score-date'}
+            %div.label Biggest Score
 
         .clearfloat
 
