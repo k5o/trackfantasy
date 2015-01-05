@@ -10,7 +10,12 @@
   }
 
   // Seed data
-  $('#from_date').val("#{(@analytics.date_of_first_entry)}")
+  var firstEntry = "#{(@analytics.date_of_first_entry)}";
+
+  if (firstEntry !== 'N/A') {
+    $('#from_date').val("#{(@analytics.date_of_first_entry)}");
+  }
+  
   $('#js-entries').html("#{(@analytics.total_entries)}");
   $('#js-revenue-amount').html("#{number_to_currency(@analytics.revenue_amount)}");
   $('#js-revenue-amount').addClass(colorClass);
@@ -45,7 +50,6 @@
       $('#js-sport-breakdown').append(t)
     });
   }
-
 
   // Draw graph
 

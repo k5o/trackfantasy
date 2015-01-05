@@ -9,7 +9,7 @@ class DashboardController < ApplicationController
   def fetch_dashboard_data
     # TODO: Ensure request/return are clean, email notify admins if not (exception email)
     begin
-      @analytics = Dashboard::AnalyticsCalculator.new(@user, @date_range, @site)
+      @analytics = Dashboard::AnalyticsCalculator.new(@user, @date_range, @site, @sport)
     rescue
       render :index, status: 403 and return
     end
@@ -17,7 +17,7 @@ class DashboardController < ApplicationController
     if request.xhr?
       render 'presenter.js'
     else
-      redirect_to dashboard_path(from_date: @date_range.first, to_date: @date_range.last, site: @site)
+      redirect_to dashboard_path(from_date: @date_range.first, to_date: @date_range.last, site: @site, sport: @sport)
     end
   end
 
@@ -32,5 +32,6 @@ class DashboardController < ApplicationController
   def load_params
     @date_range = params[:from_date]..params[:to_date]
     @site = params[:site]
+    @sport = params[:sport]
   end
 end
