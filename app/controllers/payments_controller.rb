@@ -23,15 +23,15 @@ class PaymentsController < ApplicationController
     end
 
     current_user.stripe_customer_id = customer.id
-    current_user.set_active_until!(@plan)
+    current_user.set_active_until!(@payment_plan)
 
-    # redirect_to root_path
+    redirect_to dashboard_path
   end
 
   private
 
   def auth_user
-    redirect_to root_path unless current_user
-    redirect_to dashboard_path if current_user.active?
+    redirect_to root_path and return unless current_user
+    redirect_to dashboard_path and return if current_user && current_user.active?
   end
 end

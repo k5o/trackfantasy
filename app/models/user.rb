@@ -6,17 +6,17 @@ class User < ActiveRecord::Base
   EMAIL_REGEXP = /\S+@\S+/
 
   has_secure_password
-  validates_presence_of :email, :password
-  validates_uniqueness_of :email
-  validates :email, format: { with: EMAIL_REGEXP }
-  validates :password, length: { minimum: 5 }
+  # validates_presence_of :email, :password
+  # validates_uniqueness_of :email
+  # validates :email, format: { with: EMAIL_REGEXP }
+  # validates :password, length: { minimum: 5 }
 
   def uninitiated?
-    !!stripe_customer_id
+    stripe_customer_id.nil?
   end
 
   def active?
-    Time.current <= active_until
+    active_until && Time.current <= active_until
   end
 
   def inactive?

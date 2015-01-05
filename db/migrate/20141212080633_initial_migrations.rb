@@ -29,11 +29,12 @@ class InitialMigrations < ActiveRecord::Migration
     end
 
     create_table :entries do |t|
-      t.references :contest, :account
+      t.references :contest, :account, :user
       t.integer :position, :opponent_account_id, :winnings_in_cents
       t.integer :entry_fee_in_cents, :profit, null: false
       t.decimal :score, null: false
       t.string :site_entry_id, :opponent_username, :link, :sport
+      t.date :entered_on
       t.timestamps
     end
 
