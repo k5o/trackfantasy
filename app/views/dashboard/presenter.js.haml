@@ -43,7 +43,7 @@
     }
   }
 
-  if (sports) {
+  if (!$.isEmptyObject(sports)) {
     $('#js-sport-breakdown').append('<h3>Sports</h3>')
     $.each(sports, function(sport, data_array) {
       t = ''
