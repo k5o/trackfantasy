@@ -23,15 +23,21 @@ class FanduelCsvImporter
       unless contest.title
         contest.update title: row[3], entrants: row[8], completed_on: Date.strptime(row[2], '%m/%d/%y'), link: url, buy_in_in_cents: row[10].to_i * 100
       end
+      entry_fee = row[10].to_i * 100
+      winnings = row[11].to_i * 100
+      profit = winnings - entry_fee
+
       player.entries.create!(
         contest: contest,
         site_entry_id: row[0].gsub(/\D/, ''),
+        sport: row[1],
         score: row[5],
         position: row[7],
         opponent_username: opponent ? opponent.username : nil,
-        entry_fee_in_cents: row[10].to_i * 100,
-        winnings_in_cents: row[11],
+        entry_fee_in_cents: entry_fee,
+        winnings_in_cents: winnings,
         link: row[12],
+        profit: profit
       )
       if row[9] == "Tournament"
         # FanduelContestImporter.new(url).import
