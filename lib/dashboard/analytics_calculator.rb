@@ -9,9 +9,9 @@ class Dashboard::AnalyticsCalculator
 
     # Get entries
     if date_range.first.present? && date_range.last.present?
-      @entries = @user.entries.where("entered_on >= ? AND entered_on <= ?", date_range.first, date_range.last).order(:entered_on)
+      @entries = @user.entries.where("entered_on >= ? AND entered_on <= ?", date_range.first, date_range.last)
     else
-      @entries = @user.entries.order(:entered_on)
+      @entries = @user.entries
     end
 
     if site
@@ -19,59 +19,23 @@ class Dashboard::AnalyticsCalculator
 
       @entries.includes(:account).where(accounts: {site_id: site_id})
     end
+
+    @sorted_entries = @entries.order(:entered_on)
   end
 
   def entry_fees
-    @entries.sum(:entry_fee_in_cents)
+    @entries.sum(:entry_fee_in_cents) / 100.0
   end
 
   def revenue_amount
-    @entries.sum(:profit)
-  end
-
-  def day_profit
-    dates_and_entry_profits = @entries.reduce({}) do |result, entry|
-      unix_time_datestamp_in_milliseconds = (entry.entered_on.to_time.to_f * 1000).to_i
-      result[unix_time_datestamp_in_milliseconds] ||= []
-      result[unix_time_datestamp_in_milliseconds] << entry.profit
-
-      result
-    end
-
-    result = {}
-
-    dates_and_entry_profits.each do |date, profits|
-      result[date] = profits.inject(:+).to_f
-    end
-
-    result
-  end
-
-  def running_revenue_list_by_date
-    running_count = 0
-    result = {}
-
-    day_profit.each do |date, profit|
-      running_count += profit
-      result[date] = running_count
-    end
-
-    result
+    @entries.sum(:profit) / 100.0
   end
 
   def graph_axes
-    dates_and_profits = running_revenue_list_by_date
-    x_axis = dates_and_profits.values
-    y_axis = dates_and_profits.keys
-
-    y_axis.zip(x_axis)
-
-    # results = @entries.group("entered_on").pluck <<-SQL
-    #   extract(epoch from entered_on) * 1000,
-    #   sum(sum(profit) / 100.0) over (order by entered_on)
-    # SQL
-
-    # results
+    @entries.group("entered_on").pluck <<-SQL
+      extract(epoch from entered_on) * 1000,
+      sum(sum(profit)::float8 / 100.0) over (order by entered_on)
+    SQL
   end
 
   def roi
@@ -83,7 +47,7 @@ class Dashboard::AnalyticsCalculator
   end
 
   def date_of_first_entry
-    @entries.first.entered_on
+    @sorted_entries.first.entered_on
   end
 
   def biggest_day_entry
@@ -91,7 +55,7 @@ class Dashboard::AnalyticsCalculator
   end
 
   def biggest_day
-    biggest_day_entry.profit
+    biggest_day_entry.profit / 100.0
   end
 
   def biggest_day_date
@@ -99,11 +63,11 @@ class Dashboard::AnalyticsCalculator
   end
 
   def biggest_score
-    @entries.maximum(:winnings_in_cents)
+    @entries.maximum(:winnings_in_cents) / 100.0
   end
 
   def biggest_score_date
-    @entries.find_by_winnings_in_cents(biggest_score).try(:entered_on)
+    @entries.find_by_winnings_in_cents(biggest_score * 100).try(:entered_on)
   end
 
   def sports_and_data
@@ -113,9 +77,11 @@ class Dashboard::AnalyticsCalculator
     count_and_profit_by_sport = {}
 
     profit_by_sport.each_pair do |sport, profit|
-        count = count_by_sport[sport]
-        count_and_profit_by_sport[sport] = {count: count, profit: profit}
+      count = count_by_sport[sport]
+      count_and_profit_by_sport[sport] = {count: count, profit: (profit / 100.0)}
     end
+
+    JSON(count_and_profit_by_sport)
   end
 
   def sites_and_data
