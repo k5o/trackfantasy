@@ -21,6 +21,7 @@
   $('#js-revenue-amount').addClass(colorClass);
   $('#js-roi').html("#{number_to_percentage(@analytics.roi, precision: 2)}");
   $('#js-roi').addClass(colorClass);
+  $('#js-winrate').html("#{number_to_percentage(@analytics.winrate, precision: 2)}");
   $('#js-biggest-day').html("#{number_to_currency(@analytics.biggest_day)}");
   $('#js-biggest-day').addClass(greenClass);
   $('#js-biggest-day-date').html("#{@analytics.biggest_day_date}");

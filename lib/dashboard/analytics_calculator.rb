@@ -58,7 +58,7 @@ class Dashboard::AnalyticsCalculator
 
   def roi
     if entry_fees > 0
-      (revenue_amount / entry_fees) * 100
+      (revenue_amount / entry_fees.to_f) * 100
     else
       0
     end
@@ -66,6 +66,15 @@ class Dashboard::AnalyticsCalculator
 
   def total_entries
     @entries.count
+  end
+
+  def winrate
+    if @entries.any?
+      games_won = @entries.where('profit > ?', 0).count
+      (games_won / total_entries.to_f) * 100
+    else
+      0
+    end
   end
 
   def date_of_first_entry
