@@ -27,10 +27,11 @@ class Dashboard::AnalyticsCalculator
     end
 
     @sorted_entries = @entries.order(:entered_on)
+    @nonzero_value = @entries.any?
   end
 
   def entry_fees
-    if @entries.any?
+    if @entries_exist
       @entries.sum(:entry_fee_in_cents) / 100.0
     else
       0
@@ -38,7 +39,7 @@ class Dashboard::AnalyticsCalculator
   end
 
   def revenue_amount
-    if @entries.any?
+    if @entries_exist
       @entries.sum(:profit) / 100.0
     else
       0
@@ -46,7 +47,7 @@ class Dashboard::AnalyticsCalculator
   end
 
   def graph_axes
-    if @entries.any?
+    if @entries_exist
       @entries.group("entered_on").pluck <<-SQL
         extract(epoch from entered_on) * 1000,
         sum(sum(profit)::float8 / 100.0) over (order by entered_on)
@@ -69,7 +70,7 @@ class Dashboard::AnalyticsCalculator
   end
 
   def winrate
-    if @entries.any?
+    if @entries_exist
       games_won = @entries.where('profit > ?', 0).count
       (games_won / total_entries.to_f) * 100
     else
@@ -78,7 +79,7 @@ class Dashboard::AnalyticsCalculator
   end
 
   def date_of_first_entry
-    if @sorted_entries.any?
+    if @entries_exist
       @sorted_entries.try(:first).try(:entered_on)
     else
       'N/A'
@@ -106,7 +107,7 @@ class Dashboard::AnalyticsCalculator
   end
 
   def biggest_score
-    if @entries.any?
+    if @entries_exist
       @entries.maximum(:winnings_in_cents) / 100.0
     else
       0
@@ -114,7 +115,7 @@ class Dashboard::AnalyticsCalculator
   end
 
   def biggest_score_date
-    if @entries.any?
+    if @entries_exist
       @entries.find_by_winnings_in_cents(biggest_score * 100).try(:entered_on)
     else
       'N/A'
@@ -122,7 +123,7 @@ class Dashboard::AnalyticsCalculator
   end
 
   def sports_and_data
-    if @sport || @entries.blank?
+    if @sport || !@entries_exist
       {}
     else
       profit_by_sport = @entries.group(:sport).sum(:profit).sort_by(&:last).reverse
