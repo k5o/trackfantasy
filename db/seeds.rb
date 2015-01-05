@@ -6,4 +6,5 @@
 #   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
 #   Mayor.create(name: 'Emanuel', city: cities.first)
 
+User.create(email: 'yudarvish@dykstra.xxx', password: 'foobar').validate(false)
 FanduelCsvImporter.new("db/seed/fanduel_example.csv").import

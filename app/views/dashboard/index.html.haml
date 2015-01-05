@@ -3,15 +3,18 @@
     = render partial: 'sidebar'
   %main
     .main-header
-      %span.date-selection
-        = form_tag '/dashboard/fetch_dashboard_data', method: 'get', id: 'filter' do
-          = label_tag 'From:'
-          = date_field_tag 'from_date', @date_range.try(:first).try(:to_date)
-          = label_tag 'To:'
-          = date_field_tag 'to_date', @date_range.try(:last).try(:to_date) || Date.today
-          = submit_tag 'Filter', id: 'js-filter-btn'
+      %span.filter-title Filters:
+      = form_tag '/dashboard/fetch_dashboard_data', method: 'get', id: 'filter' do
+        = label_tag 'From:'
+        = date_field_tag 'from_date', @date_range.try(:first).try(:to_date)
+        = label_tag 'To:'
+        = date_field_tag 'to_date', @date_range.try(:last).try(:to_date) || Date.today
+        = select_tag "sport", options_for_select(Entry::SPORTS, @sport), include_blank: 'Sport:'
+        = select_tag "site", options_for_select(Site::NAMES, @site), include_blank: 'Site:'
+        .header-actions
+          = submit_tag 'Filter', id: 'js-filter-btn', class: 'header-btn filter-btn'
+          = link_to 'Reset', dashboard_path, class: 'header-btn reset-btn'
           = icon('cog', '', class: 'fa-spin js-filter-loader')
-      %span.site-selection
     .main-container
       = render partial: 'partials/flash'
       .primary-figure
@@ -34,45 +37,21 @@
           = icon('cog', '', class: 'fa-4x fa-spin')
 
       .detailed-breakdown
-        %h3 Sports
-        / Won/loss
-        / Entries
-        / Sport
-        / {:nfl => [1000, 299.99]}
-        / - sports_with_data.each do |sport, data|
-        /   .primary-figure
-        /     %div{class: 'amount', id: "js-sport-#{sport}"}
-        /       = icon('cog', '', class: 'fa-spin')
-        /     %div{class: 'sub-amount', id: "js-biggest-#{sport}-entries"}
-        /     %div.label= "#{sport}"
+        #js-sport-breakdown.breakdown
 
-        %h3 Sites
-        / Won/loss
-        / Entries
-        / Sport
-        / {:fanduel => [5000, 1299.99]}
-        / - sites_with_data.each do |sport, data|
-        /   .primary-figure
-        /     %div{class: 'amount', id: "js-site-#{site}"}
-        /       = icon('cog', '', class: 'fa-spin')
-        /     %div{class: 'sub-amount', id: "js-biggest-#{site}-entries"}
-        /     %div.label= "#{site}"
+        #wins-breakdown.breakdown
+          %h3 Wins
+          .primary-figure
+            %div{class: 'amount', id: 'js-biggest-day'}
+              = icon('cog', '', class: 'fa-spin')
+            %div{class: 'sub-amount', id: 'js-biggest-day-date'}
+            %div.label Biggest Day
 
-        %h3 Wins
-        .primary-figure
-          %div{class: 'amount', id: 'js-biggest-day'}
-            = icon('cog', '', class: 'fa-spin')
-          %div{class: 'sub-amount', id: 'js-biggest-day-date'}
-          %div.label Biggest Day
-
-        .primary-figure
-          %div{class: 'amount', id: 'js-biggest-score'}
-            = icon('cog', '', class: 'fa-spin')
-          %div{class: 'sub-amount', id: 'js-biggest-score-date'}
-          %div.label Biggest Score
-
-        .clearfloat
-
+          .primary-figure
+            %div{class: 'amount', id: 'js-biggest-score'}
+              = icon('cog', '', class: 'fa-spin')
+            %div{class: 'sub-amount', id: 'js-biggest-score-date'}
+            %div.label Biggest Score
 
 :javascript
   $(function () {
@@ -88,9 +67,11 @@
     var fromDate = getUrlParameter('from_date');
     var toDate = getUrlParameter('to_date');
     var site = getUrlParameter('site');
+    var sport = getUrlParameter('sport');
+
     $.ajax({
       url: '/dashboard/fetch_dashboard_data',
-      data: {from_date: fromDate, to_date: toDate, site: site},
+      data: {from_date: fromDate, to_date: toDate, site: site, sport: sport},
       type: 'GET',
     });
   });

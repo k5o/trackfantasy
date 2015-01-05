@@ -3,77 +3,65 @@
 class Dashboard::AnalyticsCalculator
   attr_reader :user, :date_range, :account
 
-  def initialize(user, date_range = nil, site = nil)
-    validate_input(user, date_range, site)
+  def initialize(user, date_range = nil, site = nil, sport = nil)
+    validate_input(user, date_range, site, sport)
     @user = user
+    @site = site.present? && site
+    @sport = sport.present? && sport
 
     # Get entries
     if date_range.first.present? && date_range.last.present?
-      @entries = @user.entries.where("entered_on >= ? AND entered_on <= ?", date_range.first, date_range.last).order(:entered_on)
+      @entries = @user.entries.where("entered_on >= ? AND entered_on <= ?", date_range.first, date_range.last)
     else
-      @entries = @user.entries.order(:entered_on)
+      @entries = @user.entries
     end
 
-    if site
-      site_id = Site.find_by_name(site).try(:id)
+    if @site
+      site_id = Site.find_by_name(@site).try(:id)
 
-      @entries.includes(:account).where(accounts: {site_id: site_id})
+      @entries = @entries.includes(:account).where(accounts: {site_id: site_id}) # Possibly more performant if we remove account join
     end
-  end
 
-  def winnings
-    @entries.sum(:winnings)
+    if @sport
+      @entries = @entries.where(sport: @sport)
+    end
+
+    @sorted_entries = @entries.order(:entered_on)
   end
 
   def entry_fees
-    @entries.sum(:entry_fee)
+    if @entries.any?
+      @entries.sum(:entry_fee_in_cents) / 100.0
+    else
+      0
+    end
   end
 
   def revenue_amount
-    winnings - entry_fees
-  end
-
-  def day_profit
-    # TODO: Possibly a postgres window function (OVER) to speed up this operation
-    dates_and_entry_profits = @entries.reduce({}) do |result, entry|
-      unix_time_datestamp_in_milliseconds = (entry.entered_on.to_time.to_f * 1000).to_i
-      result[unix_time_datestamp_in_milliseconds] ||= []
-      result[unix_time_datestamp_in_milliseconds] << entry.profit
-
-      result
+    if @entries.any?
+      @entries.sum(:profit) / 100.0
+    else
+      0
     end
-
-    result = {}
-
-    dates_and_entry_profits.each do |date, profits|
-      result[date] = profits.inject(:+)
-    end
-
-    result
-  end
-
-  def running_revenue_list_by_date
-    running_count = 0
-    result = {}
-
-    day_profit.each do |date, profit|
-      running_count += profit
-      result[date] = running_count
-    end
-
-    result
   end
 
   def graph_axes
-    dates_and_profits = running_revenue_list_by_date
-    x_axis = dates_and_profits.values
-    y_axis = dates_and_profits.keys
-
-    y_axis.zip(x_axis)
+    if @entries.any?
+      @entries.group("entered_on").pluck <<-SQL
+        extract(epoch from entered_on) * 1000,
+        sum(sum(profit)::float8 / 100.0) over (order by entered_on)
+      SQL
+    else
+      [0,0]
+    end
   end
 
   def roi
-    (revenue_amount / entry_fees) * 100
+    if entry_fees > 0
+      (revenue_amount / entry_fees) * 100
+    else
+      0
+    end
   end
 
   def total_entries
@@ -81,31 +69,65 @@ class Dashboard::AnalyticsCalculator
   end
 
   def date_of_first_entry
-    @entries.first.entered_on
+    if @sorted_entries.any?
+      @sorted_entries.try(:first).try(:entered_on)
+    else
+      'N/A'
+    end
   end
 
   def biggest_day_entry
-    day_profit.sort_by {|k,v| v}.last
+    @entries.sort_by(&:profit).try(:last)
   end
 
   def biggest_day
-    biggest_day_entry.last
+    if biggest_day_entry
+      biggest_day_entry.profit / 100.0
+    else
+      0
+    end
   end
 
   def biggest_day_date
-    Time.at(biggest_day_entry.first / 1000).to_date
+    if biggest_day_entry
+      biggest_day_entry.entered_on
+    else
+      'N/A'
+    end
   end
 
   def biggest_score
-    @entries.maximum(:winnings)
+    if @entries.any?
+      @entries.maximum(:winnings_in_cents) / 100.0
+    else
+      0
+    end
   end
 
   def biggest_score_date
-    @entries.find_by_winnings(biggest_score).try(:entered_on)
+    if @entries.any?
+      @entries.find_by_winnings_in_cents(biggest_score * 100).try(:entered_on)
+    else
+      'N/A'
+    end
   end
 
   def sports_and_data
-    # {:nfl => [1000, 299.99]}
+    if @sport || @entries.blank?
+      {}
+    else
+      profit_by_sport = @entries.group(:sport).sum(:profit).sort_by(&:last).reverse
+      count_by_sport = @entries.group(:sport).count
+
+      count_and_profit_by_sport = {}
+
+      profit_by_sport.each do |pair|
+        count = count_by_sport[pair.first]
+        count_and_profit_by_sport[pair.first] = {count: count, profit: (pair.last / 100.0)}
+      end
+
+      JSON(count_and_profit_by_sport)
+    end
   end
 
   def sites_and_data
@@ -114,7 +136,7 @@ class Dashboard::AnalyticsCalculator
 
   private
 
-  def validate_input(user, date_range, site)
+  def validate_input(user, date_range, site, sport)
     raise 'Invalid entry' unless user.kind_of?(User)
 
     if date_range && date_range.first.present? && date_range.last.present?
@@ -124,8 +146,12 @@ class Dashboard::AnalyticsCalculator
       raise 'Invalid entry' unless from_date.kind_of?(Date) && to_date.kind_of?(Date) && to_date >= from_date
     end
 
-    if site
+    if site.present?
       raise 'Invalid entry' unless Site::NAMES.include?(site)
+    end
+
+    if sport.present?
+      raise 'Invalid entry' unless Entry::SPORTS.include?(sport)
     end
   end
 end

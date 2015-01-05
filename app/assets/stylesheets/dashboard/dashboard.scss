@@ -50,9 +50,10 @@ aside {
         line-height: 32px;
         width: 100%;
         padding: 10px 12px;
+        color: #777;
 
         &:hover {
-          background: #A3B5DE;
+          background: lighten($primary, 40%);
         }
 
         &:focus {
@@ -60,6 +61,7 @@ aside {
         }
 
         &.active {
+          color: $primary-saturated;
           font-weight: 700;
         }
       }
@@ -90,35 +92,72 @@ main {
   padding: 10px 20px;
   text-align: left;
 
-  input[type=date] {
+  span {
+    font-weight: 700;
+    text-transform: uppercase;
+    padding-right: 10px;
+  }
+
+  form {
+    display: inline;
+  }
+
+  input[type=date], select {
     font-family: $primary-font;
     margin-right: 10px;
-  }
-
-  input[type=submit] {
-    color: #E4E7EC;
-    background: $primary-saturated;
-    border: 2px solid $primary-saturated;
-    border-radius: 3px;
+    background: #fff;
+    border: 1px solid $border;
     font-size: 12px;
-    font-family: $secondary-font;
-    position: absolute;
-    line-height: 12px;
 
     &:hover {
-      cursor: pointer;
-      background: darken($primary-saturated, 5%);
-      border: 2px solid darken($primary-saturated, 5%);
-    }
-
-    &:focus {
-      outline: none;
+      background: lighten($primary, 40%);
     }
   }
 
-  .js-filter-loader {
-    display: none;
-    margin-left: 12px;
+  input[type=date] {
+    padding-left: 4px;
+  }
+
+  .header-actions {
+    position: relative;
+    display: inline;
+
+    .header-btn {
+      border: 2px solid $primary-saturated;
+      border-radius: 3px;
+      font-size: 12px;
+      font-family: $secondary-font;
+      position: absolute;
+      line-height: 12px;
+
+      &:hover {
+        cursor: pointer;
+        color: #E4E7EC;
+        background: darken($primary-saturated, 5%);
+        border: 2px solid darken($primary-saturated, 5%);
+      }
+    }
+
+    .filter-btn {
+      color: #E4E7EC;
+      background: $primary-saturated;
+
+      &:focus {
+        outline: none;
+      }
+    }
+
+    .reset-btn {
+      color: $primary-saturated;
+      left: 50px;
+      background: none;
+      padding: 2px 6px 3px 6px;
+    }
+
+    .js-filter-loader {
+      display: none;
+      margin-left: 12px;
+    }
   }
 }
 
@@ -141,8 +180,12 @@ main {
     text-align: left;
   }
 
+  .breakdown {
+    text-align: left;
+  }
+
   .primary-figure {
-    float: left;
+    text-align: center;
 
     .amount {
       font-size: 24px;
@@ -153,8 +196,4 @@ main {
       font-size: 12px;
     }
   }
-}
-
-.clearfloat {
-  clear: both;
 }

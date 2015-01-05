@@ -1,6 +1,9 @@
 class Entry < ActiveRecord::Base
+  SPORTS = ['nfl', 'nba', 'mlb', 'nfl', 'cfb', 'mma']
+
   belongs_to :account
   belongs_to :contest
+  belongs_to :user
 
   def self.create_from_fanduel_seat data, contest
     site = Site.where(name: "fanduel").first_or_create
@@ -18,11 +21,11 @@ class Entry < ActiveRecord::Base
     )
   end
 
-  def profit
-    (winnings - entry_fee).to_f
+  def winnings
+    winnings_in_cents / 100.0
   end
 
-  # def entered_on
-  #   contest.completed_on
-  # end
+  def entry_fee
+    entry_fee_in_cents / 100.0
+  end
 end
