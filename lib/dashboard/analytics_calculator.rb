@@ -4,7 +4,8 @@ class Dashboard::AnalyticsCalculator
   attr_reader :user, :date_range, :account
 
   def initialize(user, date_range = nil, site = nil, sport = nil)
-    validate_input(user, date_range, site, sport)
+    return false unless inputs_valid?(user, date_range, site, sport)
+
     @user = user
     @site = site.present? && site
     @sport = sport.present? && sport
@@ -27,7 +28,7 @@ class Dashboard::AnalyticsCalculator
     end
 
     @sorted_entries = @entries.order(:entered_on)
-    @nonzero_value = @entries.any?
+    @entries_exist = @entries.any?
   end
 
   def entry_fees
@@ -146,22 +147,24 @@ class Dashboard::AnalyticsCalculator
 
   private
 
-  def validate_input(user, date_range, site, sport)
-    raise 'Invalid entry' unless user.kind_of?(User)
+  def inputs_valid?(user, date_range, site, sport)
+    return false unless user.kind_of?(User)
 
     if date_range && date_range.first.present? && date_range.last.present?
       from_date = date_range.first.to_date
       to_date = date_range.last.to_date
 
-      raise 'Invalid entry' unless from_date.kind_of?(Date) && to_date.kind_of?(Date) && to_date >= from_date
+      return false unless from_date.kind_of?(Date) && to_date.kind_of?(Date) && to_date >= from_date
     end
 
     if site.present?
-      raise 'Invalid entry' unless Site::NAMES.include?(site)
+      return false unless Site::NAMES.include?(site)
     end
 
     if sport.present?
-      raise 'Invalid entry' unless Entry::SPORTS.include?(sport)
+      return false unless Entry::SPORTS.include?(sport)
     end
+
+    true
   end
 end

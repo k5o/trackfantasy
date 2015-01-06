@@ -8,11 +8,9 @@ class DashboardController < ApplicationController
 
   def fetch_dashboard_data
     # TODO: Ensure request/return are clean, email notify admins if not (exception email)
-    begin
-      @analytics = Dashboard::AnalyticsCalculator.new(@user, @date_range, @site, @sport)
-    rescue
-      render :index, status: 403 and return
-    end
+    @analytics = Dashboard::AnalyticsCalculator.new(@user, @date_range, @site, @sport)
+
+    render :index, status: 403 and return if !@analytics
 
     if request.xhr?
       render 'presenter.js'
