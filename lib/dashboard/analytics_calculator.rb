@@ -136,7 +136,7 @@ class Dashboard::AnalyticsCalculator
         count_and_profit_by_sport[pair.first] = {count: count, profit: (pair.last / 100.0)}
       end
 
-      JSON(count_and_profit_by_sport)
+      count_and_profit_by_sport
     end
   end
 

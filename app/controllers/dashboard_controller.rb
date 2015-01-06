@@ -13,7 +13,7 @@ class DashboardController < ApplicationController
     render :index, status: 403 and return if !@analytics
 
     if request.xhr?
-      render 'presenter.js'
+      render partial: 'presenter'
     else
       redirect_to dashboard_path(from_date: @date_range.first, to_date: @date_range.last, site: @site, sport: @sport)
     end
