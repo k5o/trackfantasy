@@ -27,7 +27,6 @@ class Dashboard::AnalyticsCalculator
       @entries = @entries.where(sport: @sport)
     end
 
-    @sorted_entries = @entries.order(:entered_on)
     @entries_exist = @entries.any?
   end
 
@@ -81,7 +80,7 @@ class Dashboard::AnalyticsCalculator
 
   def date_of_first_entry
     if @entries_exist
-      @sorted_entries.try(:first).try(:entered_on)
+      @entries.sort(:entered_on).first.try(:entered_on)
     else
       'N/A'
     end
