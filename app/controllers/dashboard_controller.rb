@@ -10,12 +10,14 @@ class DashboardController < ApplicationController
     # TODO: Ensure request/return are clean, email notify admins if not (exception email)
     @analytics = Dashboard::AnalyticsCalculator.new(@user, @date_range, @site, @sport)
 
-    render :index, status: 403 and return if !@analytics
-
-    if request.xhr?
-      render partial: 'presenter'
+    if @analytics.valid?
+      if request.xhr?
+        render partial: 'presenter', status: 200 and return
+      else
+        redirect_to dashboard_path(from_date: @date_range.first, to_date: @date_range.last, site: @site, sport: @sport)
+      end
     else
-      redirect_to dashboard_path(from_date: @date_range.first, to_date: @date_range.last, site: @site, sport: @sport)
+      render :index, status: 403 and return
     end
   end
 

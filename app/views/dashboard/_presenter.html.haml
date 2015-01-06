@@ -1,21 +1,21 @@
 .main-errors
 .primary-figure
-  %div{class: 'amount', id: 'js-entries'}
+  %div{class: 'amount'}
     = @analytics.total_entries
   %div.label Entries
 
 .primary-figure
-  %div{class: "amount #{money_class(@analytics.revenue_amount)}", id: 'js-revenue-amount'}
+  %div{class: "amount #{money_class(@analytics.revenue_amount)}"}
     = number_to_currency(@analytics.revenue_amount)
   %span.label Bottom Line
 
 .primary-figure
-  %div{class: "amount #{money_class(@analytics.roi)}", id: 'js-roi'}
+  %div{class: "amount #{money_class(@analytics.roi)}"}
     = number_to_percentage(@analytics.roi, precision: 2)
   %div.label ROI
 
 .primary-figure
-  %div{class: 'amount', id: 'js-winrate'}
+  %div{class: 'amount'}
     = number_to_percentage(@analytics.winrate, precision: 2)
   %div.label Winrate
 
@@ -38,28 +38,24 @@
   #wins-breakdown.breakdown
     %h3 Wins
     .primary-figure
-      %div{class: 'amount in-the-black', id: 'js-biggest-day'}
+      %div{class: 'amount in-the-black'}
         = number_to_currency(@analytics.biggest_day)
-      %div{class: 'sub-amount', id: 'js-biggest-day-date'}
+      %div{class: 'sub-amount'}
       %div.label Biggest Day
 
     .primary-figure
-      %div{class: 'amount in-the-black', id: 'js-biggest-score'}
+      %div{class: 'amount in-the-black'}
         = number_to_currency(@analytics.biggest_score)
-      %div{class: 'sub-amount', id: 'js-biggest-score-date'}
+      %div{class: 'sub-amount'}
       %div.label Biggest Score
 
 
 :javascript
   // Seed data
   var firstEntry = "#{(@analytics.date_of_first_entry)}";
-
-  if (firstEntry !== 'N/A') {
-    $('#from_date').val("#{(@analytics.date_of_first_entry)}");
-  }
+  if (firstEntry !== 'N/A') { $('#from_date').val("#{(@analytics.date_of_first_entry)}"); }
 
   // Draw graph
-
   $('#canvas').highcharts({
     chart: {
       backgroundColor: '#fff',

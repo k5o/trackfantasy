@@ -4,11 +4,12 @@ class Dashboard::AnalyticsCalculator
   attr_reader :user, :date_range, :account
 
   def initialize(user, date_range = nil, site = nil, sport = nil)
-    return false unless inputs_valid?(user, date_range, site, sport)
-
     @user = user
+    @date_range = date_range
     @site = site.present? && site
     @sport = sport.present? && sport
+
+    return false unless valid?
 
     # Get entries
     if date_range.first.present? && date_range.last.present?
@@ -144,24 +145,22 @@ class Dashboard::AnalyticsCalculator
     # {:fanduel => [5000, 1299.99]}
   end
 
-  private
+  def valid?
+    return false unless @user.kind_of?(User)
 
-  def inputs_valid?(user, date_range, site, sport)
-    return false unless user.kind_of?(User)
-
-    if date_range && date_range.first.present? && date_range.last.present?
-      from_date = date_range.first.to_date
-      to_date = date_range.last.to_date
+    if @date_range && @date_range.first.present? && @date_range.last.present?
+      from_date = @date_range.first.to_date
+      to_date = @date_range.last.to_date
 
       return false unless from_date.kind_of?(Date) && to_date.kind_of?(Date) && to_date >= from_date
     end
 
-    if site.present?
-      return false unless Site::NAMES.include?(site)
+    if @site.present?
+      return false unless Site::NAMES.include?(@site)
     end
 
-    if sport.present?
-      return false unless Entry::SPORTS.include?(sport)
+    if @sport.present?
+      return false unless Entry::SPORTS.include?(@sport)
     end
 
     true

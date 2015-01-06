@@ -14,10 +14,6 @@
   margin: auto;
   max-width: 1600px;
   min-height: 400px;
-
-  .fa {
-    margin-top: 10%;
-  }
 }
 
 aside {
@@ -78,6 +74,10 @@ main {
     border: 1px solid $border;
     background: #fff;
     padding: 20px;
+
+    .fa {
+      margin: 10% 0;
+    }
   }
 }
 
@@ -179,10 +179,6 @@ main {
 
   .label {
     text-transform: uppercase;
-  }
-
-  .fa {
-    font-size: 16px;
   }
 }
 
