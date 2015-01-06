@@ -32,38 +32,24 @@ class Dashboard::AnalyticsCalculator
   end
 
   def entry_fees
-    if @entries_exist
-      @entries.sum(:entry_fee_in_cents) / 100.0
-    else
-      0
-    end
+    nil_guard_value || @entries.sum(:entry_fee_in_cents) / 100.0
   end
 
   def revenue_amount
-    if @entries_exist
-      @entries.sum(:profit) / 100.0
-    else
-      0
-    end
+    nil_guard_value || @entries.sum(:profit) / 100.0
   end
 
   def graph_axes
-    if @entries_exist
-      @entries.group("entered_on").pluck <<-SQL
-        extract(epoch from entered_on) * 1000,
-        sum(sum(profit)::float8 / 100.0) over (order by entered_on)
-      SQL
-    else
-      [0,0]
-    end
+    return [0,0] unless @entries_exist
+
+    @entries.group("entered_on").pluck <<-SQL
+      extract(epoch from entered_on) * 1000,
+      sum(sum(profit)::float8 / 100.0) over (order by entered_on)
+    SQL
   end
 
   def roi
-    if entry_fees > 0
-      (revenue_amount / entry_fees.to_f) * 100
-    else
-      0
-    end
+    nil_guard_value || (revenue_amount / entry_fees.to_f) * 100
   end
 
   def total_entries
@@ -71,20 +57,13 @@ class Dashboard::AnalyticsCalculator
   end
 
   def winrate
-    if @entries_exist
-      games_won = @entries.where('profit > ?', 0).count
-      (games_won / total_entries.to_f) * 100
-    else
-      0
-    end
+    games_won = @entries.where('profit > ?', 0).count
+
+    nil_guard_value || (games_won / total_entries.to_f) * 100
   end
 
   def date_of_first_entry
-    if @entries_exist
-      @entries.sort_by(&:entered_on).first.try(:entered_on)
-    else
-      'N/A'
-    end
+    nil_guard_text || @entries.sort_by(&:entered_on).first.try(:entered_on)
   end
 
   def biggest_day_entry
@@ -92,35 +71,19 @@ class Dashboard::AnalyticsCalculator
   end
 
   def biggest_day
-    if biggest_day_entry
-      biggest_day_entry.profit / 100.0
-    else
-      0
-    end
+    nil_guard_value || biggest_day_entry.profit / 100.0
   end
 
   def biggest_day_date
-    if biggest_day_entry
-      biggest_day_entry.entered_on
-    else
-      'N/A'
-    end
+    nil_guard_text || biggest_day_entry.entered_on
   end
 
   def biggest_score
-    if @entries_exist
-      @entries.maximum(:winnings_in_cents) / 100.0
-    else
-      0
-    end
+    nil_guard_value || @entries.maximum(:winnings_in_cents) / 100.0
   end
 
   def biggest_score_date
-    if @entries_exist
-      @entries.find_by_winnings_in_cents(biggest_score * 100).try(:entered_on)
-    else
-      'N/A'
-    end
+    nil_guard_text || @entries.find_by_winnings_in_cents(biggest_score * 100).try(:entered_on)
   end
 
   def sports_data
@@ -153,5 +116,15 @@ class Dashboard::AnalyticsCalculator
     end
 
     true
+  end
+
+  private
+
+  def nil_guard_value
+    0 unless @entries_exist
+  end
+
+  def nil_guard_text
+    'N/A' unless @entries_exist
   end
 end
