@@ -80,7 +80,7 @@ class Dashboard::AnalyticsCalculator
 
   def date_of_first_entry
     if @entries_exist
-      @entries.sort(:entered_on).first.try(:entered_on)
+      @entries.sort_by(&:entered_on).first.try(:entered_on)
     else
       'N/A'
     end
