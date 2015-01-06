@@ -8,6 +8,8 @@ class FanduelCsvImporter
     CSV.foreach(@file).each do |row|
       next if row[2] == "Date"
       next if Entry.find_by_site_entry_id row[0].gsub(/\D/, '')
+      next if row[5].blank?
+
       puts row[0].gsub(/\D/, '')
       site = Site.where(name: "fanduel").first_or_create
 
@@ -23,8 +25,8 @@ class FanduelCsvImporter
       unless contest.title
         contest.update title: row[3], entrants: row[8], completed_on: Date.strptime(row[2], '%m/%d/%y'), link: url, buy_in_in_cents: row[10].to_i * 100
       end
-      entry_fee = row[10].to_i * 100
-      winnings = row[11].to_i * 100
+      entry_fee = row[10].to_f * 100
+      winnings = row[11].to_f * 100
       profit = winnings - entry_fee
 
       player.entries.create!(
