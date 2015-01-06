@@ -123,22 +123,11 @@ class Dashboard::AnalyticsCalculator
     end
   end
 
-  def sports_and_data
-    if @sport || !@entries_exist
-      {}
-    else
-      profit_by_sport = @entries.group(:sport).sum(:profit).sort_by(&:last).reverse
-      count_by_sport = @entries.group(:sport).count
+  def sports_data
+    # 0 => sport, 1 => Count, 2 => Profit
+    sports_data = @entries.group(:sport).pluck("sport, count(*), sum(profit)").sort_by {|e| e.last}.reverse
 
-      count_and_profit_by_sport = {}
-
-      profit_by_sport.each do |pair|
-        count = count_by_sport[pair.first]
-        count_and_profit_by_sport[pair.first] = {count: count, profit: (pair.last / 100.0)}
-      end
-
-      count_and_profit_by_sport
-    end
+    sports_data.map {|sport, count, profit| [sport, count, profit / 100.0] }
   end
 
   def sites_and_data

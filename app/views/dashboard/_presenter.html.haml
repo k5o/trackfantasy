@@ -24,16 +24,16 @@
 
 .detailed-breakdown
   #js-sport-breakdown.breakdown
-    - if @analytics.sports_and_data
+    - if @analytics.sports_data
       %h3 Sports
-      - @analytics.sports_and_data.each_pair do |sport, data|
+      - @analytics.sports_data.each do |data|
         .primary-figure
-          %div{class: "amount #{money_class(data[:profit])}"}
-            = number_to_currency(data[:profit])
+          %div{class: "amount #{money_class(data[2])}"}
+            = number_to_currency(data[2])
           %div{class: 'sub-amount'}
-            = data[:count]
+            = data[1]
           %div.label
-            = sport
+            = data[0]
 
   #wins-breakdown.breakdown
     %h3 Wins
