@@ -4,10 +4,12 @@ class Dashboard::AnalyticsCalculator
   attr_reader :user, :date_range, :account
 
   def initialize(user, date_range = nil, site = nil, sport = nil)
-    validate_input(user, date_range, site, sport)
     @user = user
+    @date_range = date_range
     @site = site.present? && site
     @sport = sport.present? && sport
+
+    return false unless valid?
 
     # Get entries
     if date_range.first.present? && date_range.last.present?
@@ -26,132 +28,103 @@ class Dashboard::AnalyticsCalculator
       @entries = @entries.where(sport: @sport)
     end
 
-    @sorted_entries = @entries.order(:entered_on)
+    @entries_exist = @entries.any?
   end
 
   def entry_fees
-    if @entries.any?
-      @entries.sum(:entry_fee_in_cents) / 100.0
-    else
-      0
-    end
+    nil_guard_value || @entries.sum(:entry_fee_in_cents) / 100.0
   end
 
   def revenue_amount
-    if @entries.any?
-      @entries.sum(:profit) / 100.0
-    else
-      0
-    end
+    nil_guard_value || @entries.sum(:profit) / 100.0
   end
 
   def graph_axes
-    if @entries.any?
-      @entries.group("entered_on").pluck <<-SQL
-        extract(epoch from entered_on) * 1000,
-        sum(sum(profit)::float8 / 100.0) over (order by entered_on)
-      SQL
-    else
-      [0,0]
-    end
+    return [0,0] unless @entries_exist
+
+    @entries.group("entered_on").pluck <<-SQL
+      extract(epoch from entered_on) * 1000,
+      sum(sum(profit)::float8 / 100.0) over (order by entered_on)
+    SQL
   end
 
   def roi
-    if entry_fees > 0
-      (revenue_amount / entry_fees) * 100
-    else
-      0
-    end
+    nil_guard_value || (revenue_amount / entry_fees.to_f) * 100
   end
 
   def total_entries
     @entries.count
   end
 
+  def winrate
+    games_won = @entries.where('profit > ?', 0).count
+
+    nil_guard_value || (games_won / total_entries.to_f) * 100
+  end
+
   def date_of_first_entry
-    if @sorted_entries.any?
-      @sorted_entries.try(:first).try(:entered_on)
-    else
-      'N/A'
-    end
+    nil_guard_text || @entries.sort_by(&:entered_on).first.try(:entered_on)
   end
 
   def biggest_day_entry
-    @entries.sort_by(&:profit).try(:last)
+    nil_guard_text || @entries.sort_by(&:profit).try(:last)
   end
 
   def biggest_day
-    if biggest_day_entry
-      biggest_day_entry.profit / 100.0
-    else
-      0
-    end
+    nil_guard_value || biggest_day_entry.profit / 100.0
   end
 
   def biggest_day_date
-    if biggest_day_entry
-      biggest_day_entry.entered_on
-    else
-      'N/A'
-    end
+    nil_guard_text || biggest_day_entry.entered_on
   end
 
   def biggest_score
-    if @entries.any?
-      @entries.maximum(:winnings_in_cents) / 100.0
-    else
-      0
-    end
+    nil_guard_value || @entries.maximum(:winnings_in_cents) / 100.0
   end
 
   def biggest_score_date
-    if @entries.any?
-      @entries.find_by_winnings_in_cents(biggest_score * 100).try(:entered_on)
-    else
-      'N/A'
-    end
+    nil_guard_text || @entries.find_by_winnings_in_cents(biggest_score * 100).try(:entered_on)
   end
 
-  def sports_and_data
-    if @sport || @entries.blank?
-      {}
-    else
-      profit_by_sport = @entries.group(:sport).sum(:profit).sort_by(&:last).reverse
-      count_by_sport = @entries.group(:sport).count
+  def sports_data
+    # 0 => sport, 1 => Count, 2 => Profit
+    sports_data = @entries.group(:sport).pluck("sport, count(*), sum(profit)").sort_by {|e| e.last}.reverse
 
-      count_and_profit_by_sport = {}
-
-      profit_by_sport.each do |pair|
-        count = count_by_sport[pair.first]
-        count_and_profit_by_sport[pair.first] = {count: count, profit: (pair.last / 100.0)}
-      end
-
-      JSON(count_and_profit_by_sport)
-    end
+    sports_data.map {|sport, count, profit| [sport, count, profit / 100.0] }
   end
 
   def sites_and_data
     # {:fanduel => [5000, 1299.99]}
   end
 
+  def valid?
+    return false unless @user.kind_of?(User)
+
+    if @date_range && @date_range.first.present? && @date_range.last.present?
+      from_date = @date_range.first.to_date
+      to_date = @date_range.last.to_date
+
+      return false unless from_date.kind_of?(Date) && to_date.kind_of?(Date) && to_date >= from_date
+    end
+
+    if @site.present?
+      return false unless Site::NAMES.include?(@site)
+    end
+
+    if @sport.present?
+      return false unless Entry::SPORTS.include?(@sport)
+    end
+
+    true
+  end
+
   private
 
-  def validate_input(user, date_range, site, sport)
-    raise 'Invalid entry' unless user.kind_of?(User)
+  def nil_guard_value
+    0 unless @entries_exist
+  end
 
-    if date_range && date_range.first.present? && date_range.last.present?
-      from_date = date_range.first.to_date
-      to_date = date_range.last.to_date
-
-      raise 'Invalid entry' unless from_date.kind_of?(Date) && to_date.kind_of?(Date) && to_date >= from_date
-    end
-
-    if site.present?
-      raise 'Invalid entry' unless Site::NAMES.include?(site)
-    end
-
-    if sport.present?
-      raise 'Invalid entry' unless Entry::SPORTS.include?(sport)
-    end
+  def nil_guard_text
+    'N/A' unless @entries_exist
   end
 end

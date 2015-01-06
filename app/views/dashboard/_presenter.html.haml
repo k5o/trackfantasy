@@ -1,0 +1,121 @@
+.main-errors
+.primary-figure
+  %div{class: 'amount'}
+    = @analytics.total_entries
+  %div.label Entries
+
+.primary-figure
+  %div{class: "amount #{money_class(@analytics.revenue_amount)}"}
+    = number_to_currency(@analytics.revenue_amount)
+  %span.label Bottom Line
+
+.primary-figure
+  %div{class: "amount #{money_class(@analytics.roi)}"}
+    = number_to_percentage(@analytics.roi, precision: 2)
+  %div.label ROI
+
+.primary-figure
+  %div{class: 'amount'}
+    = number_to_percentage(@analytics.winrate, precision: 2)
+  %div.label Winrate
+
+.graph
+  #canvas{:width => '100%'}
+
+.detailed-breakdown
+  #js-sport-breakdown.breakdown
+    - if @analytics.sports_data
+      %h3 Sports
+      - @analytics.sports_data.each do |data|
+        .primary-figure
+          %div{class: "amount #{money_class(data[2])}"}
+            = number_to_currency(data[2])
+          %div{class: 'sub-amount'}
+            = data[1]
+          %div.label
+            = data[0]
+
+  #wins-breakdown.breakdown
+    %h3 Wins
+    .primary-figure
+      %div{class: 'amount in-the-black'}
+        = number_to_currency(@analytics.biggest_day)
+      %div{class: 'sub-amount'}
+        = @analytics.biggest_day_date
+      %div.label Biggest Day
+
+    .primary-figure
+      %div{class: 'amount in-the-black'}
+        = number_to_currency(@analytics.biggest_score)
+      %div{class: 'sub-amount'}
+      = @analytics.biggest_score_date
+      %div.label Biggest Score
+
+
+:javascript
+  // Seed data
+  var firstEntry = "#{(@analytics.date_of_first_entry)}";
+  if (firstEntry !== 'N/A') { $('#from_date').val("#{(@analytics.date_of_first_entry)}"); }
+
+  // Draw graph
+  $('#canvas').highcharts({
+    chart: {
+      backgroundColor: '#fff',
+      type: 'line',
+    },
+    title: {
+      text: '',
+    },
+    credits: {
+      enabled: false
+    },
+    legend: {
+      enabled: false
+    },
+    plotOptions: {
+      line: {
+        marker: {
+          enabled: false
+        },
+      }
+    },
+    yAxis: {
+      title: {
+        text: 'Winnings',
+        style: { "color": "#666", "fontWeight": "bold" },
+      },
+      labels: {
+        format: '${value}',
+        style: {"color":"#666"}
+      },
+      maxPadding: 0.1,
+      minorGridLineColor: '#ededed',
+      minorTickInterval: 'auto',
+      lineColor: '#888',
+      gridLineColor: '#ddd',
+      lineWidth: 2,
+      plotLines: [{
+        value: 0,
+        width: 2,
+        color: '#999'
+      }]
+    },
+    xAxis: {
+      type: 'datetime',
+      lineWidth: 2,
+      lineColor: '#888',
+      gridLineColor: '#ddd',
+      gridLineDashStyle: 'solid',
+      gridLineWidth: 1,
+      minPadding: 0,
+      maxPadding: 0,
+      labels: {
+        style: {"color":"#666"}
+      }
+    },
+    series: [{
+      name: '$',
+      color: '#0D653B',
+      data: #{@analytics.graph_axes}
+    }],
+  });
