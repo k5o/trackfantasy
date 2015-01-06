@@ -1,5 +1,5 @@
 class Entry < ActiveRecord::Base
-  SPORTS = ['nfl', 'nba', 'mlb', 'nfl', 'cfb', 'mma']
+  SPORTS = ['nfl', 'nba', 'mlb', 'nfl', 'cfb', 'cbb', 'mma']
 
   belongs_to :account
   belongs_to :contest
