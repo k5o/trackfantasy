@@ -41,12 +41,14 @@
       %div{class: 'amount in-the-black'}
         = number_to_currency(@analytics.biggest_day)
       %div{class: 'sub-amount'}
+        = @analytics.biggest_day_date
       %div.label Biggest Day
 
     .primary-figure
       %div{class: 'amount in-the-black'}
         = number_to_currency(@analytics.biggest_score)
       %div{class: 'sub-amount'}
+      = @analytics.biggest_score_date
       %div.label Biggest Score
 
 
