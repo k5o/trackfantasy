@@ -67,7 +67,7 @@ class Dashboard::AnalyticsCalculator
   end
 
   def biggest_day_entry
-    @entries.sort_by(&:profit).try(:last)
+    nil_guard_text || @entries.sort_by(&:profit).try(:last)
   end
 
   def biggest_day
