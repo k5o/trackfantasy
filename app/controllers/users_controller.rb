@@ -35,7 +35,7 @@ class UsersController < ApplicationController
         current_user.password = new_password
         current_user.save
       else
-        flash.now[:error] = 'Your current password was incorrect.'
+        flash.now[:error] = 'Your password was incorrect.'
         render :edit and return
       end
     end
