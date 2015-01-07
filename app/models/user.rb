@@ -44,4 +44,8 @@ class User < ActiveRecord::Base
     @password = Password.create(new_password)
     self.password_digest = @password
   end
+
+  def sports_played
+    entries.pluck(:sport).uniq
+  end
 end

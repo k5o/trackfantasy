@@ -22,6 +22,12 @@ class DashboardController < ApplicationController
     end
   end
 
+  def games
+    @sports_played = current_user.sports_played
+
+    @sport = @sports_played.length == 1 ? @sports_played.first : params[:sport]
+  end
+
   def support
   end
 
