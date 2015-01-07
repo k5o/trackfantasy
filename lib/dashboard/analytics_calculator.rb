@@ -63,11 +63,11 @@ class Dashboard::AnalyticsCalculator
   end
 
   def date_of_first_entry
-    nil_guard_text || @entries.sort_by(&:entered_on).first.try(:entered_on)
+    nil_guard_text || @entries.order(:entered_on).first.try(:entered_on)
   end
 
   def biggest_day_entry
-    nil_guard_text || @entries.sort_by(&:profit).try(:last)
+    nil_guard_text || @entries.order(:profit).first.try(:last)
   end
 
   def biggest_day
