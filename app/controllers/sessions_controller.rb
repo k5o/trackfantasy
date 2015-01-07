@@ -22,7 +22,6 @@ class SessionsController < ApplicationController
 
   def destroy
     reset_session
-    flash[:success] = "Signed out successfully."
     redirect_to root_path
   end
 end
