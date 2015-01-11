@@ -2,18 +2,16 @@
   .info-card-title
     %h1 Sign Up For Free
   .info-card-content
-    = form_tag users_path, method: 'post', class: 'signup-form' do
+    = form_for @user, html: {class: 'signup-form'} do |f|
       .text-field-container
-        = email_field_tag :email, '', placeholder: 'Email', id: 'email', autofocus: true
+        = f.email_field :email, placeholder: 'Email', id: 'email', autofocus: true
         = icon('at', '', class: 'fa-fw input-embedded-icon')
       .text-field-container
-        = password_field_tag :password, '', placeholder: 'Password (at least 5 characters)', id: 'password', class: 'submit-input'
+        = f.password_field :password, placeholder: 'Password (at least 5 characters)', id: 'password', class: 'submit-input'
         = icon('lock', '', class: 'fa-fw input-embedded-icon')
       - if @user.errors.any?
         .error-messages
           %ul
             - for message in @user.errors.full_messages
               %li= message
-      = button_to '', class: 'btn' do
-        = 'Next'
-        = icon('chevron-right', '', class: 'fa-fw')
+      = f.submit 'Next', class: 'btn'
