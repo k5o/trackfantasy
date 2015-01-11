@@ -26,9 +26,6 @@ class DashboardController < ApplicationController
   def import
   end
 
-  def support
-  end
-
   private
 
   def verify_user
