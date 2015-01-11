@@ -16,7 +16,7 @@ class UsersController < ApplicationController
 
     if @user.save
       session[:user_id] = @user.id
-      redirect_to dashboard_path
+      redirect_to import_path
     else
       render :new
     end

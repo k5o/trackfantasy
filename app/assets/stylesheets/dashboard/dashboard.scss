@@ -75,6 +75,10 @@ main {
     background: #fff;
     padding: 20px;
 
+    &.new-user-notification {
+      background-color: #FFECB3;
+    }
+
     .fa-cog {
       margin: 10% 0;
     }

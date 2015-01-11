@@ -16,7 +16,11 @@
           = link_to 'Reset', dashboard_path, class: 'header-btn reset-btn'
           = icon('cog', '', class: 'fa-spin js-filter-loader')
     = render partial: 'partials/flash'
-    .main-container
+    - if @is_new_user
+      .main-container.new-user-notification
+        To see your results, you must first import your DFS history using the
+        = link_to 'Import tab', import_path, class: 'strong'
+    .main-container#dashboard
       = icon('cog', '', class: 'fa-4x fa-spin')
 
 :javascript
@@ -40,7 +44,7 @@
       data: {from_date: fromDate, to_date: toDate, site: site, sport: sport},
       type: 'GET',
     }).success(function(data){
-      $('.main-container').html(data);
+      $('#dashboard').html(data);
     }).fail(function(data){
       $('.main-errors').append('Something went wrong, please make sure your date input is valid. <a href="/dashboard">Refresh</a>').show();
     });
