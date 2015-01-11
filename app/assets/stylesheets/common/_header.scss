@@ -2,7 +2,7 @@ header {
   height: 68px;
   padding: 20px 0;
   line-height: 28px;
-  background: $fill-saturated;
+  background: $primary;
 
   .logo {
     @include span-columns(6 of 12);

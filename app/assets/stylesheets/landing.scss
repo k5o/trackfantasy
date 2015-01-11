@@ -1,7 +1,5 @@
 .splash {
   padding-top: 5%;
-  height: 60%;
-  max-height: 545px;
   background: $primary;
   position: relative;
 
@@ -56,6 +54,10 @@
     }
 
     margin-bottom: 10%;
+  }
+
+  .info-card {
+    margin-bottom: 40px;
   }
 
   .learn-more {

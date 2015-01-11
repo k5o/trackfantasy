@@ -2,7 +2,10 @@
   .splash
     .container
       %h1 Performance Analytics for Daily Fantasy Sports Players
-      %h2 Maximize your profit with valuable winrate and score metrics
+      %h2 Maximize your profit with valuable winrate and score metrics.
+
+      = render partial: 'users/new_user_form'
+      .clearfloat
 
       .learn-more
         = link_to '#', id: 'js-learn-more' do
