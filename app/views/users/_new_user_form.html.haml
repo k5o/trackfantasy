@@ -4,10 +4,10 @@
   .info-card-content
     = form_for @user, html: {class: 'signup-form'} do |f|
       .text-field-container
-        = f.email_field :email, placeholder: 'Email', id: 'email', autofocus: true
+        = f.email_field :email, placeholder: 'Email', id: 'email', autofocus: true, required: :required
         = icon('at', '', class: 'fa-fw input-embedded-icon')
       .text-field-container
-        = f.password_field :password, placeholder: 'Password (at least 5 characters)', id: 'password', class: 'submit-input'
+        = f.password_field :password, placeholder: 'Password (at least 5 characters)', id: 'password', class: 'submit-input', required: :required
         = icon('lock', '', class: 'fa-fw input-embedded-icon')
       - if @user.errors.any?
         .error-messages
