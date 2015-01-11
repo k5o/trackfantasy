@@ -1,8 +1,9 @@
 %header
   .container
-    = link_to root_path, class: 'logo' do
-      %span.track Track
-      %span.fantasy Fantasy
+    .logo-container
+      = link_to root_path, class: 'logo' do
+        %span.track Track
+        %span.fantasy Fantasy
 
     %ul.nav
       %li= link_to 'Login', login_path, class: 'login-link'

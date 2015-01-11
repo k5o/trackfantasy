@@ -4,8 +4,11 @@ header {
   line-height: 28px;
   background: $primary;
 
-  .logo {
+  .logo-container {
     @include span-columns(6 of 12);
+  }
+
+  .logo {
     color: $off-white;
     text-decoration: none;
     font-family: $logo-font, 'Helvetica', Arial;
