@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141212080633) do
+ActiveRecord::Schema.define(version: 20150111104131) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -61,15 +61,6 @@ ActiveRecord::Schema.define(version: 20141212080633) do
     t.datetime "updated_at"
   end
 
-  create_table "payment_plans", force: :cascade do |t|
-    t.string   "name",                        null: false
-    t.integer  "amount_in_cents",             null: false
-    t.string   "interval",                    null: false
-    t.integer  "interval_count",  default: 1
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
   create_table "sites", force: :cascade do |t|
     t.string   "name"
     t.string   "domain"
@@ -79,9 +70,7 @@ ActiveRecord::Schema.define(version: 20141212080633) do
 
   create_table "users", force: :cascade do |t|
     t.string   "email"
-    t.string   "stripe_customer_id"
-    t.string   "password_digest",    null: false
-    t.date     "active_until"
+    t.string   "password_digest", null: false
     t.datetime "created_at"
     t.datetime "updated_at"
   end

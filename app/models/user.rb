@@ -12,30 +12,6 @@ class User < ActiveRecord::Base
   # validates :email, format: { with: EMAIL_REGEXP }
   # validates :password, length: { minimum: 5 }
 
-  def uninitiated?
-    stripe_customer_id.nil?
-  end
-
-  def active?
-    active_until && Time.current <= active_until
-  end
-
-  def inactive?
-    !!active_until || Time.current >= active_until
-  end
-
-  def set_active_until!(plan)
-    return unless plan
-
-    if plan.name == PaymentPlan::MONTHLY_PLAN_NAME
-      self.active_until = 1.month.from_now
-    elsif plan.name == PaymentPlan::ANNUAL_PLAN_NAME
-      self.active_until = 1.year.from_now
-    end
-
-    self.save!
-  end
-
   def password
     @password ||= Password.new(password_digest)
   end

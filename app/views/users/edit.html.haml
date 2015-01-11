@@ -12,18 +12,6 @@
             = current_user.email
           %div.label Email
         .primary-figure
-          %div{class: 'amount'}
-            = @stripe_details.subscriptions.data.first.plan.name.titleize
-          %div.label Plan
-        .primary-figure
-          %div{class: 'amount'}
-            = current_user.active_until
-          %div.label Paid Until
-        .primary-figure
-          %div{class: 'amount', id: 'js-dashboard-account-credit-card'}
-            = "#{@stripe_details.cards.data.first.last4} (#{@stripe_details.cards.data.first.brand})"
-          %div.label Card Ending In
-        .primary-figure
           = 'Questions? Contact us at'
           %p= link_to 'support@trackfantasy.com', 'mailto:support@trackfantasy.com'
         .primary-figure
@@ -35,53 +23,7 @@
           = password_field_tag :current_password, '', placeholder: 'Your current password'
           = password_field_tag :new_password, '', placeholder: 'New Password (at least 5 characters)', class: 'submit-input vertical'
           .password-helper
-          %p Change Credit Card
-          = text_field_tag :credit_card_number, '', placeholder: 'Card Number', maxlength: 16
-          = text_field_tag :credit_card_exp_month, '', placeholder: 'MM', maxlength: 2
-          = text_field_tag :credit_card_exp_year, '', placeholder: 'YY', maxlength: 2
-          = text_field_tag :credit_card_security, '', placeholder: 'CVC', maxlength: 3
           .error-messages
           = submit_tag 'Update', class: 'btn'
-          .safety
-            = icon('lock', 'For your safety, your credit card details are never stored by TrackFantasy. Payments are handled by Stripe, a PCI Level 1 Service Provider.')
 
       .clearfloat
-
-%script{type: 'text/javascript', src: 'https://js.stripe.com/v2/'}
-:javascript
-  Stripe.setPublishableKey("#{Rails.application.secrets.STRIPE_PUBLISHABLE_KEY}");
-
-  var editForm = $('form#user-edit-form');
-
-  editForm.on('submit', function(e){
-    e.preventDefault();
-
-    $(this).children('input[type=submit]').prop('disabled', 'disabled')
-
-    if ($('#credit_card_number').val() > 0) {
-      Stripe.card.createToken({
-        number: $('#credit_card_number').val(),
-        cvc: $('#credit_card_security').val(),
-        exp_month: $('#credit_card_exp_month').val(),
-        exp_year: $('#credit_card_exp_year').val()
-      }, stripeResponseHandler);
-    }
-    else {
-      $(this).get(0).submit();
-    }
-  })
-
-  function stripeResponseHandler(status, response) {
-    if (response.error) {
-      // Show the errors on the form
-      $('.error-messages').text(response.error.message);
-      editForm.children('input[type=submit]').prop('disabled', false);
-    } else {
-      // response contains id and card, which contains additional card details
-      var token = response.id;
-      // Insert the token into the form so it gets submitted to the server
-      editForm.append($('<input type="hidden" name="stripeToken" />').val(token));
-      // and submit
-      editForm.get(0).submit();
-    }
-  }
