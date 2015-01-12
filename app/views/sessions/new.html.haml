@@ -5,6 +5,8 @@
       .info-card-title
         %h1 Log In
       .info-card-content
+        .error-messages
+          = @invalid_message
         = form_tag sessions_path, method: 'post', class: 'signup-form' do
           .text-field-container
             = email_field_tag :email, '', placeholder: 'Email', id: 'email', autofocus: true
@@ -13,12 +15,12 @@
             = password_field_tag :password, '', placeholder: 'Password', id: 'password', class: 'submit-input'
             = icon('lock', '', class: 'fa-fw input-embedded-icon')
           = button_to '', class: 'btn' do
-            = 'Show me the money!'
+            = 'Log me in'
 
         .alternative-actions
           %p.helper-action
             Don't have an account?
-            = link_to "Sign up to start tracking", "#{root_url}#pricing"
+            = link_to "Sign up to start tracking", signup_path
           %p.helper-action
             Forgot your password?
             = link_to "Reset it here", '#'

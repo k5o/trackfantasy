@@ -2,10 +2,17 @@ header {
   height: 68px;
   padding: 20px 0;
   line-height: 28px;
-  background: $fill-saturated;
+  background: $primary;
+
+  .logo-container {
+    @include span-columns(6 of 12);
+
+    @include media($small) {
+      @include span-columns(12 of 12);
+    }
+  }
 
   .logo {
-    @include span-columns(6 of 12);
     color: $off-white;
     text-decoration: none;
     font-family: $logo-font, 'Helvetica', Arial;

@@ -18,12 +18,11 @@
           %div.label.strong= link_to 'Logout', session_path(current_user), method: :delete
 
       .user-form
-        = form_tag "/users/#{current_user.id}", method: :put, class: 'signup-form', id: 'user-edit-form' do
-          %p Change Password (optional)
-          = password_field_tag :current_password, '', placeholder: 'Your current password'
-          = password_field_tag :new_password, '', placeholder: 'New Password (at least 5 characters)', class: 'submit-input vertical'
-          .password-helper
+        = form_for @user, method: :put, html: { class: 'signup-form', id: 'user-edit-form' } do |f|
+          %p Change Password
+          = f.password_field :current_password, placeholder: 'Your current password'
+          = f.password_field :password, placeholder: 'New Password (at least 5 characters)', class: 'submit-input vertical'
           .error-messages
-          = submit_tag 'Update', class: 'btn'
+          = f.submit 'Update', class: 'btn'
 
       .clearfloat

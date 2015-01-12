@@ -1,8 +1,7 @@
 %header
   .container
-    = link_to root_path, class: 'logo' do
-      %span.track Track
-      %span.fantasy Fantasy
+    .logo-container
+      = render partial: 'partials/logo'
 
     %ul.nav
       %li= link_to 'Login', login_path, class: 'login-link'

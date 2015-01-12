@@ -4,6 +4,7 @@ class DashboardController < ApplicationController
   # caches_action :fetch_dashboard_data, expires_in: 1.month # TODO: invalidate cache when new csv is imported
 
   def index
+    @is_new_user = @user.entries.blank?
   end
 
   def fetch_dashboard_data
@@ -22,7 +23,7 @@ class DashboardController < ApplicationController
     end
   end
 
-  def support
+  def import
   end
 
   private

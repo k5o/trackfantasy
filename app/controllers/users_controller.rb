@@ -16,7 +16,7 @@ class UsersController < ApplicationController
 
     if @user.save
       session[:user_id] = @user.id
-      redirect_to dashboard_path
+      redirect_to import_path
     else
       render :new
     end
@@ -26,26 +26,31 @@ class UsersController < ApplicationController
   end
 
   def update
-    new_password = params[:new_password]
+    new_password = params[:user][:password]
 
     if new_password.present?
-      if current_user.password == params[:current_password]
-        current_user.password = new_password
-        current_user.save
+      if current_user.authenticate(params[:user][:current_password])
+        if current_user.update_attributes(user_params)
+          flash[:success] = 'Password changed successfully.'
+          redirect_to account_path and return
+        else
+          flash.now[:error] = @user.errors.full_messages.join
+          render :edit and return
+        end
       else
-        flash.now[:error] = 'Your password was incorrect.'
+        flash.now[:error] = "Your password was incorrect."
         render :edit and return
       end
+    else
+      flash[:success] = 'No changes have been made.'
+      redirect_to account_path and return
     end
-
-    flash[:success] = 'Your account has been updated.'
-    redirect_to account_path and return
   end
 
   private
 
   def user_params
-    params.permit(:email, :password)
+    params[:user].permit(:email, :password)
   end
 
   def load_user

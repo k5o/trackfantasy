@@ -91,7 +91,8 @@
   }
 
   .btn {
-    margin-top: 20px;
+    width: 200px;
+    padding: 2px 6px 3px 6px;
   }
 
   .text-field-container {
@@ -118,12 +119,12 @@
 
   @include media($small) {
     text-align: center;
-    @include span-columns(12 of 12);
   }
 }
 
 .error-messages {
   color: red;
+  margin-bottom: 20px;
 }
 
 .in-the-red {
