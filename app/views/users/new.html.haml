@@ -1,4 +1,12 @@
 .page.new-user
   .container
     = render 'partials/logo'
-    = render 'new_user_form'
+    .info-card
+      .info-card-title
+        %h1 Sign Up For Free
+      .info-card-content
+        = render 'new_user_form'
+        .alternative-actions
+          %p.helper-action
+            Already have an account?
+            = link_to "Log in", login_path

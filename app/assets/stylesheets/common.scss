@@ -119,12 +119,12 @@
 
   @include media($small) {
     text-align: center;
-    @include span-columns(12 of 12);
   }
 }
 
 .error-messages {
   color: red;
+  margin-bottom: 20px;
 }
 
 .in-the-red {

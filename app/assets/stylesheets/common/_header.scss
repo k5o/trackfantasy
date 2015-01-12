@@ -6,6 +6,10 @@ header {
 
   .logo-container {
     @include span-columns(6 of 12);
+
+    @include media($small) {
+      @include span-columns(12 of 12);
+    }
   }
 
   .logo {
