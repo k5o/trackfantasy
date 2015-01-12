@@ -4,10 +4,6 @@
       %h1 Performance Analytics for Daily Fantasy Sports Players
       %h2 Maximize your profit with valuable winrate and score metrics
 
-      .js-cta.cta
-        .cta-header View Pricing and Sign Up
-        .cta-subheader 60-day money back guarantee
-
       .learn-more
         = link_to '#', id: 'js-learn-more' do
           = 'Learn more'
@@ -45,48 +41,3 @@
         %span.strong improve
         your scores and your
         %span.strong bottom line.
-
-  %a{name: 'pricing'}
-  #js-pricing.pricing
-    .container
-      %h1 Pricing and Signup
-      %p Sign up today risk-free with our 60-day money back guarantee
-
-      .pricing-cards
-        = render 'partials/pricing_card_monthly'
-        = render 'partials/pricing_card_annual'
-
-      %p
-        Questions? Email us at
-        = link_to 'support@trackfantasy.com', 'mailto:support@trackfantasy.com', class: 'strong'
-  .faq
-    .container
-      %h1 FAQ
-      %p
-        We're always available at  
-        = link_to 'support@trackfantasy.com', 'mailto:support@trackfantasy.com'
-        if you have any other questions.
-
-      .q-a
-        %p.q
-          Are my results safe with TrackFantasy?
-        %p.a
-          Yes. Users can only see data they've uploaded themselves. Rest assured that we keep your data secure and confidential.
-
-      .q-a
-        %p.q
-          Am I tied to a contract?
-        %p.a
-          Our monthly plan bills month-to-month and can be canceled at any time with no penalty. Our yearly plan bills annually, however both the yearly plan and the monthly plan come with 60-day money back guarantees.
-
-      .q-a
-        %p.q
-          Are there any limits to the amount of data I can store?
-        %p.a
-          Not right now. This may change in the future, but anyone who signs up now will be grandfathered into their current plan, monthly or annual, both which offer unlimited tracking.
-
-      .q-a
-        %p.q
-          Which Fantasy sites and games does TrackFantasy support?
-        %p.a
-          Our platform currently supports all sports and game types from FanDuel and DraftKings. Site support for DraftDay, FantasyAces, FantasyFeud, FantasyDraft, and more coming soon.

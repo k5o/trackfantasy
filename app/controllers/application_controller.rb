@@ -12,9 +12,4 @@ class ApplicationController < ActionController::Base
   def no_layout
     @no_layout = true
   end
-
-  def parse_plan
-    @plan = params[:plan]
-    @plan_exists = PaymentPlan::PLAN_NAMES.include?(@plan)
-  end
 end

@@ -1,14 +1,12 @@
 class UsersController < ApplicationController
   before_filter :no_layout, only: [:new, :create]
-  before_filter :parse_plan, only: [:new, :create]
   before_filter :load_user, only: [:edit, :update]
 
   def show
   end
 
   def new
-    redirect_to new_payment_path(plan: params[:plan]) and return if current_user && current_user.uninitiated?
-    redirect_to root_path and return if current_user
+    redirect_to dashboard_path and return if current_user
 
     @user = User.new
   end
@@ -18,7 +16,7 @@ class UsersController < ApplicationController
 
     if @user.save
       session[:user_id] = @user.id
-      redirect_to new_payment_path(plan: params[:plan])
+      redirect_to dashboard_path
     else
       render :new
     end
@@ -40,19 +38,6 @@ class UsersController < ApplicationController
       end
     end
 
-    stripe_token = params[:stripeToken]
-
-    if stripe_token.present?
-      cu = Stripe::Customer.retrieve(current_user.stripe_customer_id)
-      cu.card = stripe_token
-      begin
-        cu.save
-      rescue
-        flash.now[:error] = 'Something went wrong in saving your card details. Please try again.'
-        render :edit and return
-      end
-    end
-
     flash[:success] = 'Your account has been updated.'
     redirect_to account_path and return
   end
@@ -65,6 +50,5 @@ class UsersController < ApplicationController
 
   def load_user
     @user = current_user
-    @stripe_details = Stripe::Customer.retrieve(@user.stripe_customer_id)
   end
 end

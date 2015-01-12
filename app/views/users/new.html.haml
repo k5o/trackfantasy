@@ -5,10 +5,6 @@
       .info-card-title
         %h1 Sign Up
       .info-card-content
-        - if @plan_exists
-          %h3 
-            = "#{@plan.titleize} Plan, nice! Now let's get you set up:"
-
         = form_tag users_path, method: 'post', class: 'signup-form' do
           .text-field-container
             = email_field_tag :email, '', placeholder: 'Email', id: 'email', autofocus: true
@@ -16,7 +12,6 @@
           .text-field-container
             = password_field_tag :password, '', placeholder: 'Password (at least 5 characters)', id: 'password', class: 'submit-input'
             = icon('lock', '', class: 'fa-fw input-embedded-icon')
-          = hidden_field_tag :plan, @plan
           - if @user.errors.any?
             .error-messages
               %ul

@@ -28,8 +28,6 @@ class DashboardController < ApplicationController
   private
 
   def verify_user
-    redirect_to root_path unless current_user && !current_user.uninitiated?
-
     @user = current_user
   end
 
