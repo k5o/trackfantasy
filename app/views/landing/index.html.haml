@@ -26,24 +26,27 @@
         and
         %span.strong game history
         for grinders like you.
-      %ul
-        %li
-          .vp-image
-          .vp-content
-            .strong.vp-header Your money, analyzed
-            .sub-vp Bankrolls don't tell the full story. Our stat-heavy dashboard lets you visualize your earnings. Get the full scoop on where your money is coming and going. 
-        %li
-          .vp-image
-          .vp-content
-            .strong.vp-header Performance stats everywhere
-            .sub-vp Evaluate your play with score tracking. Works across all game types, so you know which games you have the biggest edge in.
-        %li
-          .vp-image
-          .vp-content
-            .strong.vp-header Your game history, forever
-            .sub-vp Easy look-up of old games and lineups. Your data is secure and your lineups are always retrievable.
+
+      .vp-container
+        %ul
+          %li
+            .vp-image
+            .vp-content
+              .strong.vp-header Your money, analyzed
+              .sub-vp Bankrolls don't tell the full story. Our stat-heavy dashboard lets you visualize your earnings by every filter imagineable. Get the full scoop on where your money is coming and going. 
+          %li
+            .vp-image
+            .vp-content
+              .strong.vp-header Performance stats everywhere
+              .sub-vp Evaluate your play with score tracking. Works across all game types, so you know which games you have the biggest edge in.
+          %li
+            .vp-image
+            .vp-content
+              .strong.vp-header Access anywhere
+              .sub-vp View and update your saved stats anywhere. We take secure precautions to make sure your data is always safe.
+
+        .screenshot-container
+          = image_tag(asset_path('screenshot.png'))
+
       %p
-        TrackFantasy helps
-        %span.strong improve
-        your scores and your
-        %span.strong bottom line.
+        = link_to 'Sign Up For Free', signup_path, class: 'btn'
