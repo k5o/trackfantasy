@@ -3,6 +3,7 @@ header {
   padding: 20px 0;
   line-height: 28px;
   background: $primary;
+  z-index: 0;
 
   .logo-container {
     @include span-columns(6 of 12);
