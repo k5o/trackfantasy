@@ -19,10 +19,9 @@
 
       .user-form
         = form_for @user, method: :put, html: { class: 'signup-form', id: 'user-edit-form' } do |f|
-          %p Change Password (optional)
+          %p Change Password
           = f.password_field :current_password, placeholder: 'Your current password'
           = f.password_field :password, placeholder: 'New Password (at least 5 characters)', class: 'submit-input vertical'
-          .password-helper
           .error-messages
           = f.submit 'Update', class: 'btn'
 
