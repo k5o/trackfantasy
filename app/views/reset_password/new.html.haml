@@ -1,0 +1,20 @@
+.page.new-user
+  .container
+    = render partial: 'partials/logo'
+    .info-card
+      .info-card-title
+        %h1 Reset Password
+      .info-card-content
+        = render partial: 'partials/flash'
+        = form_tag reset_password_index_path, method: 'post', class: 'signup-form' do
+          %p Input your TrackFantasy email address and we'll send you password reset instructions.
+          .text-field-container
+            = email_field_tag :email, '', placeholder: 'Your account email address', id: 'email', autofocus: true
+            = icon('envelope', '', class: 'fa-fw input-embedded-icon')
+          = button_to '', class: 'btn' do
+            = 'Send Instructions'
+
+        .alternative-actions
+          %p.helper-action
+            = link_to "Back to Login", login_path
+    .clearfloat

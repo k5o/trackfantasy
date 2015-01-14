@@ -75,4 +75,19 @@ Rails.application.configure do
 
   # Do not dump schema after migrations.
   config.active_record.dump_schema_after_migration = false
+
+  config.action_mailer.default_url_options = { host: 'trackfantasy.com'}
+  config.action_mailer.delivery_method = :smtp
+
+  config.action_mailer.smtp_settings = {
+    address: 'smtp.zoho.com',
+    port: 465,
+    domain: 'trackfantasy.com',
+    authentication: :plain,
+    user_name: Rails.application.secrets.mail_user,
+    password: Rails.application.secrets.mail_password,
+    ssl: true,
+    tls: true,
+    enable_starttls_auto: true
+  }
 end
