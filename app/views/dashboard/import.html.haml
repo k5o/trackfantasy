@@ -1,8 +1,12 @@
 .dashboard.support
   %aside
     = render partial: 'sidebar'
-  %main
+  %main#droparea
     .main-header
       Import CSVs
     .main-container
-      %p Import multiple files here. This process may take some time, depending on how many entries you have.
+      %p Click and drag to import multiple files here. This process may take some time, depending on how many entries you have.
+
+      = form_tag({controller: :csv, action: :upload}, class:'dropzone', multipart: true) do
+        = file_field_tag 'file', multiple: true
+        %input{type: "Submit", class: "csv_submit"}

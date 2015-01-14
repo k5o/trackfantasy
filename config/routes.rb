@@ -11,4 +11,6 @@ Rails.application.routes.draw do
   get '/dashboard/fetch_dashboard_data', to: 'dashboard#fetch_dashboard_data', as: 'fetch_dashboard_data'
   get '/import', to: 'dashboard#import', as: 'import'
   get '/privacy', to: 'landing#privacy', as: 'privacy'
+
+  post '/csv_upload', to: 'csv#upload', as: 'csv_upload'
 end

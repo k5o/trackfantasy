@@ -23,6 +23,7 @@ gem 'nokogiri'
 gem 'httparty'
 gem 'highcharts-rails', '~> 3.0.0'
 gem 'actionpack-action_caching'
+gem 'sucker_punch'
 
 group :production do
   gem 'rails_12factor'
