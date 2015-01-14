@@ -10,5 +10,6 @@ Rails.application.routes.draw do
   get '/dashboard', to: 'dashboard#index', as: 'dashboard'
   get '/dashboard/fetch_dashboard_data', to: 'dashboard#fetch_dashboard_data', as: 'fetch_dashboard_data'
   get '/import', to: 'dashboard#import', as: 'import'
+  get '/contact', to: 'dashboard#contact', as: 'contact'
   get '/privacy', to: 'landing#privacy', as: 'privacy'
 end

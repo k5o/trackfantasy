@@ -1,0 +1,17 @@
+.dashboard.contact
+  %aside
+    = render partial: 'sidebar'
+  %main
+    .main-header
+      Contact Us
+    .main-container
+      %p
+        You can email us at
+        = link_to 'support@trackfantasy.com', 'mailto:support@trackfantasy.com', class: 'strong'
+        or leave a message below (it goes straight to our inbox).
+      %p
+        TrackFantasy is built by a couple fantasy sports geeks for the DFS community. Please leave a suggestion for what you want to see on TrackFantasy and we'll try to make it happen.
+      = form_tag '/user_feedback', method: :post, html: {} do
+        = text_area_tag 'user_feedback', '', placeholder: 'Leave your question, comment, suggestion, or favorite joke here'
+        = submit_tag 'Submit', class: 'btn'
+

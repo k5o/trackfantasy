@@ -26,6 +26,12 @@ class DashboardController < ApplicationController
   def import
   end
 
+  def contact
+  end
+
+  def user_feedback
+  end
+
   private
 
   def verify_user
