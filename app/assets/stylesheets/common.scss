@@ -139,24 +139,28 @@
   text-align: left;
 }
 
-.flash-error {
-  color: $red;
-  background: #FAB6B6;
+.flash {
+  padding: 0 20px;
+  margin-bottom: 20px;
+}
+
+div[class|='flash-message'] {
   padding: 5px;
   width: 100%;
-  border: 1px solid $red;
   border-radius: 3px;
   margin-bottom: 20px;
 }
 
-.flash-success {
+.flash-message-error {
+  color: $red;
+  background: #FAB6B6;
+  border: 1px solid $red;
+}
+
+.flash-message-success {
   color: $money;
-  background: #79F281;
-  padding: 5px;
-  width: 100%;
+  background: #94E078;
   border: 1px solid $money;
-  border-radius: 3px;
-  margin-bottom: 20px;
 }
 
 .clearfloat {
