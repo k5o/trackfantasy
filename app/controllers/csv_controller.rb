@@ -13,9 +13,9 @@ class CsvController < ApplicationController
         f.write params[:file].read
       end
       if filename.include?("fanduel")
-        FanduelCsvImporterJob.new.perform({file_location: tmp_file, user: current_user})
+        FanduelCsvImporterJob.new.async.perform({file_location: tmp_file, user: current_user.id})
       elsif filename.include?("draftkings")
-        DraftkingsCsvImporterJob.new.perform({file_location: tmp_file, user: current_user})
+        DraftkingsCsvImporterJob.new.async.perform({file_location: tmp_file, user: current_user.id})
       end
     end
     redirect_to dashboard_path

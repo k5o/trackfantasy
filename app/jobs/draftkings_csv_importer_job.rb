@@ -1,9 +1,10 @@
-class DraftkingsCsvImporterJob < ActiveJob::Base
+class DraftkingsCsvImporterJob
+  include SuckerPunch::Job
 
   def perform args
     ActiveRecord::Base.connection_pool.with_connection do
       file_location = args[:file_location]
-      user = args[:user]
+      user = User.find(args[:user])
       file = File.open(file_location)
       CSV.foreach(file).each do |row|
         next if row[0] == "Sport"
