@@ -5,4 +5,10 @@ class UserMailer < ActionMailer::Base
     @user = user
     mail(to: @user.email, subject: 'TrackFantasy Reset Password Instructions', bcc: "support@trackfantasy.com")
   end
+
+  def user_feedback_email(user, message)
+    @user = user
+    @message = message
+    mail(to: 'support@trackfantasy.com', subject: "TrackFantasy User Feedback #{Date.today.strftime("%m/%d/%y")}")
+  end
 end

@@ -13,4 +13,5 @@ Rails.application.routes.draw do
   get '/import', to: 'dashboard#import', as: 'import'
   get '/contact', to: 'dashboard#contact', as: 'contact'
   get '/privacy', to: 'landing#privacy', as: 'privacy'
+  post '/user_feedback', to: 'dashboard#user_feedback'
 end
