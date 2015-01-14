@@ -9,4 +9,14 @@ class User < ActiveRecord::Base
   validates_uniqueness_of :email
   validates :email, format: { with: EMAIL_REGEXP }
   validates :password, length: { minimum: 5 }
+
+  def generate_reset_password_token!
+    self.reset_password_token = SecureRandom.hex(8)
+    self.save(validate: false)
+  end
+
+  def clear_reset_password_token!
+    self.reset_password_token = nil
+    self.save(validate: false)
+  end
 end
