@@ -1,5 +1,5 @@
 class CsvController < ApplicationController
-  require 'active_job'
+
   def upload
     if params[:file]
       filename = params[:file].original_filename
@@ -13,9 +13,9 @@ class CsvController < ApplicationController
         f.write params[:file].read
       end
       if filename.include?("fanduel")
-        FanduelCsvImporterJob.new.async.perform({file_location: tmp_file, user: current_user.id})
+        FanduelCsvImporterJob.perform_later({file_location: tmp_file, user: current_user.id})
       elsif filename.include?("draftkings")
-        DraftkingsCsvImporterJob.new.async.perform({file_location: tmp_file, user: current_user.id})
+        DraftkingsCsvImporterJob.perform_later({file_location: tmp_file, user: current_user.id})
       end
     end
     redirect_to dashboard_path

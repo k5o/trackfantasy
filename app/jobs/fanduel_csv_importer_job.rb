@@ -1,5 +1,4 @@
-class FanduelCsvImporterJob
-  include SuckerPunch::Job
+class FanduelCsvImporterJob < ActiveJob::Base
 
   def perform args
     ActiveRecord::Base.connection_pool.with_connection do
