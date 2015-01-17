@@ -14,4 +14,6 @@
 //= require jquery_ujs
 //= require highcharts
 //= require highcharts/highcharts-more
+//= require dataTables/jquery.dataTables
+//= require dataTables/extras/dataTables.responsive
 //= require_tree .
