@@ -20,13 +20,23 @@
       Select a sport to begin:
       = select_tag "sport", options_for_select(@sports_played, @sport)
 
-      %table#games.display.responsive.no-wrap{:"data-source"=> "#{fetch_games_data_url(format: "json")}"}
-      %thead
-        %tr
-          %th Entries
-          %th Buyin
-          %th Game Type
-          %th Total $
-          %th ROI %
-          %th Average Score
-      %tbody
+      %table#games.display.responsive.no-wrap
+        %thead
+          %tr
+            %th Entries
+            %th Buyin
+            %th Game Type
+            %th Total $
+            %th ROI %
+            %th Winrate
+            %th Average Score
+        %tbody
+
+:javascript
+  $(document).ready(function() {
+    $('#games').dataTable({
+      "processing": true,
+      "serverSide": true,
+      "ajax": "/dashboard/fetch_games_data"
+    });
+  });

@@ -30,6 +30,19 @@ class DashboardController < ApplicationController
   end
 
   def fetch_games_data
+    render json: {}
+    # @games = Dashboard::Games.new(view_context)
+
+    # if @games.valid?
+    #   if request.xhr?
+    #     render json: @games
+    #   else
+    #     redirect_to dashboard_path(from_date: @date_range.first, to_date: @date_range.last, site: @site, sport: @sport)
+    #   end
+    # else
+    #   flash.now[:error] = "Something went wrong, please make sure your date input is valid. <a href='/dashboard'>Refresh</a>".html_safe
+    #   render :index, status: 403 and return
+    # end
   end
 
   def import
