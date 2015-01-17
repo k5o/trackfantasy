@@ -91,7 +91,8 @@
   }
 
   .btn {
-    margin-top: 20px;
+    width: 200px;
+    padding: 2px 6px 3px 6px;
   }
 
   .text-field-container {
@@ -118,12 +119,12 @@
 
   @include media($small) {
     text-align: center;
-    @include span-columns(12 of 12);
   }
 }
 
 .error-messages {
   color: red;
+  margin-bottom: 20px;
 }
 
 .in-the-red {
@@ -138,24 +139,29 @@
   text-align: left;
 }
 
-.flash-error {
-  color: $red;
-  background: #FAB6B6;
-  padding: 5px;
-  width: 100%;
-  border: 1px solid $red;
-  border-radius: 3px;
+.flash {
+  padding: 0 20px;
   margin-bottom: 20px;
 }
 
-.flash-success {
-  color: $money;
-  background: #79F281;
+div[class|='flash-message'] {
   padding: 5px;
-  width: 100%;
-  border: 1px solid $money;
+  width: 50%;
   border-radius: 3px;
+  margin: auto;
   margin-bottom: 20px;
+}
+
+.flash-message-error {
+  color: $red;
+  background: #FAB6B6;
+  border: 1px solid $red;
+}
+
+.flash-message-success {
+  color: $money;
+  background: #94E078;
+  border: 1px solid $money;
 }
 
 .clearfloat {

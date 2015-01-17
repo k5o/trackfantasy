@@ -3,7 +3,7 @@ Rails.application.routes.draw do
 
   resources :users
   resources :sessions
-  resources :payments
+  resources :reset_password, only: [:new, :show, :create, :update]
 
   get '/login', to: 'sessions#new', as: 'login'
   get '/signup', to: 'users#new', as: 'signup'
@@ -11,7 +11,8 @@ Rails.application.routes.draw do
   get '/dashboard', to: 'dashboard#index', as: 'dashboard'
   get '/dashboard/fetch_dashboard_data', to: 'dashboard#fetch_dashboard_data', as: 'fetch_dashboard_data'
   get '/games', to: 'dashboard#games', as: 'games'
+  get '/import', to: 'dashboard#import', as: 'import'
+  get '/contact', to: 'dashboard#contact', as: 'contact'
   get '/privacy', to: 'landing#privacy', as: 'privacy'
-  get '/support', to: 'dashboard#support', as: 'support'
-  post '/stripe/w3bh00k', to: 'stripe#webhook'
+  post '/user_feedback', to: 'dashboard#user_feedback'
 end

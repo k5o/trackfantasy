@@ -13,9 +13,8 @@
     %meta{property: "og:description", content: "Performance Analytics for Daily Fantasy Sports Players. Valuable winrate and scoring metrics at your fingertips."}
     %meta{property: "og:image", content: ""}
   %body
-    = render partial: 'partials/flash'
-    - unless @no_layout || (current_user && !current_user.uninitiated?)
+    - unless @no_layout || current_user
       = render partial: 'partials/header'
     = yield
-    - unless @no_layout || (current_user && !current_user.uninitiated?)
+    - unless @no_layout || current_user
       = render partial: 'partials/footer'

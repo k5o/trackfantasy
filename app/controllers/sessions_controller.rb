@@ -9,13 +9,9 @@ class SessionsController < ApplicationController
     if @user && @user.authenticate(params[:password])
       session[:user_id] = @user.id
 
-      if @user.uninitiated?
-        redirect_to new_payment_path and return
-      else
-        redirect_to dashboard_path and return
-      end
+      redirect_to dashboard_path
     else
-      flash.now[:error] = "Invalid username/email or password combination"
+      @invalid_message = "Invalid username/email or password combination"
       render :new
     end
   end

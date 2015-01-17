@@ -4,6 +4,7 @@ class DashboardController < ApplicationController
   # caches_action :fetch_dashboard_data, expires_in: 1.month # TODO: invalidate cache when new csv is imported
 
   def index
+    @is_new_user = @user.entries.blank?
   end
 
   def fetch_dashboard_data
@@ -28,14 +29,24 @@ class DashboardController < ApplicationController
     @sport = @sports_played.length == 1 ? @sports_played.first : params[:sport]
   end
 
-  def support
+  def import
+  end
+
+  def contact
+  end
+
+  def user_feedback
+    message = params[:user_feedback]
+
+    UserMailer.user_feedback_email(current_user, message).deliver_later if message.present?
+
+    flash[:success] = "Feedback sent, thank you!"
+    redirect_to contact_path
   end
 
   private
 
   def verify_user
-    redirect_to root_path unless current_user && !current_user.uninitiated?
-
     @user = current_user
   end
 

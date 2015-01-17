@@ -1,9 +1,27 @@
 .splash {
   padding-top: 5%;
-  height: 60%;
-  max-height: 545px;
   background: $primary;
   position: relative;
+  z-index: 0;
+  min-height: 100vh;
+
+  .container {
+    &:before {
+      font-family: 'FontAwesome';
+      content: "\f201";
+      color: mix($primary, black, 97%);
+      font-size: 52em;
+      position: absolute;
+      left: 50%;
+      top: 48%;
+      z-index: -1;
+      transform: translate(-50%,0);
+
+      @include media($medium) {
+        content: ''
+      }
+    }
+  }
 
   h1, h2 {
     text-align: center;
@@ -18,6 +36,7 @@
 
   h2 {
     font-size: 1.8em;
+    line-height: 1.6em;
     margin: 0 0 28px 0;
     font-weight: 300;
   }
@@ -58,6 +77,16 @@
     margin-bottom: 10%;
   }
 
+  .info-card {
+    margin-bottom: 40px;
+    background: rgb(255, 255, 255);
+    background: rgba(255, 255, 255, 0.3);
+
+    @include media($medium) {
+      background: rgb(255, 255, 255);
+    }
+  }
+
   .learn-more {
     text-align: center;
     margin-bottom: 8px;
@@ -79,8 +108,10 @@
 .details {
   padding: 20px 0;
   background: $off-white;
+  z-index: 0;
 
   p {
+    clear: both;
     font-family: $secondary-font;
     text-align: center;
     font-size: 22px;
@@ -88,32 +119,33 @@
     margin-bottom: 40px;
   }
 
-  ul {
+  .vp-container {
     @include span-columns(12 of 12);
+    @include omega();
+  }
+
+  .screenshot-container {
+    @include span-columns(4 of 12);
+    @include omega();
+
+    @include media($medium) {
+      @include span-columns(12 of 12);
+    }
+  }
+
+  ul {
+    @include span-columns(8 of 12);
 
     li {
-      @include span-columns(8 of 12);
-      @include shift(2);
+      @include span-columns(8 of 8);
       @include omega;
       margin-bottom: 40px;
 
       @include media($medium) {
-        @include span-columns(12 of 12);
-        @include shift(0);
-      }
-
-      .vp-image {
-        @include span-columns(2 of 8);
-
-        @include media($medium) {
-          text-align: center;
-          @include span-columns(12 of 12);
-        }
+        @include span-columns(8 of 8);
       }
 
       .vp-content {
-        @include span-columns(6 of 8);
-
         @include media($medium) {
           text-align: center;
           @include span-columns(12 of 12);
@@ -136,159 +168,6 @@
         @include span-columns(12 of 12);
         @include shift(0);
       }
-    }
-  }
-}
-
-.pricing {
-  background: $primary-saturated;
-  color: $off-white;
-  padding: 40px 0;
-  @include span-columns(12 of 12);
-
-  h1, p {
-    text-align: center;
-  }
-
-  p {
-    font-family: $secondary-font;
-    font-size: 16px;
-    line-height: 24px;
-
-    a {
-      color: $off-white;
-
-      &:hover {
-        color: darken($off-white, 10%);
-      }
-    }
-  }
-
-  .pricing-cards {
-    margin: auto;
-    margin-top: 24px;
-    text-align: center;
-    color: $fill-saturated;
-
-    .card {
-      display: inline-block;
-      margin-right: 40px;
-      @include omega(2n);
-      text-align: left;
-      border-radius: 8px;
-      background: $off-white;
-      margin-bottom: 40px;
-
-      .card-title {
-        margin-top: 0;
-        padding: 12px 0;
-        font-weight: 700;
-        background: $fill-saturated;
-        border-radius: 6px 6px 0 0;
-
-        h3 {
-          text-align: center;
-          color: $off-white;
-          font-size: 20px;
-        }
-      }
-
-      .card-pricing {
-        background: $off-white-saturated;
-        padding: 20px 0;
-        text-align: center;
-
-        .dollar-figure {
-          font-family: $secondary-font;
-          font-weight: 300;
-          font-style: italic;
-          position: relative;
-          bottom: 11px;
-          font-size: 16px;
-        }
-
-        .dollar-amount {
-          font-family: $secondary-font;
-          font-weight: 300;
-          font-style: italic;
-          font-size: 36px;
-        }
-
-        .interval {
-          margin-top: 8px;
-          text-transform: uppercase;
-        }
-      }
-
-      .card-details {
-        padding: 20px;
-      }
-
-      .line-item {
-        text-align: left;
-        margin-bottom: 16px;
-        font-size: 16px;
-      }
-
-      .cta {
-        @include btn($accent, #fff, 100%);
-        margin-top: 20px;
-        font-size: 18px;
-      }
-
-      @include media($medium) {
-        @include span-columns(8 of 12);
-        @include shift(2);
-        @include omega-reset(2n);
-      }
-
-      @include media($small) {
-        @include span-columns(12 of 12);
-        @include shift(0);
-      }
-    }
-  }
-}
-
-.faq {
-  background: $off-white;
-  color: $fill-saturated;
-  padding: 40px 0;
-  @include span-columns(12 of 12);
-
-  h1, p {
-    text-align: center;
-  }
-
-  p {
-    font-family: $secondary-font;
-    font-size: 16px;
-    line-height: 24px;
-  }
-
-  .q-a {
-    @include span-columns(6 of 12);
-    @include omega(2n);
-    font-size: 14px;
-    line-height: 28px;
-    margin: 24px 0;
-    padding: 0 24px;
-
-    @include media($medium) {
-      @include span-columns(12 of 12);
-      @include omega-reset(2n);
-    }
-
-    .q {
-      margin-bottom: 16px;
-      text-align: left;
-      font-weight: 700;
-      font-family: $primary-font;
-    }
-
-    .a {
-      text-align: left;
-      font-family: $primary-font;
     }
   }
 }

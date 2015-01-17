@@ -1,4 +1,3 @@
-include BCrypt
 class User < ActiveRecord::Base
   has_many :accounts
   has_many :entries
@@ -6,43 +5,19 @@ class User < ActiveRecord::Base
   EMAIL_REGEXP = /\S+@\S+/
 
   has_secure_password
-  # TODO: These validations don't currently work
-  # validates_presence_of :email, :password
-  # validates_uniqueness_of :email
-  # validates :email, format: { with: EMAIL_REGEXP }
-  # validates :password, length: { minimum: 5 }
+  validates_presence_of :email
+  validates_uniqueness_of :email
+  validates :email, format: { with: EMAIL_REGEXP }
+  validates :password, length: { minimum: 5 }
 
-  def uninitiated?
-    stripe_customer_id.nil?
+  def generate_reset_password_token!
+    self.reset_password_token = SecureRandom.hex(8)
+    self.save(validate: false)
   end
 
-  def active?
-    active_until && Time.current <= active_until
-  end
-
-  def inactive?
-    !!active_until || Time.current >= active_until
-  end
-
-  def set_active_until!(plan)
-    return unless plan
-
-    if plan.name == PaymentPlan::MONTHLY_PLAN_NAME
-      self.active_until = 1.month.from_now
-    elsif plan.name == PaymentPlan::ANNUAL_PLAN_NAME
-      self.active_until = 1.year.from_now
-    end
-
-    self.save!
-  end
-
-  def password
-    @password ||= Password.new(password_digest)
-  end
-
-  def password=(new_password)
-    @password = Password.create(new_password)
-    self.password_digest = @password
+  def clear_reset_password_token!
+    self.reset_password_token = nil
+    self.save(validate: false)
   end
 
   def sports_played

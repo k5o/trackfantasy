@@ -21,9 +21,9 @@ gem 'thin'
 gem 'font-awesome-sass', '~> 4.2.0'
 gem 'nokogiri'
 gem 'httparty'
-gem 'stripe', :git => 'https://github.com/stripe/stripe-ruby'
 gem 'highcharts-rails', '~> 3.0.0'
-gem 'actionpack-action_caching'
+gem 'redis-rails'
+gem 'sidekiq'
 
 group :production do
   gem 'rails_12factor'
