@@ -3,6 +3,7 @@ Rails.application.routes.draw do
 
   resources :users
   resources :sessions
+  resources :reset_password, only: [:new, :show, :create, :update]
 
   get '/login', to: 'sessions#new', as: 'login'
   get '/signup', to: 'users#new', as: 'signup'
@@ -10,7 +11,9 @@ Rails.application.routes.draw do
   get '/dashboard', to: 'dashboard#index', as: 'dashboard'
   get '/dashboard/fetch_dashboard_data', to: 'dashboard#fetch_dashboard_data', as: 'fetch_dashboard_data'
   get '/import', to: 'dashboard#import', as: 'import'
+  get '/contact', to: 'dashboard#contact', as: 'contact'
   get '/privacy', to: 'landing#privacy', as: 'privacy'
-
   post '/csv_upload', to: 'csv#upload', as: 'csv_upload'
+  post '/user_feedback', to: 'dashboard#user_feedback'
+
 end

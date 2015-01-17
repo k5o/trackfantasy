@@ -70,7 +70,7 @@ main {
   background: $off-white;
 
   .main-container {
-    margin: 60px 20px 20px 20px;
+    margin: 0 20px 20px 20px;
     border: 1px solid $border;
     background: #fff;
     padding: 20px;
@@ -83,6 +83,10 @@ main {
       margin: 10% 0;
     }
   }
+}
+
+.header-normalizer {
+  margin-top: 60px;
 }
 
 .main-header {

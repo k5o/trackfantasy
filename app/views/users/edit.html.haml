@@ -4,8 +4,8 @@
   %main
     .main-header
       Your Account Details
+    = render partial: 'partials/flash'
     .main-container
-      = render partial: 'partials/flash'
       .user-breakdown
         .primary-figure
           %div{class: 'amount'}

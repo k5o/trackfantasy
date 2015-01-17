@@ -26,6 +26,18 @@ class DashboardController < ApplicationController
   def import
   end
 
+  def contact
+  end
+
+  def user_feedback
+    message = params[:user_feedback]
+
+    UserMailer.user_feedback_email(current_user, message).deliver_later if message.present?
+
+    flash[:success] = "Feedback sent, thank you!"
+    redirect_to contact_path
+  end
+
   private
 
   def verify_user
