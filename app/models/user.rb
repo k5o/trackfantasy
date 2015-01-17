@@ -11,7 +11,7 @@ class User < ActiveRecord::Base
   validates :password, length: { minimum: 5 }
 
   def generate_reset_password_token!
-    self.reset_password_token = SecureRandom.hex(8)
+    self.reset_password_token = SecureRandom.hex(8) + email
     self.save(validate: false)
   end
 
