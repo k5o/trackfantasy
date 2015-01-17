@@ -29,6 +29,9 @@ class DashboardController < ApplicationController
     @sport = @sports_played.length == 1 ? @sports_played.first : params[:sport]
   end
 
+  def fetch_games_data
+  end
+
   def import
   end
 

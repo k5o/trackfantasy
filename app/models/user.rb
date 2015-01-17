@@ -21,6 +21,6 @@ class User < ActiveRecord::Base
   end
 
   def sports_played
-    entries.pluck(:sport).uniq
+    @sports_played ||= entries.pluck(:sport).uniq
   end
 end

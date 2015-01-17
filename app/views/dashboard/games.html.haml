@@ -19,3 +19,14 @@
     .main-container
       Select a sport to begin:
       = select_tag "sport", options_for_select(@sports_played, @sport)
+
+      %table#games.display.responsive.no-wrap{:"data-source"=> "#{fetch_games_data_url(format: "json")}"}
+      %thead
+        %tr
+          %th Entries
+          %th Buyin
+          %th Game Type
+          %th Total $
+          %th ROI %
+          %th Average Score
+      %tbody
