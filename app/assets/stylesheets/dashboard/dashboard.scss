@@ -83,10 +83,14 @@ main {
       margin: 10% 0;
     }
   }
-}
 
-.header-normalizer {
-  margin-top: 60px;
+  .header-normalizer {
+    margin-top: 60px;
+  }
+
+  div[class|='flash-message'] {
+    width: 50%;
+  }
 }
 
 .main-header {

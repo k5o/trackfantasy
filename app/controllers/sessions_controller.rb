@@ -8,6 +8,7 @@ class SessionsController < ApplicationController
 
     if @user && @user.authenticate(params[:password])
       session[:user_id] = @user.id
+      @user.clear_reset_password_token!
 
       redirect_to dashboard_path
     else
