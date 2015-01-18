@@ -21,6 +21,6 @@ class User < ActiveRecord::Base
   end
 
   def empty_entries?
-    @empty_entries ||= entries.blank?
+    @empty_entries ||= !entries.exists?
   end
 end
