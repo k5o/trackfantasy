@@ -18,21 +18,25 @@ class Dashboard::Games
 private
 
   def data
-    @games.map do |game|
+    games.map do |game|
       [
-        game.entries.count,
-        number_to_currency(game.entry_fee_in_cents),
-        game.type,
-        number_to_currency(game.entry_total_profit),
-        number_to_percentage(game.roi, precision: 2),
-        number_to_percentage(game.winrate, precision: 2),
-        game.average_score
+        game.count, # entries
+        number_to_currency(game[1]), # entry_fee_in_cents
+        game[2], # game type
+        number_to_currency(game[3]), # profit sum
+        number_to_percentage(game[4], precision: 2), # roi percentage
+        number_to_percentage(game[5], precision: 2), # winrate percentage
+        game[6] # average score
       ]
     end
   end
 
   def games
-    @games ||= @user.entries.group_by(&:entry_fee_in_cents)
+    @user.entries.group(:entry_fee_in_cents, :sport).select(<<-SQL)
+      entry_fee_in_cents, sport,
+      count(*) as count,
+      sum(profit) as profit
+    SQL
   end
 
   def fetch_games
