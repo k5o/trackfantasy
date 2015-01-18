@@ -47,6 +47,7 @@
   var dropzoneSelector = $('.import-dropzone');
 
   var importDropzone = new Dropzone('.import-dropzone', { 
+    url: "/csv_upload",
     parallelUploads: 20,
     previewTemplate: previewTemplate,
     autoQueue: false,
