@@ -17,13 +17,13 @@ gem 'therubyracer', platforms: :ruby
 gem 'react-rails', git: 'git://github.com/reactjs/react-rails.git'
 gem 'spring', group: :development
 gem 'figaro'
-gem 'thin'
 gem 'font-awesome-sass', '~> 4.2.0'
 gem 'nokogiri'
 gem 'httparty'
 gem 'highcharts-rails', '~> 3.0.0'
 gem 'redis-rails'
 gem 'sidekiq'
+gem 'unicorn'
 
 group :production do
   gem 'rails_12factor'

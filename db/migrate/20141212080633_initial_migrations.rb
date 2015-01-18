@@ -46,9 +46,6 @@ class InitialMigrations < ActiveRecord::Migration
       t.timestamps
     end
 
-    PaymentPlan.create(name: 'monthly', amount_in_cents: 1900, interval: 'month', interval_count: 1)
-    PaymentPlan.create(name: 'annual', amount_in_cents: 17900, interval: 'year', interval_count: 1)
-
   end
 
 end
