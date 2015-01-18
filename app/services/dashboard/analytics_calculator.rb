@@ -87,14 +87,25 @@ class Dashboard::AnalyticsCalculator
   end
 
   def sports_data
+    return false if @sport
+
     # 0 => sport, 1 => Count, 2 => Profit
     sports_data = @entries.group(:sport).pluck("sport, count(*), sum(profit)").sort_by {|e| e.last}.reverse
+
+    return false if sports_data.length <= 1
 
     sports_data.map {|sport, count, profit| [sport, count, profit / 100.0] }
   end
 
-  def sites_and_data
-    # {:fanduel => [5000, 1299.99]}
+  def sites_data
+    return false if @site
+
+    # 0 => site_id, 1 => Count, 2 => Profit
+    sites_data = @entries.group(:site_id).pluck("site_id, count(*), sum(profit)").sort_by {|e| e.last}.reverse
+
+    return false if sites_data.length <= 1
+
+    sites_data.map {|site_id, count, profit| [Site.find_by_id(site_id).try(:name), count, profit / 100.0] }
   end
 
   def valid?
