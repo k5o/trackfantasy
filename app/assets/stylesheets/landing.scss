@@ -79,12 +79,7 @@
 
   .info-card {
     margin-bottom: 40px;
-    background: rgb(255, 255, 255);
-    background: rgba(255, 255, 255, 0.3);
-
-    @include media($medium) {
-      background: rgb(255, 255, 255);
-    }
+    background: #fff;
   }
 
   .learn-more {
