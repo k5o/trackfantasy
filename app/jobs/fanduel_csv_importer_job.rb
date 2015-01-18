@@ -5,19 +5,21 @@ class FanduelCsvImporterJob < ActiveJob::Base
       file_location = args[:file_location]
       user = User.find(args[:user])
       file = File.open(file_location)
+      errors = []
       CSV.foreach(file).each do |row|
-        next if row[2] == "Date"
-        next if Entry.find_by_site_entry_id row[0].gsub(/\D/, '')
-        next if row[5].blank?
+        begin
+          next if row[2] == "Date"
+          next if Entry.find_by_site_entry_id row[0].gsub(/\D/, '')
+          next if row[5].blank?
 
-        site = Site.where(name: "fanduel").first_or_create
-        player = Account.where(site: site, user: user).first_or_create
+          site = Site.where(name: "fanduel").first_or_create
+          player = Account.where(site: site, user: user).first_or_create
 
-        entry_fee = row[10].to_f * 100
-        winnings = row[11].to_f * 100
-        profit = winnings - entry_fee
+          entry_fee = row[10].to_f * 100
+          winnings = row[11].to_f * 100
+          profit = winnings - entry_fee
 
-        if entry = player.entries.create!(
+          entry = player.entries.create!(
             site_id: site.id,
             site_entry_id: row[0].gsub(/\D/, ''),
             sport: row[1],
@@ -33,12 +35,14 @@ class FanduelCsvImporterJob < ActiveJob::Base
             entered_on: Date.strptime(row[2], '%Y/%m/%d'),
             user_id: user.id
           )
-          puts "#{entry.id} imported"
-        else
-          puts "#{entry.id} failed"
+        rescue
+          Rails.logger.error("#{user.id} - #{row.inspect} failed to import")
+          errors << "#{user.id} - #{row.inspect} failed to import"
           next
         end
       end
+      ExceptionMailer.csv_import_errors_email(errors).deliver_later
+
     end
   end
 
