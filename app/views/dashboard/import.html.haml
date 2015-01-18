@@ -39,7 +39,6 @@
 
 %script{:src => "https://cdnjs.cloudflare.com/ajax/libs/dropzone/3.12.0/dropzone.min.js", :type => "text/javascript"}
 :javascript
-  // Get the template HTML and remove it from the document
   var previewNode = document.querySelector("#template");
   previewNode.id = "";
   var previewTemplate = previewNode.parentNode.innerHTML;
@@ -48,11 +47,10 @@
   var dropzoneSelector = $('.import-dropzone');
 
   var importDropzone = new Dropzone('.import-dropzone', { 
-    url: "/target-url", // Set the url
     parallelUploads: 20,
     previewTemplate: previewTemplate,
-    autoQueue: false, // Make sure the files aren't queued until manually added
-    previewsContainer: "#import-preview", // Define the container to display the previews
+    autoQueue: false,
+    previewsContainer: "#import-preview",
     acceptedFiles: ".csv",
     clickable: ".clickable-select",
     dictInvalidFileType: "Only CSV files are allowed. This file will be skipped if imported.",
@@ -62,13 +60,11 @@
   });
 
   function highlightDropzone() {
-    dropzoneSelector.css("background", "#BBDEFB");
-    dropzoneSelector.css("border", "3px dotted #555");
+    dropzoneSelector.addClass('highlighted');
   }
 
   function resetDropzone() {
-    dropzoneSelector.css("background", "#E3F2FD");
-    dropzoneSelector.css("border", "3px dotted #888");
+    dropzoneSelector.removeClass('highlighted');
   }
 
   importDropzone.on("dragover", function(e){
