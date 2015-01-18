@@ -80,14 +80,12 @@ Rails.application.configure do
   config.action_mailer.delivery_method = :smtp
 
   config.action_mailer.smtp_settings = {
-    address: 'smtp.zoho.com',
-    port: 465,
+    address: 'smtp.mandrillapp.com',
+    port: 587,
     domain: 'trackfantasy.com',
     authentication: :plain,
-    user_name: Rails.application.secrets.mail_user,
-    password: Rails.application.secrets.mail_password,
-    ssl: true,
-    tls: true,
-    enable_starttls_auto: true
+    enable_starttls_auto: true,
+    user_name: ENV["mail_user"],
+    password: ENV["mail_password"],
   }
 end

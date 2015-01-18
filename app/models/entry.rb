@@ -4,6 +4,7 @@ class Entry < ActiveRecord::Base
   belongs_to :account
   belongs_to :contest
   belongs_to :user
+  belongs_to :site
 
   def self.create_from_fanduel_seat data, contest
     site = Site.where(name: "fanduel").first_or_create
