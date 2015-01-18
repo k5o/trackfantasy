@@ -13,23 +13,25 @@ class Dashboard::AnalyticsCalculator
   end
 
   def entries
-    if @date_range.first.present? && @date_range.last.present?
-      default_scope = @user.entries.where("entered_on >= ? AND entered_on <= ?", date_range.first, date_range.last)
-    else
-      default_scope = @user.entries
+    @entries ||= begin
+      if @date_range.first.present? && @date_range.last.present?
+        scope = @user.entries.where("entered_on = ? AND entered_on <= ?", @date_range.first, @date_range.last)
+      else
+        scope = @user.entries
+      end
+
+      if @site
+        site_id = Site.find_by_name(@site).try(:id)
+
+        scope = scope.where(site_id: site_id)
+      end
+
+      if @sport
+        scope = scope.where(sport: @sport)
+      end
+
+      scope
     end
-
-    if @site
-      site_id = Site.find_by_name(@site).try(:id)
-
-      default_scope = default_scope.where(site_id: site_id) # Possibly more performant if we remove account join
-    end
-
-    if @sport
-      default_scope = default_scope.where(sport: @sport)
-    end
-
-    @entries ||= default_scope
   end
 
   def entries_exist
@@ -37,20 +39,24 @@ class Dashboard::AnalyticsCalculator
   end
 
   def entry_fees
-    @entry_fees ||= nil_guard_value || entries.sum(:entry_fee_in_cents) / 100.0
+    @entry_fees ||= entries.sum(:entry_fee_in_cents).to_i / 100.0
   end
 
   def revenue_amount
-    @revenue_amount ||= nil_guard_value || entries.sum(:profit) / 100.0
+    @revenue_amount ||= entries.sum(:profit).to_i / 100.0
   end
 
   def graph_axes
     return [0,0] unless entries_exist
 
-    entries.group("entered_on").pluck <<-SQL
+    axes = entries.group("entered_on").pluck <<-SQL
       extract(epoch from entered_on) * 1000,
-      sum(sum(profit)::float8 / 100.0) over (order by entered_on)
+      sum(sum(profit) / 100.0) over (order by entered_on)
     SQL
+
+    axes.each do |a|
+      a[1] = a[1].to_f.round(2)
+    end
   end
 
   def roi
