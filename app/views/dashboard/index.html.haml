@@ -9,7 +9,7 @@
         = date_field_tag 'from_date', @date_range.try(:first).try(:to_date)
         = label_tag 'To:'
         = date_field_tag 'to_date', @date_range.try(:last).try(:to_date) || Date.today
-        = select_tag "sport", options_for_select(Entry::SPORTS, @sport), include_blank: 'Sport:'
+        = select_tag "sport", options_for_select(current_user.sports_played, @sport), include_blank: 'Sport:'
         = select_tag "site", options_for_select(Site::NAMES, @site), include_blank: 'Site:'
         .header-actions
           = submit_tag 'Filter', id: 'js-filter-btn', class: 'header-btn filter-btn'

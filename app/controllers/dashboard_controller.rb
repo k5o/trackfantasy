@@ -64,6 +64,8 @@ class DashboardController < ApplicationController
 
   def verify_user
     @user = current_user
+
+    redirect_to root_path unless @user
   end
 
   def load_params
