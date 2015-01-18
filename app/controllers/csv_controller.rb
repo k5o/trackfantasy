@@ -19,7 +19,7 @@ class CsvController < ApplicationController
       end
     end
 
-    flash[:success] = "Your new csv data is being uploaded, try refreshing in a minute."
+    flash[:success] = "Your entries are being processed, try refreshing in a minute."
     redirect_to dashboard_path
   end
 end

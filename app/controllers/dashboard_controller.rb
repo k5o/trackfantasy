@@ -17,12 +17,13 @@ class DashboardController < ApplicationController
         redirect_to dashboard_path(from_date: @date_range.first, to_date: @date_range.last, site: @site, sport: @sport)
       end
     else
-      flash.now[:error] = "Something went wrong, please make sure your date input is valid. <a href='/dashboard'>Refresh</a>".html_safe
+      flash.now[:error] = "Something went wrong, please make sure your date input is valid. <a href=\"#{dashboard_path}\">Refresh</a>".html_safe
       render :index, status: 403 and return
     end
   end
 
   def import
+    last_import_date
   end
 
   def contact
@@ -48,5 +49,11 @@ class DashboardController < ApplicationController
     @date_range = params[:from_date]..params[:to_date]
     @site = params[:site]
     @sport = params[:sport]
+  end
+
+  def last_import_date
+    unless @is_new_user
+      @last_import_date = @user.entries.last.created_at
+    end
   end
 end

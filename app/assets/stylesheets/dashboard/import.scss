@@ -1,5 +1,11 @@
 .import h3 {
   margin-top: 0;
+
+  span {
+    font-size: 14px;
+    color: #666;
+    text-transform: uppercase;
+  }
 }
 
 .import-dropzone {
@@ -35,6 +41,10 @@
 
     .file-cell {
       font-size: 12px;
+
+      .name {
+        font-size: 24px;
+      }
 
       .size {
         margin-left: 10px;

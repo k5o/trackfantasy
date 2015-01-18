@@ -8,6 +8,10 @@
     .main-container
       - if @is_new_user
         %h3 Welcome to TrackFantasy! Get started by uploading your CSV history using the form below.
+      - else
+        %h3
+          %span Last Updated:
+          = "#{time_ago_in_words(@last_import_date)} ago"
       %p
         %strong Drag and drop
         multiple CSVs into the dotted area, or click the 

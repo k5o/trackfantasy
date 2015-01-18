@@ -14,3 +14,6 @@
 /config/secrets.yml
 # Ignore application configuration
 /config/application.yml
+dump.rdb
+.DS_Store
+/*/.DS_Store
