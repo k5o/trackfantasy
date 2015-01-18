@@ -24,6 +24,7 @@ gem 'highcharts-rails', '~> 3.0.0'
 gem 'redis-rails'
 gem 'sidekiq'
 gem 'unicorn'
+gem 'figaro'
 
 group :production do
   gem 'rails_12factor'

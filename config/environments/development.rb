@@ -49,7 +49,7 @@ Rails.application.configure do
     domain: 'trackfantasy.com',
     authentication: :plain,
     enable_starttls_auto: true,
-    user_name: Rails.application.secrets.mail_user,
-    password: Rails.application.secrets.mail_password,
+    user_name: ENV["mail_user"],
+    password: ENV["mail_password"],
   }
 end
