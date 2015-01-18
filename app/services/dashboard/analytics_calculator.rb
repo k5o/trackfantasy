@@ -33,7 +33,7 @@ class Dashboard::AnalyticsCalculator
   end
 
   def entries_exist
-    entries.any?
+    @entries_exist ||= entries.exists?
   end
 
   def entry_fees
