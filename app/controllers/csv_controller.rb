@@ -18,6 +18,8 @@ class CsvController < ApplicationController
         DraftkingsCsvImporterJob.perform_later({file_location: tmp_file, user: current_user.id})
       end
     end
+
+    flash[:success] = "Your new csv data is being uploaded, try refreshing in a minute."
     redirect_to dashboard_path
   end
 end
