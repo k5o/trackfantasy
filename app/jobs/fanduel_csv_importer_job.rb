@@ -18,6 +18,7 @@ class FanduelCsvImporterJob < ActiveJob::Base
         profit = winnings - entry_fee
 
         if entry = player.entries.create!(
+            site_id: site.id,
             site_entry_id: row[0].gsub(/\D/, ''),
             sport: row[1],
             score: row[5],
