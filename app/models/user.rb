@@ -19,4 +19,8 @@ class User < ActiveRecord::Base
     self.reset_password_token = nil
     self.save(validate: false)
   end
+
+  def empty_entries?
+    @empty_entries ||= entries.blank?
+  end
 end

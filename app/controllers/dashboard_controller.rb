@@ -42,7 +42,7 @@ class DashboardController < ApplicationController
 
   def verify_user
     @user = current_user
-    @is_new_user = @user.entries.blank?
+    @is_new_user = @user.empty_entries?
   end
 
   def load_params
