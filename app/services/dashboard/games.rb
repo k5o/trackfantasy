@@ -21,7 +21,7 @@ private
     @games.map do |game|
       [
         game.entries.count,
-        number_to_currency(game.buyin_in_cents),
+        number_to_currency(game.entry_fee_in_cents),
         game.type,
         number_to_currency(game.entry_total_profit),
         number_to_percentage(game.roi, precision: 2),
@@ -32,7 +32,7 @@ private
   end
 
   def games
-    @games ||= @user.games.where().order('buyin_in_cents', 'type')
+    @games ||= @user.entries.group_by(&:entry_fee_in_cents)
   end
 
   def fetch_games
@@ -53,7 +53,7 @@ private
   end
 
   def sort_column
-    columns = %w[buyin_in_cents type entry_total_profit roi average_score]
+    columns = %w[entry_fee_in_cents type entry_total_profit roi average_score]
     columns[params[:iSortCol_0].to_i]
   end
 
