@@ -8,14 +8,23 @@
     .main-container
       .user-breakdown
         .primary-figure
-          %div{class: 'amount'}
+          Signed in as:
+          .amount
             = current_user.email
-          %div.label Email
+
         .primary-figure
-          = 'Questions? Contact us at'
-          %p= link_to 'support@trackfantasy.com', 'mailto:support@trackfantasy.com'
+          .amount
+            = link_to session_path(current_user), method: :delete do
+              = icon('sign-out', 'Sign Out', class: 'fa-fw')
+
         .primary-figure
-          %div.label.strong= link_to 'Logout', session_path(current_user), method: :delete
+          .amount
+            = link_to contact_path do
+              = icon('envelope', 'Contact Us', class: 'fa-fw')
+
+        .primary-figure
+          = link_to wipe_data_path, method: :post, class: 'in-the-red', data: {confirm: 'Do you really want to wipe all your data? This is irreversible, and your account will not have any linked entries until you import again.'} do
+            = icon('trash', 'Delete All Entries', class: 'fa-fw')
 
       .user-form
         = form_for @user, method: :put, html: { class: 'signup-form', id: 'user-edit-form' } do |f|
