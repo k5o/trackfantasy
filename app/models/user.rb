@@ -23,8 +23,4 @@ class User < ActiveRecord::Base
   def empty_entries?
     @empty_entries ||= !entries.exists?
   end
-
-  def wipe_entries!
-    entries.destroy_all
-  end
 end
