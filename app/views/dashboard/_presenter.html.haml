@@ -35,6 +35,18 @@
           %div.label
             = data[0]
 
+  #js-sport-breakdown.breakdown
+    - if @analytics.sites_data
+      %h3 Sites
+      - @analytics.sites_data.each do |data|
+        .primary-figure
+          %div{class: "amount #{money_class(data[2])}"}
+            = number_to_currency(data[2])
+          %div{class: 'sub-amount'}
+            = data[1]
+          %div.label
+            = data[0]
+
   #wins-breakdown.breakdown
     %h3 Wins
     .primary-figure

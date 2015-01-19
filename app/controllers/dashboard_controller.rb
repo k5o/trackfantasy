@@ -4,7 +4,6 @@ class DashboardController < ApplicationController
   # caches_action :fetch_dashboard_data, expires_in: 1.month # TODO: invalidate cache when new csv is imported
 
   def index
-    @is_new_user = @user.entries.blank?
   end
 
   def fetch_dashboard_data
@@ -18,12 +17,13 @@ class DashboardController < ApplicationController
         redirect_to dashboard_path(from_date: @date_range.first, to_date: @date_range.last, site: @site, sport: @sport)
       end
     else
-      flash.now[:error] = "Something went wrong, please make sure your date input is valid. <a href='/dashboard'>Refresh</a>".html_safe
+      flash.now[:error] = "Something went wrong, please make sure your date input is valid. <a href=\"#{dashboard_path}\">Refresh</a>".html_safe
       render :index, status: 403 and return
     end
   end
 
   def import
+    last_import_date
   end
 
   def contact
@@ -42,11 +42,18 @@ class DashboardController < ApplicationController
 
   def verify_user
     @user = current_user
+    @is_new_user = @user.empty_entries?
   end
 
   def load_params
     @date_range = params[:from_date]..params[:to_date]
     @site = params[:site]
     @sport = params[:sport]
+  end
+
+  def last_import_date
+    unless @is_new_user
+      @last_import_date = @user.entries.last.created_at
+    end
   end
 end

@@ -6,8 +6,80 @@
       Import CSVs
     = render partial: 'partials/flash'
     .main-container
-      %p Click and drag to import multiple files here. This process may take some time, depending on how many entries you have.
+      - if @is_new_user
+        %h3 Welcome to TrackFantasy! Get started by uploading your CSV history using the form below.
+      - else
+        %h3
+          %span Last Updated:
+          = "#{time_ago_in_words(@last_import_date)} ago"
+      %p
+        %strong Drag and drop
+        multiple CSVs into the dotted area, or click the 
+        %strong Select CSV Files
+        button.
+      %p
+        This process may take some time, depending on how many entries you have. Having problems?
+        = link_to 'Contact us', contact_path
+      .import-dropzone
+        = form_tag({controller: :csv, action: :upload}, class: 'csv-importer', id: 'csv_upload', multipart: true) do
+          .clickable-select
+            Select CSV Files
 
-      = form_tag({controller: :csv, action: :upload}, class:'dropzone', multipart: true) do
-        = file_field_tag 'file', multiple: true
-        %input{type: "Submit", class: "csv_submit"}
+          #import-preview
+            %li#template.file-row
+              .file-cell
+                %span.name{"data-dz-name" => ""}
+                %span.size{"data-dz-size" => ""}
+                %a.delete-file{"data-dz-remove" => ""}
+                  = icon('remove', 'Cancel', class: 'fa-fw')
+              .file-cell
+                %strong{"data-dz-errormessage" => ""}
+
+          = submit_tag 'Import Selected', class: 'csv-submit'
+
+%script{:src => "https://cdnjs.cloudflare.com/ajax/libs/dropzone/3.12.0/dropzone.min.js", :type => "text/javascript"}
+:javascript
+  var previewNode = document.querySelector("#template");
+  previewNode.id = "";
+  var previewTemplate = previewNode.parentNode.innerHTML;
+  previewNode.parentNode.removeChild(previewNode);
+
+  var dropzoneSelector = $('.import-dropzone');
+
+  var importDropzone = new Dropzone('.import-dropzone', { 
+    url: "/csv_upload",
+    parallelUploads: 20,
+    previewTemplate: previewTemplate,
+    autoQueue: false,
+    previewsContainer: "#import-preview",
+    acceptedFiles: ".csv",
+    clickable: ".clickable-select",
+    dictInvalidFileType: "Only CSV files are allowed. This file will be skipped if imported.",
+    accept: function(file, done) {
+      $('.csv-submit').fadeIn(400);
+    }
+  });
+
+  function highlightDropzone() {
+    dropzoneSelector.addClass('highlighted');
+  }
+
+  function resetDropzone() {
+    dropzoneSelector.removeClass('highlighted');
+  }
+
+  importDropzone.on("dragover", function(e){
+    highlightDropzone();
+  });
+
+  importDropzone.on("drop", function(e){
+    resetDropzone();
+  });
+
+  importDropzone.on("dragleave", function(e){
+    resetDropzone();
+  });
+
+  importDropzone.on("dragend", function(e){
+    resetDropzone();
+  });
