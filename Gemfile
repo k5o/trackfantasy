@@ -22,10 +22,9 @@ gem 'nokogiri'
 gem 'httparty'
 gem 'highcharts-rails', '~> 3.0.0'
 gem 'redis-rails'
-gem 'sidekiq'
 gem 'jquery-datatables-rails', '~> 3.1.1'
-gem 'unicorn'
-gem 'figaro'
+gem 'delayed_job_active_record'
+gem 'puma'
 
 group :production do
   gem 'rails_12factor'

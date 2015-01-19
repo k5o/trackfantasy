@@ -2,11 +2,10 @@ class FanduelCsvImporterJob < ActiveJob::Base
 
   def perform args
     ActiveRecord::Base.connection_pool.with_connection do
-      file_location = args[:file_location]
+      file_contents = args[:file_contents]
       user = User.find(args[:user])
-      file = File.open(file_location)
       errors = []
-      CSV.foreach(file).each do |row|
+      CSV.parse(file_contents).each do |row|
         begin
           next if row[2] == "Date"
           next if Entry.find_by_site_entry_id row[0].gsub(/\D/, '')
