@@ -8,8 +8,11 @@
     .main-container
       %p
         You can email us at
-        = link_to 'support@trackfantasy.com', 'mailto:support@trackfantasy.com', class: 'strong'
-        or leave a message below (it goes straight to our inbox).
+        = succeed '.' do
+          = link_to 'support@trackfantasy.com', 'mailto:support@trackfantasy.com', class: 'strong'
+        If you're having trouble importing, attach your CSV(s) to help us fix your issue faster.
+      %p
+        You can also leave a message below (it goes straight to our inbox).
       %p
         TrackFantasy is built by a couple fantasy sports geeks for the DFS community. Please leave a suggestion for what you want to see on TrackFantasy and we'll try to make it happen.
       = form_tag '/user_feedback', method: :post, html: {} do
