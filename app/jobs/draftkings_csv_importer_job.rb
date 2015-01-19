@@ -2,12 +2,11 @@ class DraftkingsCsvImporterJob < ActiveJob::Base
 
   def perform args
     ActiveRecord::Base.connection_pool.with_connection do
-      file_location = args[:file_location]
+      file_contents = args[:file_contents]
       user = User.find(args[:user])
-      file = File.open(file_location)
       last_entry_date = user.entries.last.entered_on if Entry.last
       errors = []
-      CSV.foreach(file).each do |row|
+      CSV.parse(file_contents).each do |row|
         begin
           next if row[0] == "Sport"
           entry_id = Base64.encode64("#{row[1]}#{row[2]}")
