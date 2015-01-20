@@ -63,7 +63,11 @@
     acceptedFiles: ".csv",
     maxFilesize: 2,
     clickable: ".clickable-select",
-    dictInvalidFileType: "Only CSV files are allowed. This file will be skipped if imported."
+    dictInvalidFileType: "Only CSV files are allowed. This file will be skipped if imported.",
+    headers: {
+      'X-CSRF-Token': "#{form_authenticity_token}",
+      'user_id': #{current_user.id}
+    }
   });
 
   function highlightDropzone() {
