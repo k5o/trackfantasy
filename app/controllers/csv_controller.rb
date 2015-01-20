@@ -7,7 +7,7 @@ class CsvController < ApplicationController
       if filename.include?("fanduel")
         FanduelCsvImporterJob.perform_later({file_contents: params[:file].read, user: current_user.id})
       elsif filename.include?("draftkings")
-        DraftkingsCsvImporterJob.new.perform({file_contents: params[:file].read, user: current_user.id})
+        DraftkingsCsvImporterJob.perform_later({file_contents: params[:file].read, user: current_user.id})
       end
 
       render nothing: true, status: 200 and return
