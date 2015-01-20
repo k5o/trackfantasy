@@ -1,6 +1,6 @@
 class UsersController < ApplicationController
   before_filter :no_layout, only: [:new, :create]
-  before_filter :load_user, only: [:edit, :update]
+  before_filter :load_user, only: [:edit, :update, :wipe_data]
 
   def show
   end
@@ -45,6 +45,15 @@ class UsersController < ApplicationController
       flash[:success] = 'No changes have been made.'
       redirect_to account_path and return
     end
+  end
+
+  def wipe_data
+    render nothing: true, status: 403 unless @user
+
+    EntryWipeJob.perform_later(user_id: current_user.id)
+
+    flash[:success] = 'Your entries are being deleted. This may take a while depending on the amount of entries, try refreshing in a minute.'
+    redirect_to dashboard_path
   end
 
   private
