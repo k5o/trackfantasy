@@ -1,6 +1,7 @@
 class FanduelCsvImporterJob < ActiveJob::Base
 
   def perform args
+    
     ActiveRecord::Base.connection_pool.with_connection do
       file_contents = args[:file_contents]
       user = User.find(args[:user])
@@ -21,6 +22,7 @@ class FanduelCsvImporterJob < ActiveJob::Base
           entry = player.entries.create!(
             site_id: site.id,
             site_entry_id: row[0].gsub(/\D/, ''),
+            game_type: game_type(row[3].downcase, row[8]).to_i,
             sport: row[1],
             score: row[5],
             position: row[7],
@@ -42,6 +44,26 @@ class FanduelCsvImporterJob < ActiveJob::Base
       end
       ExceptionMailer.csv_import_errors_email(errors).deliver_later
 
+    end
+  end
+
+  private
+
+  def game_type(name, entries)
+    if name.includes?("head")
+      "h2h"
+    elsif name.includes?("50/50")
+      "50/50"
+    elsif name.includes?("double")
+      "Double Up"
+    elsif name.includes?("triple")
+      "Triple Up"
+    elsif name.includes?("matrix")
+      "Matrix"
+    elsif entries > 10
+      "GPP"
+    else
+      "#{entries} player league"
     end
   end
 
