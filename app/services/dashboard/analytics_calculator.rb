@@ -51,12 +51,8 @@ class Dashboard::AnalyticsCalculator
 
     axes = entries.group("entered_on").pluck <<-SQL
       extract(epoch from entered_on) * 1000,
-      sum(sum(profit) / 100.0) over (order by entered_on)
+      sum(sum(profit)::float / 100.0) over (order by entered_on)
     SQL
-
-    axes.each do |a|
-      a[1] = a[1].to_f.round(2)
-    end
   end
 
   def roi
