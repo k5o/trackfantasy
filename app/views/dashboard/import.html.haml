@@ -26,7 +26,7 @@
         The import process may take some time, depending on how many entries you have. Only FanDuel and DraftKings currently supported. Having problems?
         = link_to 'Contact us', contact_path
       .import-dropzone
-        = form_tag({controller: :csv, action: :upload}, class: 'csv-importer', id: 'csv_upload', multipart: true) do
+        = form_tag({controller: :csv, action: :upload}, class: 'csv-importer', multipart: true) do
           .clickable-select
             Select CSV Files
 
@@ -40,7 +40,9 @@
               .file-cell
                 %strong{"data-dz-errormessage" => ""}
 
-          = submit_tag 'Import Selected', class: 'csv-submit'
+          .import-actions
+            .csv-submit Import Selected
+            = icon('cog', '', class: 'fa-spin js-loader')
 
 %script{:src => "https://cdnjs.cloudflare.com/ajax/libs/dropzone/3.12.0/dropzone.min.js", :type => "text/javascript"}
 :javascript
@@ -52,18 +54,16 @@
   var dropzoneSelector = $('.import-dropzone');
 
   var importDropzone = new Dropzone('.import-dropzone', { 
+    uploadMultiple: true,
     url: "/csv_upload",
     parallelUploads: 20,
     previewTemplate: previewTemplate,
-    autoQueue: false,
+    autoProcessQueue: false,
     previewsContainer: "#import-preview",
     acceptedFiles: ".csv",
     maxFilesize: 2,
     clickable: ".clickable-select",
-    dictInvalidFileType: "Only CSV files are allowed. This file will be skipped if imported.",
-    accept: function(file, done) {
-      $('.csv-submit').fadeIn(400);
-    }
+    dictInvalidFileType: "Only CSV files are allowed. This file will be skipped if imported."
   });
 
   function highlightDropzone() {
@@ -89,3 +89,26 @@
   importDropzone.on("dragend", function(e){
     resetDropzone();
   });
+
+  importDropzone.on("addedfile", function() {
+    $('.csv-submit').fadeIn(400);
+  });
+
+  importDropzone.on("successmultiple", function(files, response) {
+    $('form')[0].submit();
+  });
+
+  importDropzone.on("sendingmultiple", function() {
+    $('body').on('click', '.csv-submit', function(){
+      $(this).hide().attr('disabled', 'disabled');
+      $('.js-loader').show();
+    })
+  });
+
+  $('.csv-submit').on('click', function(e){
+    e.preventDefault();
+
+    if (importDropzone.getQueuedFiles().length > 0) {
+      importDropzone.processQueue();
+    }
+  })

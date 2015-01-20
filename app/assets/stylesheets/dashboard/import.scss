@@ -36,6 +36,18 @@
     background: #BBDEFB;
     border: 3px dotted #555;
   }
+
+  .import-actions {
+    position: relative;
+
+    .js-loader {
+      display: none;
+      margin: 0;
+      position: absolute;
+      font-size: 20px;
+      top: 10px;
+    }
+  }
 }
 
 .csv-importer {
