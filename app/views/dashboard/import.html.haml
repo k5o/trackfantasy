@@ -7,18 +7,23 @@
     = render partial: 'partials/flash'
     .main-container
       - if @is_new_user
-        %h3 Welcome to TrackFantasy! Get started by uploading your CSV history using the form below.
+        %h3 Welcome to TrackFantasy! Get started by uploading your CSV history.
       - else
         %h3
           %span Last Updated:
           = "#{time_ago_in_words(@last_import_date)} ago"
-      %p
+      %p Instructions:
+      %li.instructions
         %strong Drag and drop
-        multiple CSVs into the dotted area, or click the 
+        your FanDuel or DraftKings History CSV(s) into the dotted area, or use the 
         %strong Select CSV Files
         button.
+      %li.instructions
+        Then click the
+        %strong Import Selected
+        button.
       %p
-        This process may take some time, depending on how many entries you have. Having problems?
+        The import process may take some time, depending on how many entries you have. Only FanDuel and DraftKings currently supported. Having problems?
         = link_to 'Contact us', contact_path
       .import-dropzone
         = form_tag({controller: :csv, action: :upload}, class: 'csv-importer', id: 'csv_upload', multipart: true) do
@@ -53,6 +58,7 @@
     autoQueue: false,
     previewsContainer: "#import-preview",
     acceptedFiles: ".csv",
+    maxFilesize: 2,
     clickable: ".clickable-select",
     dictInvalidFileType: "Only CSV files are allowed. This file will be skipped if imported.",
     accept: function(file, done) {

@@ -60,7 +60,7 @@ class Dashboard::AnalyticsCalculator
   end
 
   def roi
-    nil_guard_value || (revenue_amount / entry_fees.to_f) * 100
+    entry_fees > 0 ? (revenue_amount / entry_fees.to_f) * 100 : 0
   end
 
   def total_entries
