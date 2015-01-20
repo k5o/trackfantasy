@@ -23,6 +23,8 @@ gem 'httparty'
 gem 'highcharts-rails', '~> 3.0.0'
 gem 'redis-rails'
 gem 'delayed_job_active_record'
+gem 'daemons'
+gem 'workless'
 gem 'puma'
 
 group :production do
