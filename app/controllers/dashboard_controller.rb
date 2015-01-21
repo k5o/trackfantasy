@@ -29,8 +29,8 @@ class DashboardController < ApplicationController
   end
 
   def fetch_games_data
-    render json: {}
-    # @games = Dashboard::Games.new(view_context)
+    @games = Dashboard::Games.new(view_context)
+    render json: @games, status: 200
 
     # if @games.valid?
     #   if request.xhr?
