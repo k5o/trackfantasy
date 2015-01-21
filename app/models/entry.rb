@@ -6,6 +6,24 @@ class Entry < ActiveRecord::Base
   belongs_to :user
   belongs_to :site
 
+  def self.define_game_type(name, entries)
+    if name.include?("head")
+      "h2h"
+    elsif name.include?("50/50")
+      "50/50"
+    elsif name.include?("double")
+      "Double Up"
+    elsif name.include?("triple")
+      "Triple Up"
+    elsif name.include?("matrix")
+      "Matrix"
+    elsif entries.to_i > 10
+      "GPP"
+    else
+      "#{entries} player league"
+    end
+  end
+
   def self.create_from_fanduel_seat data, contest
     site = Site.where(name: "fanduel").first_or_create
     player = Account.where(site_user_id: data["user_id"], site: site).first_or_create

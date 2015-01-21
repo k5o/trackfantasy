@@ -8,6 +8,7 @@ Rails.application.routes.draw do
   get '/login', to: 'sessions#new', as: 'login'
   get '/signup', to: 'users#new', as: 'signup'
   get '/account', to: 'users#edit', as: 'account'
+  post '/wipe_data', to: 'users#wipe_data', as: 'wipe_data'
   get '/dashboard', to: 'dashboard#index', as: 'dashboard'
   get '/dashboard/fetch_dashboard_data', to: 'dashboard#fetch_dashboard_data', as: 'fetch_dashboard_data'
   get '/games', to: 'dashboard#games', as: 'games'

@@ -6,8 +6,113 @@
       Import CSVs
     = render partial: 'partials/flash'
     .main-container
-      %p Click and drag to import multiple files here. This process may take some time, depending on how many entries you have.
+      - if @is_new_user
+        %h3 Welcome to TrackFantasy! Get started by uploading your CSV history.
+      - else
+        %h3
+          %span Last Updated:
+          = "#{time_ago_in_words(@last_import_date)} ago"
+      %p Instructions:
+      %li.instructions
+        %strong Drag and drop
+        your FanDuel or DraftKings History CSV(s) into the dotted area, or use the 
+        %strong Select CSV Files
+        button.
+      %li.instructions
+        Then click the
+        %strong Import Selected
+        button.
+      %p
+        The import process may take some time, depending on how many entries you have. Only FanDuel and DraftKings currently supported. Having problems?
+        = link_to 'Contact us', contact_path
+      .import-dropzone
+        = form_tag({controller: :csv, action: :upload}, class: 'csv-importer', multipart: true) do
+          .clickable-select
+            Select CSV Files
 
-      = form_tag({controller: :csv, action: :upload}, class:'dropzone', multipart: true) do
-        = file_field_tag 'file', multiple: true
-        %input{type: "Submit", class: "csv_submit"}
+          #import-preview
+            %li#template.file-row
+              .file-cell
+                %span.name{"data-dz-name" => ""}
+                %span.size{"data-dz-size" => ""}
+                %a.delete-file{"data-dz-remove" => ""}
+                  = icon('remove', 'Cancel', class: 'fa-fw')
+              .file-cell
+                %strong{"data-dz-errormessage" => ""}
+
+          .import-actions
+            .csv-submit Import Selected
+            = icon('cog', '', class: 'fa-spin js-loader')
+
+%script{:src => "https://cdnjs.cloudflare.com/ajax/libs/dropzone/3.12.0/dropzone.min.js", :type => "text/javascript"}
+:javascript
+  var previewNode = document.querySelector("#template");
+  previewNode.id = "";
+  var previewTemplate = previewNode.parentNode.innerHTML;
+  previewNode.parentNode.removeChild(previewNode);
+
+  var dropzoneSelector = $('.import-dropzone');
+
+  var importDropzone = new Dropzone('.import-dropzone', { 
+    uploadMultiple: true,
+    url: "/csv_upload",
+    parallelUploads: 20,
+    previewTemplate: previewTemplate,
+    autoProcessQueue: false,
+    previewsContainer: "#import-preview",
+    acceptedFiles: ".csv",
+    maxFilesize: 2,
+    clickable: ".clickable-select",
+    dictInvalidFileType: "Only CSV files are allowed. This file will be skipped if imported.",
+    headers: {
+      'X-CSRF-Token': "#{form_authenticity_token}",
+      'user_id': #{current_user.id}
+    }
+  });
+
+  function highlightDropzone() {
+    dropzoneSelector.addClass('highlighted');
+  }
+
+  function resetDropzone() {
+    dropzoneSelector.removeClass('highlighted');
+  }
+
+  importDropzone.on("dragover", function(e){
+    highlightDropzone();
+  });
+
+  importDropzone.on("drop", function(e){
+    resetDropzone();
+  });
+
+  importDropzone.on("dragleave", function(e){
+    resetDropzone();
+  });
+
+  importDropzone.on("dragend", function(e){
+    resetDropzone();
+  });
+
+  importDropzone.on("addedfile", function() {
+    $('.csv-submit').fadeIn(400);
+  });
+
+  importDropzone.on("successmultiple", function(files, response) {
+    $('form')[0].submit();
+  });
+
+  importDropzone.on("sendingmultiple", function() {
+    $('body').on('click', '.csv-submit', function(){
+      $(this).hide().attr('disabled', 'disabled');
+      $('.js-loader').show();
+    })
+  });
+
+  $('.csv-submit').on('click', function(e){
+    e.preventDefault();
+
+    if (importDropzone.getQueuedFiles().length > 0) {
+      importDropzone.processQueue();
+    }
+  })

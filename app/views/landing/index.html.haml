@@ -1,11 +1,11 @@
 .page
   .splash
     .container
-      %h1 Performance Analytics for Daily Fantasy Sports Players
-      %h2 Maximize your profit with valuable winrate and score metrics.
+      %h1 Your game history on PEDs
+      %h2 Complete bankroll and performance tracking for Daily Fantasy Sports players
       .info-card
         .info-card-title
-          %h1 Sign Up For Free
+          %h1 Sign Up For Free Tracking
         .info-card-content
           = render partial: 'users/new_user_form'
       .clearfloat
@@ -17,23 +17,15 @@
 
   #js-details.details
     .container
-      %p
-        Tracking
-        = succeed ',' do
-          %span.strong winrate
-        = succeed ',' do
-          %span.strong performance
-        and
-        %span.strong game history
-        for grinders like you.
+      %p Winrate and score analytics for grinders like you
 
       .vp-container
         %ul
           %li
             .vp-image
             .vp-content
-              .strong.vp-header Your money, analyzed
-              .sub-vp Bankrolls don't tell the full story. Our stat-heavy dashboard lets you visualize your earnings by every filter imagineable. Get the full scoop on where your money is coming and going. 
+              .strong.vp-header Your bankroll's full story
+              .sub-vp Our stat-heavy dashboard lets you visualize your earnings by every filter imagineable. Get the full scoop on where your money is coming and going. 
           %li
             .vp-image
             .vp-content
@@ -42,11 +34,11 @@
           %li
             .vp-image
             .vp-content
-              .strong.vp-header Access anywhere
-              .sub-vp View and update your saved stats anywhere. We take secure precautions to make sure your data is always safe.
+              .strong.vp-header Zero-hassle, easy to use
+              .sub-vp No more dealing with buggy excel sheets or reuploading your data every time you want to see your stats. We store everything securely, and you can erase your data at any time.
 
         .screenshot-container
           = image_tag(asset_path('screenshot.png'))
 
       %p
-        = link_to 'Sign Up For Free', signup_path, class: 'btn'
+        = link_to 'Start Tracking For Free', signup_path, class: 'btn strong'

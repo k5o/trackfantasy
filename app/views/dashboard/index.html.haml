@@ -14,7 +14,7 @@
         .header-actions
           = submit_tag 'Filter', id: 'js-filter-btn', class: 'header-btn filter-btn'
           = link_to 'Reset', dashboard_path, class: 'header-btn reset-btn'
-          = icon('cog', '', class: 'fa-spin js-filter-loader')
+          = icon('cog', '', class: 'fa-spin js-loader')
     = render partial: 'partials/flash'
     - if @is_new_user
       .main-container.new-user-notification

@@ -24,6 +24,8 @@ gem 'highcharts-rails', '~> 3.0.0'
 gem 'redis-rails'
 gem 'jquery-datatables-rails', '~> 3.1.1'
 gem 'delayed_job_active_record'
+gem 'daemons'
+gem 'workless'
 gem 'puma'
 
 group :production do

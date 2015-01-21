@@ -23,4 +23,8 @@ class User < ActiveRecord::Base
   def sports_played
     @sports_played ||= entries.pluck(:sport).uniq
   end
+
+  def empty_entries?
+    @empty_entries ||= !entries.exists?
+  end
 end
