@@ -1,18 +1,12 @@
 class Dashboard::Games
-  delegate :params, :h, :link_to, :number_to_currency, to: :@view
+  delegate :params, :h, :link_to, :number_to_currency, :number_to_percentage, to: :@view
 
   def initialize(view)
     @view = view
   end
 
   def as_json(options = {})
-    {
-      draw: ,
-      recordsTotal: ,
-      recordsFiltered: ,
-      data: data,
-      error: 
-    }
+    data
   end
 
 private
@@ -21,21 +15,24 @@ private
     games.map do |game|
       [
         game.count, # entries
-        number_to_currency(game[1]), # entry_fee_in_cents
-        game[2], # game type
-        number_to_currency(game[3]), # profit sum
-        number_to_percentage(game[4], precision: 2), # roi percentage
-        number_to_percentage(game[5], precision: 2), # winrate percentage
-        game[6] # average score
+        game.game_type, # game type
+        number_to_currency(game.entry_fee_in_cents / 100.0), # entry_fee_in_cents
+        number_to_currency(game.profit), # profit sum
+        number_to_percentage(game.roi, precision: 2), # roi percentage
+        number_to_percentage(game.winrate, precision: 2), # winrate percentage
+        game.score.to_f.round(2) # average score
       ]
     end
   end
 
   def games
-    @user.entries.group(:entry_fee_in_cents, :sport).select(<<-SQL)
-      entry_fee_in_cents, sport,
+    @view.current_user.entries.where(sport: 'nba').group(:game_type, :entry_fee_in_cents).order(:entry_fee_in_cents).select(<<-SQL)
+      game_type, entry_fee_in_cents,
       count(*) as count,
-      sum(profit) as profit
+      sum(profit) / 100.0 as profit,
+      sum(profit) / 100.0 / nullif((sum(entry_fee_in_cents) / 100.0), 0) as roi,
+      sum(CASE profit > 0 when true then 1 else 0 end) / count(*) as winrate,
+      avg(score)::float8 as score
     SQL
   end
 
@@ -57,7 +54,7 @@ private
   end
 
   def sort_column
-    columns = %w[entry_fee_in_cents type entry_total_profit roi average_score]
+    columns = %w[count game_type entry_fee_in_cents profit roi winrate score]
     columns[params[:iSortCol_0].to_i]
   end
 
