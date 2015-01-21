@@ -14,7 +14,7 @@ gem 'bourbon'
 gem 'neat'
 gem 'execjs'
 gem 'therubyracer', platforms: :ruby
-gem 'react-rails', git: 'git://github.com/reactjs/react-rails.git'
+gem 'react-rails', '~> 0.12.0.0'
 gem 'spring', group: :development
 gem 'figaro'
 gem 'font-awesome-sass', '~> 4.2.0'
