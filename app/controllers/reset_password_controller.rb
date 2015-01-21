@@ -25,12 +25,10 @@ class ResetPasswordController < ApplicationController
     if user
       user.generate_reset_password_token!
       UserMailer.reset_password_email(user).deliver_later
-      flash[:success] = "Thanks! Please check your email and follow the link to reset your password."
-      redirect_to new_reset_password_path
-    else
-      flash.now[:error] = "No account found by that email address, please try again."
-      render :new
     end
+
+    flash[:success] = "Thanks! Please check your email (#{params[:email]}) and follow the link to reset your password."
+    redirect_to new_reset_password_path
   end
 
   private

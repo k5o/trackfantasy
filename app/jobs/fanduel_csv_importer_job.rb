@@ -1,70 +1,67 @@
 class FanduelCsvImporterJob < ActiveJob::Base
 
   def perform args
-    
     ActiveRecord::Base.connection_pool.with_connection do
       file_contents = args[:file_contents]
       user = User.find(args[:user])
-      errors = []
+      errors = [user.email]
+
       CSV.parse(file_contents).each do |row|
         begin
-          next if row[2] == "Date"
-          next if Entry.find_by_site_entry_id row[0].gsub(/\D/, '')
-          next if row[5].blank?
+          # Define the CSV
+          site_entry_id     = row[0]
+          sport             = row[1]
+          date              = row[2]
+          contest_title     = row[3]
+          salary_cap        = row[4]
+          score             = row[5]
+          position          = row[7]
+          total_entries     = row[8]
+          opponent_username = row[9]
+          entry_fee         = row[10]
+          winnings          = row[11]
+          link              = row[12]
+          blank_in_csv      = row[13]
 
+          # Validations
+          next if row.length != 14 # Validate that we're on the right CSV version
+          next if link == "Link" # Skip headers
+          next if score.blank? || winnings.blank? || entry_fee.blank? # Required
+          next if user.entries.find_by_site_entry_id(site_entry_id.sub(/\D/, '')) # Skip if already imported
+
+          # Pre-formatting
           site = Site.where(name: "fanduel").first_or_create
-          player = Account.where(site: site, user: user).first_or_create
-
-          entry_fee = row[10].to_f * 100
-          winnings = row[11].to_f * 100
+          entry_fee = entry_fee.to_f * 100
+          winnings = winnings.to_f * 100
           profit = winnings - entry_fee
 
-          entry = player.entries.create!(
+          # Creation
+          entry = user.entries.create!(
             site_id: site.id,
-            site_entry_id: row[0].gsub(/\D/, ''),
-            game_type: game_type(row[3].downcase, row[8]).to_i,
-            sport: row[1],
-            score: row[5],
-            position: row[7],
-            total_entries: row[8],
-            contest_title: row[3],
-            opponent_username: row[9],
+            site_entry_id: site_entry_id.sub(/\D/, ''),
+            game_type: Entry.define_game_type(contest_title.downcase, total_entries),
+            sport: sport,
+            score: score,
+            position: position,
+            total_entries: total_entries,
+            contest_title: contest_title,
+            opponent_username: opponent_username,
             entry_fee_in_cents: entry_fee,
             winnings_in_cents: winnings,
-            link: row[12],
+            link: link,
             profit: profit,
-            entered_on: Date.strptime(row[2], '%Y/%m/%d'),
-            user_id: user.id
+            entered_on: Date.strptime(date, '%Y/%m/%d')
           )
-        rescue
-          Rails.logger.error("#{user.id} - #{row.inspect} failed to import")
-          errors << "#{user.id} - #{row.inspect} failed to import"
+        rescue StandardError => e
+          Rails.logger.error("#{row.inspect} - #{e}")
+          errors << "#{row.inspect} - #{e}"
           next
         end
       end
-      ExceptionMailer.csv_import_errors_email(errors).deliver_later
 
+      if errors.length > 1
+        ExceptionMailer.csv_import_errors_email(errors).deliver_later
+      end
     end
   end
-
-  private
-
-  def game_type(name, entries)
-    if name.includes?("head")
-      "h2h"
-    elsif name.includes?("50/50")
-      "50/50"
-    elsif name.includes?("double")
-      "Double Up"
-    elsif name.includes?("triple")
-      "Triple Up"
-    elsif name.includes?("matrix")
-      "Matrix"
-    elsif entries > 10
-      "GPP"
-    else
-      "#{entries} player league"
-    end
-  end
-
 end

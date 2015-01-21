@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150119111726) do
+ActiveRecord::Schema.define(version: 20150120071016) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -79,6 +79,7 @@ ActiveRecord::Schema.define(version: 20150119111726) do
     t.integer  "total_entries"
     t.integer  "site_id"
     t.string   "game_type"
+    t.string   "salary_cap"
   end
 
   create_table "sites", force: :cascade do |t|

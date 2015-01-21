@@ -8,6 +8,6 @@ $(document).ready(function(){
 
   $('form#filter').on('submit', function(){
     $('#js-filter-btn').hide().attr('disabled', 'disabled');
-    $('.js-filter-loader').show();
+    $('.js-loader').show();
   })
 })
