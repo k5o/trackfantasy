@@ -12,9 +12,11 @@
 //
 //= require jquery
 //= require jquery_ujs
+//= require underscore
 //= require highcharts
 //= require highcharts/highcharts-more
 //= require dataTables/jquery.dataTables
 //= require dataTables/extras/dataTables.responsive
 //= require react
+//= require_tree ./react_components
 //= require_tree .
