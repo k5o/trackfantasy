@@ -14,7 +14,7 @@ gem 'bourbon'
 gem 'neat'
 gem 'execjs'
 gem 'therubyracer', platforms: :ruby
-gem 'react-rails', '~> 0.12.0.0'
+gem 'react-rails'
 gem 'spring', group: :development
 gem 'figaro'
 gem 'font-awesome-sass', '~> 4.2.0'
@@ -27,6 +27,7 @@ gem 'delayed_job_active_record'
 gem 'daemons'
 gem 'workless'
 gem 'puma'
+gem 'underscore-rails'
 
 group :production do
   gem 'rails_12factor'
