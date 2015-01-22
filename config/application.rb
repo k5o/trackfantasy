@@ -26,5 +26,12 @@ module Trackfantasy
 
     config.action_mailer.default_url_options = { host: 'trackfantasy.com' }
     config.action_mailer.perform_deliveries = true
+
+    # React
+    config.react.max_renderers = 10
+    config.react.timeout = 20 #seconds
+    config.react.react_js = lambda {File.read(::Rails.application.assets.resolve('react.js'))}
+    config.react.component_filenames = ['components.js']
+    config.react.addons = true
   end
 end
