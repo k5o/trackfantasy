@@ -14,29 +14,39 @@
         .header-actions
           = submit_tag 'Filter', id: 'js-filter-btn', class: 'header-btn filter-btn'
           = link_to 'Reset', dashboard_path, class: 'header-btn reset-btn'
-          = icon('cog', '', class: 'fa-spin js-filter-loader')
+          = icon('cog', '', class: 'fa-spin js-loader')
     = render partial: 'partials/flash'
     .main-container
       Select a sport to begin:
       = select_tag "sport", options_for_select(@sports_played, @sport)
 
-      %table#games.display.responsive.no-wrap
-        %thead
-          %tr
-            %th Entries
-            %th Game Type
-            %th Buyin
-            %th Total $
-            %th ROI %
-            %th Winrate
-            %th Average Score
-        %tbody
+      #games
 
 :javascript
-  $(document).ready(function() {
-    $('#games').dataTable({
-      "processing": true,
-      "serverSide": true,
-      "ajax": "/dashboard/fetch_games_data"
-    });
-  });
+  var gamesData = #{@games.data.to_json}
+  var columnMetadataArray = [
+    {
+      displayName: "Entries"
+    },
+    {
+      displayName: "Game Type"
+    },
+    {
+      displayName: "Buyin"
+    },
+    {
+      displayName: "Total $"
+    },
+    {
+      displayName: "ROI %"
+    },
+    {
+      displayName: "Winrate %"
+    },
+    {
+      displayName: "Average Score"
+    }
+  ];
+  var component = React.createElement(Griddle, { results: gamesData, resultsPerPage: 50, showPager: false, showFilter: true, showSettings: true, columnMetadata: columnMetadataArray });
+
+  React.render(component, document.getElementById('games'));

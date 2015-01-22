@@ -26,9 +26,24 @@ class DashboardController < ApplicationController
     @sports_played = current_user.sports_played
 
     @sport = @sports_played.length == 1 ? @sports_played.first : params[:sport]
+
+    @games = Dashboard::Games.new(view_context)
+
+    # data = current_user.entries.where(sport: 'nba').group(:game_type, :entry_fee_in_cents).order(:entry_fee_in_cents).select(<<-SQL)
+    #   game_type, entry_fee_in_cents,
+    #   count(*) as count,
+    #   sum(profit) / 100.0 as profit,
+    #   sum(profit) / 100.0 / nullif((sum(entry_fee_in_cents) / 100.0), 0) as roi,
+    #   sum(CASE profit > 0 when true then 1 else 0 end) / count(*) as winrate,
+    #   avg(score)::float8 as score
+    # SQL
+
+    # @data = data.to_json
   end
 
   def fetch_games_data
+
+
     @games = Dashboard::Games.new(view_context)
     render json: @games, status: 200
 

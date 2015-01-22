@@ -9,8 +9,6 @@ class Dashboard::Games
     data
   end
 
-private
-
   def data
     games.map do |game|
       [
