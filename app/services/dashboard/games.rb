@@ -28,8 +28,8 @@ class Dashboard::Games
       game_type, entry_fee_in_cents,
       count(*) as count,
       sum(profit) / 100.0 as profit,
-      sum(profit) / 100.0 / nullif((sum(entry_fee_in_cents) / 100.0), 0) as roi,
-      sum(CASE profit > 0 when true then 1 else 0 end) / count(*) as winrate,
+      (sum(profit) / 100.0)::float8 / nullif((sum(entry_fee_in_cents) / 100.0), 0)::float8 * 100.0 as roi,
+      (sum(CASE profit > 0 when true then 1 else 0 end)::float8 / count(*)::float8) * 100.0 as winrate,
       avg(score)::float8 as score
     SQL
   end
