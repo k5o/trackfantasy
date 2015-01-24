@@ -19,11 +19,12 @@
     .main-container
       - unless @sport
         .pre-sport-selection
-          %h3 Select a sport to begin
+          %h3 Select a sport above to begin
 
           :javascript
             $('select#sport').addClass('field-callout')
-
+      - else
+        %h3= "Displaying results for #{@sport.upcase}"
       #games
 
 - if @sport

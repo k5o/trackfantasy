@@ -1,5 +1,16 @@
-- @analytics.games_total.each do |data|
-  = data
+#games-table
+
+.foo
+  %table.games-total-table
+    %tbody
+      %tr.total-row
+        %td= @analytics.games_total[:total_entries]
+        %td= ""
+        %td= ""
+        %td{class: "#{money_class(@analytics.games_total[:total_profit])}"}= number_to_currency(@analytics.games_total[:total_profit])
+        %td{class: "#{money_class(@analytics.games_total[:roi])}"}= number_to_percentage(@analytics.games_total[:roi], precision: 2)
+        %td= number_to_percentage(@analytics.games_total[:winrate], precision: 2)
+        %td= @analytics.games_total[:average_score].to_f.round(2)
 
 :javascript
   $('.pre-sport-selection').hide();
@@ -40,6 +51,31 @@
     }
   ];
 
-  var component = React.createElement(Griddle, { results: gamesData, resultsPerPage: 50, showFilter: true, showSettings: true, columnMetadata: columnMeta, noDataMessage: "No data found, try another query or search term", settingsText: "Columns", filterPlaceholderText: "Search", useGriddleStyles: false });
+  var component = React.createElement(Griddle, { results: gamesData, showPager: false, resultsPerPage: 1000, showFilter: true, showSettings: false, columnMetadata: columnMeta, noDataMessage: "No data found, try another query or search term", filterPlaceholderText: "Search (e.g. 'GPP', '50/50', 'league')", useGriddleStyles: false, sortAscendingComponent: '', sortDescendingComponent: '' });
 
-  React.render(component, document.getElementById('games'));
+  React.render(component, document.getElementById('games-table'));
+
+  function resizeTotalRow() {
+    var cols = $('.griddle th');
+    var colLength = cols.length;
+
+    for (i = 0; i < colLength; i++) {
+      $($('.total-row td')[i]).width($(cols[i]).width() + "px");
+    }
+  }
+
+  function toggleTotalRow(toggleName) {
+    if (toggleName === 'show') {
+      $('.games-total-table').show();
+    }
+    else if (toggleName === 'hide') {
+      $('.games-total-table').hide();
+    }
+    else {
+      $('.games-total-table').toggle();
+    }
+  }
+
+  $(window).on('resize', function() {
+    resizeTotalRow();
+  })

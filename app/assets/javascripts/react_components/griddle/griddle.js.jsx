@@ -285,6 +285,9 @@ var Griddle = React.createClass({
         }
 
     },
+    componentDidMount: function() {
+        resizeTotalRow();
+    },
     //todo: clean these verify methods up
     verifyExternal: function(){
         if(this.props.useExternal === true){

@@ -63,7 +63,13 @@ class Dashboard::AnalyticsCalculator
   end
 
   def games_total
-    [total_entries, nil, nil, total_profit, roi, winrate, average_score]
+    {
+      total_entries: total_entries,
+      total_profit: total_profit,
+      roi: roi,
+      winrate: winrate,
+      average_score: average_score,
+    }
   end
 
   def entries_exist

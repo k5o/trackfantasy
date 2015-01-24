@@ -15,7 +15,15 @@ var GridFilter = React.createClass({
       }
     },
     handleChange: function(event){
+        value = event.target.value
         this.props.changeFilter(event.target.value);
+
+        if (value.length > 0) {
+          toggleTotalRow('hide');
+        }
+        else {
+          toggleTotalRow('show');
+        }
     },
     render: function(){
         return <div className="row filter-container"><input type="text" name="filter" placeholder={this.props.placeholderText} className="form-control" onChange={this.handleChange} /></div>
