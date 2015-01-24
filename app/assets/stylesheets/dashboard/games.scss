@@ -1,3 +1,39 @@
 #games_wrapper {
   margin-top: 40px;
 }
+
+select.field-callout {
+  background: $primary;
+  color: white;
+}
+
+.column-game-type {
+  font-weight: 700;
+}
+
+.griddle {
+  table {
+    width: 100%;
+  }
+
+  th {
+    background: $primary;
+    color: white;
+
+    &:hover {
+      cursor: pointer;
+      background: mix($primary, black, 92%);
+    }
+  }
+
+  th, td {
+    padding: 4px 0;
+  }
+
+  tr {
+    &:hover {
+      background: $off-white;
+      border-color: $off-white;
+    }
+  }
+}

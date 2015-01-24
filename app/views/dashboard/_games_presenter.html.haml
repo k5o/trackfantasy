@@ -1,0 +1,45 @@
+- @analytics.games_total.each do |data|
+  = data
+
+:javascript
+  $('.pre-sport-selection').hide();
+
+  var gamesData = #{@analytics.games_data.to_json}
+  var columnMeta = [
+    {
+      "columnName": "0",
+      "displayName": "Entries",
+      "customComponent": EntryFormatter
+    },
+    {
+      "columnName": "1",
+      "displayName": "Game Type",
+      "cssClassName": "column-game-type"
+    },
+    {
+      "columnName": "2",
+      "displayName": "Buyin",
+    },
+    {
+      "columnName": "3",
+      "displayName": "Total $",
+      "customComponent": MoneyFormatter
+    },
+    {
+      "columnName": "4",
+      "displayName": "ROI %",
+      "customComponent": MoneyFormatter
+    },
+    {
+      "columnName": "5",
+      "displayName": "Winrate %",
+    },
+    {
+      "columnName": "6",
+      "displayName": "Average Score",
+    }
+  ];
+
+  var component = React.createElement(Griddle, { results: gamesData, resultsPerPage: 50, showFilter: true, showSettings: true, columnMetadata: columnMeta, noDataMessage: "No data found, try another query or search term", settingsText: "Columns", filterPlaceholderText: "Search", useGriddleStyles: false });
+
+  React.render(component, document.getElementById('games'));

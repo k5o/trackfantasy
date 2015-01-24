@@ -4,7 +4,7 @@
   %main
     .main-header
       %span.filter-title Filters:
-      = form_tag '/dashboard/fetch_dashboard_data', method: 'get', id: 'filter' do
+      = form_tag '/games', method: 'get', id: 'filter' do
         = label_tag 'From:'
         = date_field_tag 'from_date', @date_range.try(:first).try(:to_date)
         = label_tag 'To:'
@@ -13,40 +13,21 @@
         = select_tag "site", options_for_select(Site::NAMES, @site), include_blank: 'Site:'
         .header-actions
           = submit_tag 'Filter', id: 'js-filter-btn', class: 'header-btn filter-btn'
-          = link_to 'Reset', dashboard_path, class: 'header-btn reset-btn'
+          = link_to 'Reset', games_path, class: 'header-btn reset-btn'
           = icon('cog', '', class: 'fa-spin js-loader')
     = render partial: 'partials/flash'
     .main-container
-      Select a sport to begin:
-      = select_tag "sport", options_for_select(@sports_played, @sport)
+      - unless @sport
+        .pre-sport-selection
+          %h3 Select a sport to begin
+
+          :javascript
+            $('select#sport').addClass('field-callout')
 
       #games
 
-:javascript
-  var gamesData = #{@games.data.to_json}
-  var columnMetadataArray = [
-    {
-      displayName: "Entries"
-    },
-    {
-      displayName: "Game Type"
-    },
-    {
-      displayName: "Buyin"
-    },
-    {
-      displayName: "Total $"
-    },
-    {
-      displayName: "ROI %"
-    },
-    {
-      displayName: "Winrate %"
-    },
-    {
-      displayName: "Average Score"
-    }
-  ];
-  var component = React.createElement(Griddle, { results: gamesData, resultsPerPage: 50, showPager: false, showFilter: true, showSettings: true, columnMetadata: columnMetadataArray });
-
-  React.render(component, document.getElementById('games'));
+- if @sport
+  :javascript
+    $(document).ready(function(){
+      fetchGamesData();
+    });
