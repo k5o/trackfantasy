@@ -30,25 +30,14 @@ class DashboardController < ApplicationController
 
     if @analytics.valid?
       if request.xhr?
-        render json: @analytics, status: 200
+        render partial: 'games_presenter', status: 200 and return
       else
         redirect_to games_path(from_date: @date_range.first, to_date: @date_range.last, site: @site, sport: @sport)
       end
     else
-      flash.now[:error] = "Something went wrong, please make sure your date input is valid. <a href=\"#{dashboard_path}\">Refresh</a>".html_safe
+      flash.now[:error] = "Something went wrong, please make sure your date input is validCONTROLLER. <a href=\"#{dashboard_path}\">Refresh</a>".html_safe
       render :index, status: 403 and return
     end
-
-    # if @games.valid?
-    #   if request.xhr?
-    #     render json: @games
-    #   else
-    #     redirect_to dashboard_path(from_date: @date_range.first, to_date: @date_range.last, site: @site, sport: @sport)
-    #   end
-    # else
-    #   flash.now[:error] = "Something went wrong, please make sure your date input is valid. <a href='/dashboard'>Refresh</a>".html_safe
-    #   render :index, status: 403 and return
-    # end
   end
 
   def import
