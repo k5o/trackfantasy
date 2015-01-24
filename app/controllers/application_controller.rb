@@ -12,4 +12,8 @@ class ApplicationController < ActionController::Base
   def no_layout
     @no_layout = true
   end
+
+  def fetch_analytics
+    @analytics ||= Dashboard::AnalyticsCalculator.new(view_context)
+  end
 end

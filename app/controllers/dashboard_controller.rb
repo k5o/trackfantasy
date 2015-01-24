@@ -1,15 +1,13 @@
 class DashboardController < ApplicationController
   before_filter :verify_user
   before_filter :load_params
+  before_filter :fetch_analytics, only: [:fetch_dashboard_data, :fetch_games_data]
   # caches_action :fetch_dashboard_data, expires_in: 1.month # TODO: invalidate cache when new csv is imported
 
   def index
   end
 
   def fetch_dashboard_data
-    # TODO: Ensure request/return are clean, email notify admins if not (exception email)
-    @analytics = Dashboard::AnalyticsCalculator.new(view_context)
-
     if @analytics.valid?
       if request.xhr?
         render partial: 'presenter', status: 200 and return
@@ -26,8 +24,6 @@ class DashboardController < ApplicationController
   end
 
   def fetch_games_data
-    @analytics = Dashboard::AnalyticsCalculator.new(view_context)
-
     if @analytics.valid?
       if request.xhr?
         render partial: 'games_presenter', status: 200 and return
