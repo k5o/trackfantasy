@@ -108,6 +108,15 @@
   }
 }
 
+input[type="name"], input[type="email"], input[type="password"], input[type="text"], input[type="date"] {
+  border: 1px solid #ccc;
+
+  &:focus {
+    border: 1px solid $primary-saturated;
+    outline: none;
+  }
+}
+
 .logo {
   font-family: $logo-font, 'Helvetica', Arial;
   letter-spacing: -2px;

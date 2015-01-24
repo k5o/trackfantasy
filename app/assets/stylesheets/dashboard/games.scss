@@ -12,28 +12,82 @@ select.field-callout {
 }
 
 .griddle {
-  table {
-    width: 100%;
+  margin-top: -40px;
+
+  @include media($medium) {
+    margin: 0;
   }
+}
 
-  th {
-    background: $primary;
-    color: white;
+.griddle-filter {
+  text-align: left;
 
-    &:hover {
-      cursor: pointer;
-      background: mix($primary, black, 92%);
+  &:before {
+    font-family: $icon-font;
+    content: "\f002";
+    position: absolute;
+
+    @include media($medium) {
+      position: static;
+      display: inline;
     }
   }
 
-  th, td {
-    padding: 4px 0;
+  @include media($medium) {
+    text-align: center;
+  }
+}
+
+.top-section {
+  margin-bottom: 20px;
+}
+
+.filter-container {
+  input {
+    padding: 4px;
+    width: 240px;
+    margin-left: 20px;
   }
 
-  tr {
-    &:hover {
-      background: $off-white;
-      border-color: $off-white;
+  @include media($medium) {
+    display: inline;
+
+    input {
+      margin-left: 8px;
     }
   }
+}
+
+table {
+  width: 100%;
+  border-spacing: 0;
+}
+
+th {
+  background: $primary;
+  color: white;
+
+  &:hover {
+    cursor: pointer;
+    background: mix($primary, black, 92%);
+  }
+}
+
+th, td {
+  padding: 4px 0;
+}
+
+tr {
+  &:hover {
+    background: $off-white;
+    border-color: $off-white;
+  }
+}
+
+tr.total-row {
+  font-weight: 700;
+}
+
+.games-total-table {
+  border-top: 1px solid $fill-saturated;
 }
