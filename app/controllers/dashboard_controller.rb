@@ -8,7 +8,7 @@ class DashboardController < ApplicationController
 
   def fetch_dashboard_data
     # TODO: Ensure request/return are clean, email notify admins if not (exception email)
-    @analytics = Dashboard::AnalyticsCalculator.new(@user, @date_range, @site, @sport)
+    @analytics = Dashboard::AnalyticsCalculator.new(view_context)
 
     if @analytics.valid?
       if request.xhr?
@@ -23,29 +23,21 @@ class DashboardController < ApplicationController
   end
 
   def games
-    @sports_played = current_user.sports_played
-
-    @sport = @sports_played.length == 1 ? @sports_played.first : params[:sport]
-
-    @games = Dashboard::Games.new(view_context)
-
-    # data = current_user.entries.where(sport: 'nba').group(:game_type, :entry_fee_in_cents).order(:entry_fee_in_cents).select(<<-SQL)
-    #   game_type, entry_fee_in_cents,
-    #   count(*) as count,
-    #   sum(profit) / 100.0 as profit,
-    #   sum(profit) / 100.0 / nullif((sum(entry_fee_in_cents) / 100.0), 0) as roi,
-    #   sum(CASE profit > 0 when true then 1 else 0 end) / count(*) as winrate,
-    #   avg(score)::float8 as score
-    # SQL
-
-    # @data = data.to_json
   end
 
   def fetch_games_data
+    @analytics = Dashboard::AnalyticsCalculator.new(view_context)
 
-
-    @games = Dashboard::Games.new(view_context)
-    render json: @games, status: 200
+    if @analytics.valid?
+      if request.xhr?
+        render json: @analytics, status: 200
+      else
+        redirect_to games_path(from_date: @date_range.first, to_date: @date_range.last, site: @site, sport: @sport)
+      end
+    else
+      flash.now[:error] = "Something went wrong, please make sure your date input is valid. <a href=\"#{dashboard_path}\">Refresh</a>".html_safe
+      render :index, status: 403 and return
+    end
 
     # if @games.valid?
     #   if request.xhr?
