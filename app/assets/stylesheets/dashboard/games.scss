@@ -5,6 +5,12 @@
 select.field-callout {
   background: $primary;
   color: white;
+  border-color: $primary;
+
+  &:hover {
+    background: mix($primary, white, 90%);
+    border-color: mix($primary, white, 90%);
+  }
 }
 
 .column-game-type {
