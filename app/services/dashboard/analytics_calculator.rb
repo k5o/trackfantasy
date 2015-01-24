@@ -1,21 +1,22 @@
 # TODO: Cache this return, or its individual calculations
 # but invalidate once user uploads new file, OR date_range changes
 class Dashboard::AnalyticsCalculator
-  attr_reader :user, :date_range, :account
+  delegate :params, :h, :link_to, :number_to_currency, :number_to_percentage, to: :@view
 
-  def initialize(user, date_range = nil, site = nil, sport = nil)
-    @user = user
-    @date_range = date_range
-    @site = site.present? && site
-    @sport = sport.present? && sport
+  def initialize(view)
+    @view = view
+    @user = @view.assigns["current_user"]
+    @date_range = nil || @view.assigns["date_range"]
+    @site = @view.assigns["site"].present? && @view.assigns["site"]
+    @sport = @view.assigns["sport"].present? && @view.assigns["sport"]
 
     return false unless valid?
   end
 
   def entries
     @entries ||= begin
-      if @date_range.first.present? && @date_range.last.present?
-        scope = @user.entries.where("entered_on = ? AND entered_on <= ?", @date_range.first, @date_range.last)
+      if @date_range && @date_range.first.present? && @date_range.last.present?
+        scope = @user.entries.where("entered_on >= ? AND entered_on <= ?", @date_range.first, @date_range.last)
       else
         scope = @user.entries
       end
@@ -34,6 +35,37 @@ class Dashboard::AnalyticsCalculator
     end
   end
 
+  def games_data
+    games.map do |game|
+      [
+        game.count, # entries
+        game.game_type, # game type
+        number_to_currency(game.entry_fee_in_cents / 100.0), # entry_fee_in_cents
+        number_to_currency(game.profit), # profit sum
+        number_to_percentage(game.roi, precision: 2), # roi percentage
+        number_to_percentage(game.winrate, precision: 2), # winrate percentage
+        game.score.to_f.round(2) # average score
+      ]
+    end
+  end
+
+  def games
+    return [] unless @sport
+
+    entries.group(:game_type, :entry_fee_in_cents).order(:entry_fee_in_cents).select(<<-SQL)
+      game_type, entry_fee_in_cents,
+      count(*) as count,
+      sum(profit) / 100.0 as profit,
+      (sum(profit) / 100.0)::float8 / nullif((sum(entry_fee_in_cents) / 100.0), 0)::float8 * 100.0 as roi,
+      (sum(CASE profit > 0 when true then 1 else 0 end)::float8 / count(*)::float8) * 100.0 as winrate,
+      avg(score)::float8 as score
+    SQL
+  end
+
+  def games_total
+    [total_entries, nil, nil, total_profit, average_roi, average_winrate, average_score]
+  end
+
   def entries_exist
     @entries_exist ||= entries.exists?
   end
@@ -44,6 +76,10 @@ class Dashboard::AnalyticsCalculator
 
   def revenue_amount
     @revenue_amount ||= entries.sum(:profit).to_i / 100.0
+  end
+
+  def total_profit
+    entries.sum(:profit).to_i / 100.0
   end
 
   def graph_axes
@@ -67,6 +103,10 @@ class Dashboard::AnalyticsCalculator
     games_won = entries.where('profit > ?', 0).count
 
     nil_guard_value || (games_won / @total_entries.to_f) * 100
+  end
+
+  def average_score
+    entries.average(:score)
   end
 
   def date_of_first_entry
