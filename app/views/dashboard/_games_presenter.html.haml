@@ -1,16 +1,15 @@
 #games-table
 
-.foo
-  %table.games-total-table
-    %tbody
-      %tr.total-row
-        %td= @analytics.games_total[:total_entries]
-        %td= ""
-        %td= ""
-        %td{class: "#{money_class(@analytics.games_total[:total_profit])}"}= number_to_currency(@analytics.games_total[:total_profit])
-        %td{class: "#{money_class(@analytics.games_total[:roi])}"}= number_to_percentage(@analytics.games_total[:roi], precision: 2)
-        %td= number_to_percentage(@analytics.games_total[:winrate], precision: 2)
-        %td= @analytics.games_total[:average_score].to_f.round(2)
+%table.games-total-table
+  %tbody
+    %tr.total-row
+      %td= @analytics.games_total[:total_entries]
+      %td= ""
+      %td= ""
+      %td{class: "#{money_class(@analytics.games_total[:total_profit])}"}= number_to_currency(@analytics.games_total[:total_profit])
+      %td{class: "#{money_class(@analytics.games_total[:roi])}"}= number_to_percentage(@analytics.games_total[:roi], precision: 2)
+      %td= number_to_percentage(@analytics.games_total[:winrate], precision: 2)
+      %td= @analytics.games_total[:average_score].to_f.round(2)
 
 :javascript
   $('.pre-sport-selection').hide();
