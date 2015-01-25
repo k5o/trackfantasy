@@ -1,0 +1,45 @@
+.dashboard
+  %aside
+    = render partial: 'sidebar'
+  %main
+    .main-header
+      %span.filter-title Filters:
+      = form_tag '/games', method: 'get', id: 'filter' do
+        = label_tag 'From:'
+        = date_field_tag 'from_date', @date_range.try(:first).try(:to_date)
+        = label_tag 'To:'
+        = date_field_tag 'to_date', @date_range.try(:last).try(:to_date) || Date.today
+        = select_tag "sport", options_for_select(current_user.sports_played, @sport), include_blank: 'Sport:'
+        = select_tag "site", options_for_select(Site::NAMES, @site), include_blank: 'Site:'
+        .header-actions
+          = submit_tag 'Filter', id: 'js-filter-btn', class: 'header-btn filter-btn'
+          = link_to 'Reset', games_path, class: 'header-btn reset-btn'
+          = icon('cog', '', class: 'fa-spin js-loader')
+    = render partial: 'partials/flash'
+    .main-container
+      - unless @sport
+        .pre-sport-selection
+          %h3 Select a sport above to begin
+
+          :javascript
+            $('select#sport').addClass('field-callout')
+      - else
+        %h3= "Displaying results for #{@sport.upcase}"
+        #games
+
+- if !params[:sport] && @sport
+  :javascript
+    var sport = "#{@sport}"
+    if (sport) {
+      currentUrl = window.location.href;
+      document.location.hash = "?sport=" + sport;
+    }
+
+    $(document).ready(function(){
+      fetchGamesData();
+    });
+- else
+  :javascript
+    $(document).ready(function(){
+      fetchGamesData();
+    });

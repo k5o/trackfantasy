@@ -4,6 +4,7 @@ class FanduelCsvImporterJob < ActiveJob::Base
     ActiveRecord::Base.connection_pool.with_connection do
       file_contents = args[:file_contents]
       user = User.find(args[:user])
+      site = Site.where(name: "fanduel").first_or_create
       errors = [user.email]
 
       CSV.parse(file_contents).each do |row|
@@ -30,7 +31,6 @@ class FanduelCsvImporterJob < ActiveJob::Base
           next if user.entries.find_by_site_entry_id(site_entry_id.sub(/\D/, '')) # Skip if already imported
 
           # Pre-formatting
-          site = Site.where(name: "fanduel").first_or_create
           entry_fee = entry_fee.to_f * 100
           winnings = winnings.to_f * 100
           profit = winnings - entry_fee

@@ -1,20 +1,37 @@
 class DashboardController < ApplicationController
   before_filter :verify_user
   before_filter :load_params
+  before_filter :fetch_analytics, only: [:fetch_dashboard_data, :fetch_games_data]
   # caches_action :fetch_dashboard_data, expires_in: 1.month # TODO: invalidate cache when new csv is imported
 
   def index
   end
 
   def fetch_dashboard_data
-    # TODO: Ensure request/return are clean, email notify admins if not (exception email)
-    @analytics = Dashboard::AnalyticsCalculator.new(@user, @date_range, @site, @sport)
-
     if @analytics.valid?
       if request.xhr?
         render partial: 'presenter', status: 200 and return
       else
         redirect_to dashboard_path(from_date: @date_range.first, to_date: @date_range.last, site: @site, sport: @sport)
+      end
+    else
+      flash.now[:error] = "Something went wrong, please make sure your date input is valid. <a href=\"#{dashboard_path}\">Refresh</a>".html_safe
+      render :index, status: 403 and return
+    end
+  end
+
+  def games
+    if current_user.sports_played.length == 1
+      @sport = current_user.sports_played.first
+    end
+  end
+
+  def fetch_games_data
+    if @analytics.valid?
+      if request.xhr?
+        render partial: 'games_presenter', status: 200 and return
+      else
+        redirect_to games_path(from_date: @date_range.first, to_date: @date_range.last, site: @site, sport: @sport)
       end
     else
       flash.now[:error] = "Something went wrong, please make sure your date input is valid. <a href=\"#{dashboard_path}\">Refresh</a>".html_safe
@@ -43,6 +60,8 @@ class DashboardController < ApplicationController
   def verify_user
     @user = current_user
     @is_new_user = @user.empty_entries?
+
+    redirect_to root_path unless @user
   end
 
   def load_params

@@ -12,6 +12,9 @@
 //
 //= require jquery
 //= require jquery_ujs
+//= require underscore
 //= require highcharts
 //= require highcharts/highcharts-more
+//= require react
+//= require_tree ./react_components
 //= require_tree .

@@ -20,6 +20,10 @@ class User < ActiveRecord::Base
     self.save(validate: false)
   end
 
+  def sports_played
+    @sports_played ||= entries.pluck(:sport).uniq
+  end
+
   def empty_entries?
     @empty_entries ||= !entries.exists?
   end

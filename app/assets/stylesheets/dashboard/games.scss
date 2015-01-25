@@ -1,0 +1,103 @@
+#games_wrapper {
+  margin-top: 40px;
+}
+
+select.field-callout {
+  background: $primary;
+  color: white;
+  border-color: $primary;
+
+  &:hover {
+    background: mix($primary, white, 90%);
+    border-color: mix($primary, white, 90%);
+  }
+}
+
+.column-game-type {
+  font-weight: 700;
+}
+
+.griddle {
+  margin-top: -40px;
+
+  @include media($medium) {
+    margin: 0;
+  }
+}
+
+.griddle-filter {
+  text-align: left;
+
+  &:before {
+    font-family: $icon-font;
+    content: "\f002";
+    position: absolute;
+
+    @include media($medium) {
+      position: static;
+      display: inline;
+    }
+  }
+
+  @include media($medium) {
+    text-align: center;
+  }
+}
+
+.top-section {
+  margin-bottom: 20px;
+}
+
+.filter-container {
+  input {
+    padding: 4px;
+    width: 240px;
+    margin-left: 20px;
+  }
+
+  @include media($medium) {
+    display: inline;
+
+    input {
+      margin-left: 8px;
+    }
+  }
+}
+
+table {
+  width: 100%;
+  border-spacing: 0;
+}
+
+th {
+  background: $primary;
+  color: white;
+
+  &:hover {
+    cursor: pointer;
+    background: mix($primary, black, 92%);
+  }
+}
+
+th, td {
+  padding: 4px 0;
+}
+
+tr {
+  &:nth-child(2n) {
+    background: mix($primary, white, 10%);
+  }
+
+  &:hover {
+    background: mix($off-white, black, 95%);
+    border-color: mix($off-white, black, 95%);
+  }
+}
+
+tr.total-row {
+  font-weight: 700;
+}
+
+.games-total-table {
+  border-top: 1px solid $fill-saturated;
+}

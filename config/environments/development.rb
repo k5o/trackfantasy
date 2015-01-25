@@ -52,4 +52,6 @@ Rails.application.configure do
     user_name: ENV["mail_user"],
     password: ENV["mail_password"],
   }
+
+  config.react.variant = :development
 end

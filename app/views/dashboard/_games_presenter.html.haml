@@ -1,0 +1,80 @@
+#games-table
+
+%table.games-total-table
+  %tbody
+    %tr.total-row
+      %td= @analytics.games_total[:total_entries]
+      %td= ""
+      %td= ""
+      %td{class: "#{money_class(@analytics.games_total[:total_profit])}"}= number_to_currency(@analytics.games_total[:total_profit])
+      %td{class: "#{money_class(@analytics.games_total[:roi])}"}= number_to_percentage(@analytics.games_total[:roi], precision: 2)
+      %td= number_to_percentage(@analytics.games_total[:winrate], precision: 2)
+      %td= @analytics.games_total[:average_score].to_f.round(2)
+
+:javascript
+  $('.pre-sport-selection').hide();
+
+  var gamesData = #{@analytics.games_data.to_json}
+  var columnMeta = [
+    {
+      "columnName": "0",
+      "displayName": "Entries",
+      "customComponent": EntryFormatter
+    },
+    {
+      "columnName": "1",
+      "displayName": "Buyin",
+    },
+    {
+      "columnName": "2",
+      "displayName": "Game Type",
+      "cssClassName": "column-game-type"
+    },
+    {
+      "columnName": "3",
+      "displayName": "Total $",
+      "customComponent": MoneyFormatter
+    },
+    {
+      "columnName": "4",
+      "displayName": "ROI %",
+      "customComponent": MoneyFormatter
+    },
+    {
+      "columnName": "5",
+      "displayName": "Winrate %",
+    },
+    {
+      "columnName": "6",
+      "displayName": "Average Score",
+    }
+  ];
+
+  var component = React.createElement(Griddle, { results: gamesData, showPager: false, resultsPerPage: 1000, showFilter: true, showSettings: false, columnMetadata: columnMeta, noDataMessage: "No data found, try another query or search term", filterPlaceholderText: "Search (e.g. 'GPP', '50/50', 'league')", useGriddleStyles: false, sortAscendingComponent: '', sortDescendingComponent: '' });
+
+  React.render(component, document.getElementById('games-table'));
+
+  function resizeTotalRow() {
+    var cols = $('.griddle th');
+    var colLength = cols.length;
+
+    for (i = 0; i < colLength; i++) {
+      $($('.total-row td')[i]).width($(cols[i]).width() + "px");
+    }
+  }
+
+  function toggleTotalRow(toggleName) {
+    if (toggleName === 'show') {
+      $('.games-total-table').show();
+    }
+    else if (toggleName === 'hide') {
+      $('.games-total-table').hide();
+    }
+    else {
+      $('.games-total-table').toggle();
+    }
+  }
+
+  $(window).on('resize', function() {
+    resizeTotalRow();
+  })

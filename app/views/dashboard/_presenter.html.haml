@@ -60,8 +60,15 @@
       %div{class: 'amount in-the-black'}
         = number_to_currency(@analytics.biggest_score)
       %div{class: 'sub-amount'}
-      = @analytics.biggest_score_date
+        = @analytics.biggest_score_date
       %div.label Biggest Score
+
+    .primary-figure
+      %div{class: "amount #{money_class(@analytics.profit_per_day)}"}
+        = number_to_currency(@analytics.profit_per_day)
+      %div{class: 'sub-amount'}
+        = "Profit"
+      %div.label Per Day
 
 
 :javascript
