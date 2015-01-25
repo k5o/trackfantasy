@@ -41,10 +41,10 @@ class Dashboard::AnalyticsCalculator
         game.count, # entries
         game.game_type, # game type
         number_to_currency(game.entry_fee_in_cents / 100.0), # entry_fee_in_cents
-        number_to_currency(game.profit), # profit sum
-        number_to_percentage(game.roi, precision: 2), # roi percentage
-        number_to_percentage(game.winrate, precision: 2), # winrate percentage
-        game.score.to_f.round(2) # average score
+        number_to_currency(game.profit.to_f / 100.0), # profit sum
+        number_to_percentage(game.roi.to_f * 100.0, precision: 2), # roi percentage
+        number_to_percentage(game.winrate.to_f * 100.0, precision: 2), # winrate percentage
+        game.score.round(2) # average score
       ]
     end
   end
@@ -55,9 +55,9 @@ class Dashboard::AnalyticsCalculator
     entries.group(:game_type, :entry_fee_in_cents).order(:entry_fee_in_cents).select(<<-SQL)
       game_type, entry_fee_in_cents,
       count(*) as count,
-      sum(profit) / 100.0 as profit,
-      (sum(profit) / 100.0)::float8 / nullif((sum(entry_fee_in_cents) / 100.0), 0)::float8 * 100.0 as roi,
-      (sum(CASE profit > 0 when true then 1 else 0 end)::float8 / count(*)::float8) * 100.0 as winrate,
+      sum(profit) as profit,
+      sum(profit) / nullif(sum(entry_fee_in_cents), 0)::float8 as roi,
+      sum(CASE profit > 0 when true then 1 else 0 end)::float8 / count(*)::float8 as winrate,
       avg(score)::float8 as score
     SQL
   end
