@@ -27,7 +27,18 @@
         %h3= "Displaying results for #{@sport.upcase}"
       #games
 
-- if @sport
+- if !params[:sport] && @sport
+  :javascript
+    var sport = "#{@sport}"
+    if (sport) {
+      currentUrl = window.location.href;
+      document.location.hash = "?sport=" + sport;
+    }
+
+    $(document).ready(function(){
+      fetchGamesData();
+    });
+- else
   :javascript
     $(document).ready(function(){
       fetchGamesData();

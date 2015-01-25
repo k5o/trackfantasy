@@ -21,6 +21,9 @@ class DashboardController < ApplicationController
   end
 
   def games
+    if current_user.sports_played.length == 1
+      @sport = current_user.sports_played.first
+    end
   end
 
   def fetch_games_data
@@ -31,7 +34,7 @@ class DashboardController < ApplicationController
         redirect_to games_path(from_date: @date_range.first, to_date: @date_range.last, site: @site, sport: @sport)
       end
     else
-      flash.now[:error] = "Something went wrong, please make sure your date input is validCONTROLLER. <a href=\"#{dashboard_path}\">Refresh</a>".html_safe
+      flash.now[:error] = "Something went wrong, please make sure your date input is valid. <a href=\"#{dashboard_path}\">Refresh</a>".html_safe
       render :index, status: 403 and return
     end
   end

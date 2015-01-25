@@ -17,11 +17,15 @@ $(document).ready(function(){
 });
 
 function getUrlParameter(sParam) {
-  var sPageURL = window.location.search.substring(1);
-  var sURLVariables = sPageURL.split('&');
-  for (var i = 0; i < sURLVariables.length; i++) {
-    var sParameterName = sURLVariables[i].split('=');
-    if (sParameterName[0] == sParam) { return sParameterName[1]; }
+  var sPageURL = window.location.href;
+  var urlParts = sPageURL.split('?').slice(1);
+  if (urlParts.length > 0) {
+    var sURLVariables = urlParts[0].split('&');
+
+    for (var i = 0; i < sURLVariables.length; i++) {
+      var sParameterName = sURLVariables[i].split('=');
+      if (sParameterName[0] == sParam) { return sParameterName[1]; }
+    }
   }
 }
 
@@ -45,6 +49,6 @@ function fetchGamesData() {
   }).success(function(data){
     $('#games').html(data);
   }).fail(function(data){
-    $('.main-errors').append('Something went wrong, please make sure your date input is validJSJS. <a href="/dashboard">Refresh</a>').show();
+    $('.main-errors').append('Something went wrong, please make sure your date input is valid. <a href="/dashboard">Refresh</a>').show();
   });
 }
