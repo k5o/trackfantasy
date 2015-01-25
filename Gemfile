@@ -27,6 +27,7 @@ gem 'daemons'
 gem 'workless'
 gem 'puma'
 gem 'underscore-rails'
+gem 'newrelic_rpm'
 
 group :production do
   gem 'rails_12factor'
