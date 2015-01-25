@@ -8,7 +8,7 @@ class Entry < ActiveRecord::Base
 
   def self.define_game_type(name, entries)
     if name.include?("head")
-      "h2h"
+      "H2H"
     elsif name.include?("50/50")
       "50/50"
     elsif name.include?("double")
@@ -20,7 +20,7 @@ class Entry < ActiveRecord::Base
     elsif entries.to_i > 10
       "GPP"
     else
-      "#{entries} player league"
+      "League (#{entries})"
     end
   end
 
