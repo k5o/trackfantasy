@@ -50,7 +50,7 @@ class FanduelCsvImporterJob < ActiveJob::Base
             winnings_in_cents: winnings,
             link: link,
             profit: profit,
-            entered_on: Date.strptime(date, '%Y/%m/%d')
+            entered_on: Date.strptime(date, '%m/%d/%y')
           )
         rescue StandardError => e
           Rails.logger.error("#{row.inspect} - #{e}")
