@@ -25,7 +25,7 @@
             $('select#sport').addClass('field-callout')
       - else
         %h3= "Displaying results for #{@sport.upcase}"
-      #games
+        #games
 
 - if !params[:sport] && @sport
   :javascript

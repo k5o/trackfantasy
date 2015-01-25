@@ -84,9 +84,13 @@ th, td {
 }
 
 tr {
+  &:nth-child(2n) {
+    background: mix($primary, white, 10%);
+  }
+
   &:hover {
-    background: $off-white;
-    border-color: $off-white;
+    background: mix($off-white, black, 95%);
+    border-color: mix($off-white, black, 95%);
   }
 }
 
