@@ -4,6 +4,7 @@ class DraftkingsCsvImporterJob < ActiveJob::Base
     ActiveRecord::Base.connection_pool.with_connection do
       file_contents = args[:file_contents]
       user = User.find(args[:user])
+      site = Site.where(name: "draftkings").first_or_create
       last_entry_date = user.entries.last.entered_on if user.entries.try(:last)
       errors = [user.email]
 
@@ -30,7 +31,6 @@ class DraftkingsCsvImporterJob < ActiveJob::Base
           next if user.entries.where(entry_id: entry_id) && last_entry_date && Date.strptime(date[0..9], '%Y-%m-%d') < last_entry_date # Skip if already imported
 
           # Pre-formatting
-          site = Site.where(name: "draftkings").first_or_create
           entry_fee = entry_fee.sub(/\D/,'').to_f * 100
           winnings = winnings.sub(/\D/,'').to_f * 100
           profit = winnings - entry_fee
