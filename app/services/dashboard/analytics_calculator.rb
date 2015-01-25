@@ -161,6 +161,14 @@ class Dashboard::AnalyticsCalculator
     sites_data.map {|site_id, count, profit| [Site.find_by_id(site_id).try(:name), count, profit / 100.0] }
   end
 
+  def profit_per_day
+    nil_guard_value
+
+    days = entries.pluck(:entered_on).uniq!
+
+    total_profit / days.count.to_f
+  end
+
   def valid?
     return false unless @user.kind_of?(User)
 
