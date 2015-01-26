@@ -28,7 +28,7 @@ class FanduelCsvImporterJob < ActiveJob::Base
           next if row.length != 14 # Validate that we're on the right CSV version
           next if link == "Link" # Skip headers
           next if score.blank? || winnings.blank? || entry_fee.blank? # Required
-          next if user.entries.find_by_site_entry_id(site_entry_id.sub(/\D/, '')) # Skip if already imported
+          next if user.entries.where(site_entry_id: site_entry_id.sub(/\D/, '')) # Skip if already imported
 
           # Pre-formatting
           entry_fee = entry_fee.to_f * 100

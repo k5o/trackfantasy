@@ -28,11 +28,13 @@ class DraftkingsCsvImporterJob < ActiveJob::Base
           next if places_paid == "Places_Paid" # Skip headers
           next if score.blank? || winnings.blank? || entry_fee.blank? # Required
           entry_id = Base64.encode64("#{contest_title}#{date}")
-          next if user.entries.where(entry_id: entry_id) && last_entry_date && Date.strptime(date[0..9], '%Y-%m-%d') < last_entry_date # Skip if already imported
+          next if user.entries.where(site_entry_id: entry_id) # Skip if already imported
+          next if last_entry_date && Date.strptime(date[0..9], '%Y-%m-%d') < last_entry_date # Skip if already imported
 
           # Pre-formatting
           entry_fee = entry_fee.sub(/\D/,'').to_f * 100
-          winnings = winnings.sub(/\D/,'').to_f * 100
+          winnings_ticket = winnings_ticket.sub(/\D/,'')
+          winnings = winnings_ticket > 0 ? winnings_ticket.to_f * 100 : winnings.sub(/\D/,'').to_f * 100
           profit = winnings - entry_fee
           opponent_username = contest_title.include?("vs.") ? contest_title.split('vs. ').last : "Tournament"
           entered_on = Date.strptime(date[0..9], '%Y-%m-%d')
