@@ -40,6 +40,7 @@ group :development, :test do
   gem 'awesome_print'
   gem 'rspec-rails'
   gem 'binding_of_caller'
+  gem 'benchmark-ips'
 end
 
 group :test do
