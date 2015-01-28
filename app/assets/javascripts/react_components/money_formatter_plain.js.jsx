@@ -1,6 +1,6 @@
 /** @jsx React.DOM */
 
-var MoneyFormatter = React.createClass({
+var MoneyFormatterPlain = React.createClass({
   render: function() {
     var figure = this.props.data.toString() || "N/A";
     var length = figure.length;
