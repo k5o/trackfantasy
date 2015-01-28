@@ -13,10 +13,6 @@ select.field-callout {
   }
 }
 
-.column-game-type {
-  font-weight: 700;
-}
-
 .griddle {
   margin-top: -40px;
 
@@ -66,6 +62,7 @@ select.field-callout {
 
 table {
   width: 100%;
+  max-width: 1200px;
   border-spacing: 0;
 }
 
@@ -80,7 +77,23 @@ th {
 }
 
 th, td {
-  padding: 4px 0;
+  padding: 4px;
+  text-align: left;
+}
+
+.column-buyin {
+  text-align: right;
+  width: 95px;
+}
+
+.column-entry-count {
+  padding-left: 10px;
+  width: 95px;
+}
+
+.column-game-type {
+  font-weight: 700;
+  width: 120px;
 }
 
 tr {

@@ -3,7 +3,7 @@
 %table.games-total-table
   %tbody
     %tr.total-row
-      %td= @analytics.games_total[:total_entries]
+      %td.column-entry-count= @analytics.games_total[:total_entries]
       %td= ""
       %td= ""
       %td{class: "#{money_class(@analytics.games_total[:total_profit])}"}= number_to_currency(@analytics.games_total[:total_profit])
@@ -19,12 +19,14 @@
     {
       "columnName": "0",
       "displayName": "Entries",
+      "cssClassName": "column-entry-count"
       // "customComponent": EntryFormatter
     },
     {
       "columnName": "1",
       "displayName": "Buyin",
-      "customComponent": MoneyFormatter
+      "customComponent": MoneyFormatter,
+      "cssClassName": "column-buyin"
     },
     {
       "columnName": "2",
