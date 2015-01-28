@@ -3,16 +3,6 @@
 var MoneyFormatter = React.createClass({
   render: function() {
     var figure = this.props.data.toString() || "N/A";
-
-    if (figure && figure[0] === "-"){
-      var klass = 'in-the-red';
-      figure = '-$' + figure.substr(1);
-    }
-    else {
-      var klass = 'in-the-black';
-      figure = '$' + figure;
-    }
-
     var length = figure.length;
 
     if (figure.indexOf('.') < 0) {
@@ -22,6 +12,6 @@ var MoneyFormatter = React.createClass({
       figure = figure + "0";
     }
 
-    return <span className={ klass }>{ figure }</span>
+    return <span>${ figure }</span>
   }
 });

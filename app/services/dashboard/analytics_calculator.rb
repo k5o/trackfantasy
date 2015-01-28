@@ -39,10 +39,10 @@ class Dashboard::AnalyticsCalculator
     games.map do |game|
       [
         game.count, # entries
-        number_to_currency(game.entry_fee_in_cents / 100.0), # entry_fee_in_cents
+        (game.entry_fee_in_cents / 100.0), # entry_fee_in_cents
         game.game_type, # game type
-        number_to_currency(game.profit.to_f / 100.0), # profit sum
-        number_to_percentage(game.roi.to_f * 100.0, precision: 2), # roi percentage
+        (game.profit.to_f / 100.0), # profit sum
+        (game.roi.to_f * 100.0).round(2), # roi percentage
         number_to_percentage(game.winrate.to_f * 100.0, precision: 2), # winrate percentage
         game.score.round(2) # average score
       ]
