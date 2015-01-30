@@ -6,6 +6,8 @@ class Entry < ActiveRecord::Base
   belongs_to :user
   belongs_to :site
 
+  validates :site_entry_id, uniqueness: true, if: :fanduel?
+
   def self.define_game_type(name, entries)
     if name.include?("head")
       "H2H"
@@ -46,5 +48,9 @@ class Entry < ActiveRecord::Base
 
   def entry_fee
     entry_fee_in_cents / 100.0
+  end
+
+  def fanduel?
+    site_id == Site.fanduel_site_id
   end
 end

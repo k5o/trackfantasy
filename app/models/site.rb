@@ -4,4 +4,8 @@ class Site < ActiveRecord::Base
   has_many :accounts
   has_many :contests
   has_many :entries
+
+  def self.fanduel_site_id
+    @fanduel_site_id ||= Site.find_by_name("fanduel").try(:id)
+  end
 end
