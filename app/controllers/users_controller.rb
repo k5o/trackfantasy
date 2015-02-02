@@ -50,6 +50,7 @@ class UsersController < ApplicationController
   def wipe_data
     render nothing: true, status: 403 unless @user
 
+    store_event!(Event::WIPE)
     EntryWipeJob.perform_later(user_id: current_user.id)
 
     flash[:success] = 'Your entries are being deleted. This may take a while depending on the amount of entries, try refreshing in a minute.'
