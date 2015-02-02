@@ -27,6 +27,7 @@ gem 'daemons'
 gem 'workless'
 gem 'puma'
 gem 'underscore-rails'
+gem 'useragent'
 
 group :production do
   gem 'rails_12factor'
