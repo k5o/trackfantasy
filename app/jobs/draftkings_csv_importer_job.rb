@@ -2,13 +2,14 @@ class DraftkingsCsvImporterJob < ActiveJob::Base
 
   def perform args
     ActiveRecord::Base.connection_pool.with_connection do
-      file_contents = args[:file_contents]
+      filename = args[:filename]
       user = User.find(args[:user])
       site = Site.where(name: "draftkings").first_or_create
-      last_entry_date = user.entries.last.entered_on if user.entries.try(:last)
+      last_entry_date = user.entries.where(site_id: site.id).last.entered_on if user.entries.where(site_id: site.id).try(:last)
       errors = [user.email]
+      full_csv_path = "#{Rails.root.to_s}/tmp/#{filename}"
 
-      CSV.parse(file_contents).each do |row|
+      CSV.foreach(full_csv_path).each do |row|
         begin
           # Define the CSV
           sport           = row[0]
@@ -64,6 +65,8 @@ class DraftkingsCsvImporterJob < ActiveJob::Base
       if errors.length > 1
         ExceptionMailer.csv_import_errors_email(errors).deliver_later
       end
+
+      File.delete(full_csv_path)
     end
   end
 end

@@ -8,12 +8,17 @@ class CsvController < ApplicationController
 
     if files
       files.each_pair do |file_index, file|
-        filename = file.original_filename
+        filename = "#{@user_id}-#{file_index}-#{file.original_filename}"
+        contents = file.read
+
+        File.open("#{Rails.root.to_s}/tmp/#{filename}", 'wb') do |f|
+          f.write contents
+        end
 
         if filename.include?("fanduel")
-          FanduelCsvImporterJob.perform_later({file_contents: file.read, user: @user_id})
+          FanduelCsvImporterJob.perform_later({filename: filename, user: @user_id})
         elsif filename.include?("draftkings")
-          DraftkingsCsvImporterJob.perform_later({file_contents: file.read, user: @user_id})
+          DraftkingsCsvImporterJob.perform_later({filename: filename, user: @user_id})
         end
       end
 

@@ -2,12 +2,13 @@ class FanduelCsvImporterJob < ActiveJob::Base
 
   def perform args
     ActiveRecord::Base.connection_pool.with_connection do
-      file_contents = args[:file_contents]
+      filename = args[:filename]
       user = User.find(args[:user])
       site = Site.where(name: "fanduel").first_or_create
       errors = [user.email]
+      full_csv_path = "#{Rails.root.to_s}/tmp/#{filename}"
 
-      CSV.parse(file_contents).each do |row|
+      CSV.foreach(full_csv_path).each do |row|
         begin
           # Define the CSV
           site_entry_id     = row[0]
@@ -25,7 +26,7 @@ class FanduelCsvImporterJob < ActiveJob::Base
           blank_in_csv      = row[13]
 
           # Validations
-          next if row.length != 14 # Validate that we're on the right CSV version
+          next unless row.length == 14 || row.length == 13 # Validate that we're on the right CSV version
           next if link == "Link" # Skip headers
           next if blank_in_csv == "endedunmatched" # Skip headers
           next if score.blank? || winnings.blank? || entry_fee.blank? # Required
@@ -63,6 +64,8 @@ class FanduelCsvImporterJob < ActiveJob::Base
       if errors.length > 1
         ExceptionMailer.csv_import_errors_email(errors).deliver_later
       end
+
+      File.delete(full_csv_path)
     end
   end
 end
