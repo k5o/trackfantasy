@@ -18,6 +18,20 @@ class ApplicationController < ActionController::Base
     @analytics ||= Dashboard::AnalyticsCalculator.new(view_context)
   end
 
+  def store_event!(event_name)
+    ua = UserAgent.parse(request.env["HTTP_USER_AGENT"])
+    event = Event.new
+
+    event.name = event_name
+    event.browser = ua.browser
+    event.browser_version = ua.version
+    event.platform = ua.platform
+    event.ip_address = request.remote_ip
+    event.user = current_user if current_user
+
+    event.save
+  end
+
   def beta
     true
   end

@@ -4,6 +4,7 @@ class CsvController < ApplicationController
   def upload
     # Check for file presence AND handle dropzone submission (normal form submission won't have any files attached)
     files = params[:file]
+    store_event!(Event::CSV_IMPORT)
 
     if files
       files.each_pair do |file_index, file|
