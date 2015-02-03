@@ -120,11 +120,16 @@ class Dashboard::AnalyticsCalculator
   end
 
   def biggest_day_entry
-    @biggest_day_entry ||= nil_guard_text || entries.order(profit: :desc).try(:first)
+    entries_by_profit = entries.group(:entered_on).order('profit DESC').select(<<-SQL)
+      entered_on,
+      sum(profit) as profit
+    SQL
+
+    @biggest_day_entry ||= nil_guard_text || entries_by_profit.first
   end
 
   def biggest_day
-    nil_guard_value || biggest_day_entry.try(:profit) / 100.0
+    nil_guard_value || biggest_day_entry.profit / 100.0
   end
 
   def biggest_day_date
