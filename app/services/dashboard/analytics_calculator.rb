@@ -169,9 +169,9 @@ class Dashboard::AnalyticsCalculator
   def profit_per_day
     return nil_guard_value if nil_guard_value
 
-    days = entries.pluck(:entered_on).uniq!
+    days_length = entries.pluck(:entered_on).uniq.count
 
-    total_profit / days.count.to_f
+    total_profit / days_length.to_f
   end
 
   def valid?
