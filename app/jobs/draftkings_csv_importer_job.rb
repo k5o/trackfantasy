@@ -5,7 +5,7 @@ class DraftkingsCsvImporterJob < ActiveJob::Base
       filename = args[:filename]
       user = User.find(args[:user])
       site = Site.where(name: "draftkings").first_or_create
-      last_entry_date = user.entries.where(site_id: site.id).last.entered_on if user.entries.where(site_id: site.id).try(:last)
+      last_entry_date = user.entries.where(site_id: site.id).last.entered_on if user.entries.where(site_id: site.id).any?
       errors = [user.email]
       full_csv_path = "#{Rails.root.to_s}/tmp/#{filename}"
 
