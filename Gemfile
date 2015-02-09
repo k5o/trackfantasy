@@ -28,6 +28,8 @@ gem 'workless'
 gem 'puma'
 gem 'underscore-rails'
 gem 'useragent'
+gem 'aws-s3', git: 'https://github.com/bartoszkopinski/aws-s3.git'
+gem 'activerecord-import', '~> 0.7.0'
 
 group :production do
   gem 'rails_12factor'
