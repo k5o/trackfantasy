@@ -25,9 +25,12 @@ gem 'redis-rails'
 gem 'delayed_job_active_record'
 gem 'daemons'
 gem 'workless'
-gem 'puma'
+gem 'unicorn'
 gem 'underscore-rails'
 gem 'useragent'
+gem 'mina'
+gem 'mina-sidekiq', :require => false
+gem 'mina-unicorn', :require => false
 
 group :production do
   gem 'rails_12factor'
