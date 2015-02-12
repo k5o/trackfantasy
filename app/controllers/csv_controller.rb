@@ -16,9 +16,10 @@ class CsvController < ApplicationController
         end
 
         if filename.include?("fanduel")
-          FanduelCsvImporterJob.perform_later({filename: filename, user: @user_id})
+          FanduelCsvImporterJob.perform_now({filename: filename, user: @user_id})
         elsif filename.include?("draftkings")
-          DraftkingsCsvImporterJob.perform_later({filename: filename, user: @user_id})
+          byebug
+          DraftkingsCsvImporterJob.perform_now({filename: filename, user: @user_id})
         end
       end
 

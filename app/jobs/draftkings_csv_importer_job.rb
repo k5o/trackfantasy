@@ -1,6 +1,8 @@
 require 'digest/sha1'
 class DraftkingsCsvImporterJob < ActiveJob::Base
 
+  ROWS_TO_CHECK = 10
+
   def perform args
     ActiveRecord::Base.connection_pool.with_connection do
       filename = args[:filename]
@@ -9,9 +11,10 @@ class DraftkingsCsvImporterJob < ActiveJob::Base
       last_entry_date = user.entries.where(site_id: site.id).last.entered_on if user.entries.where(site_id: site.id).any?
       errors = [user.email]
       full_csv_path = "#{Rails.root.to_s}/tmp/#{filename}"
-      last_uploaded_row = pattern_finder(user.last_dk_pattern, full_csv_path) if user.last_dk_pattern
+      number_rows_to_import = pattern_finder(user.last_dk_pattern, full_csv_path) if user.last_dk_pattern
 
-      CSV.foreach(full_csv_path).each do |row|
+
+      CSV.foreach(full_csv_path).first(number_rows_to_import).each do |row|
         begin
           # Define the CSV
           sport           = row[0]
@@ -68,7 +71,7 @@ class DraftkingsCsvImporterJob < ActiveJob::Base
         ExceptionMailer.csv_import_errors_email(errors).deliver_later
       end
 
-      user.last_dk_pattern = CSV.foreach(full_csv_path).first(10).map do |row|
+      user.last_dk_pattern = CSV.foreach(full_csv_path).first(ROWS_TO_CHECK+1).last(ROWS_TO_CHECK).map do |row|
         Digest::SHA1.hexdigest(row.join(''))
       end
       user.save!
@@ -84,11 +87,12 @@ class DraftkingsCsvImporterJob < ActiveJob::Base
       next unless last_index_found == -1
       if Digest::SHA1.hexdigest(row.join('')) == pattern[index_at]
         index_at += 1
-        if index_at == 10
-          last_index_found = i - 10
+        if index_at == ROWS_TO_CHECK
+          last_index_found = i - ROWS_TO_CHECK
         end
       end
     end
+    last_index_found == -1 ? 9999999999 : last_index_found
   end
 
 end
