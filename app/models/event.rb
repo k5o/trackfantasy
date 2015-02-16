@@ -3,4 +3,5 @@ class Event < ActiveRecord::Base
   WIPE = "Wipe Entries"
 
   belongs_to :user
+  has_many :import_times
 end
