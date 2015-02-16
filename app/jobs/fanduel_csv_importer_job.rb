@@ -76,7 +76,7 @@ class FanduelCsvImporterJob < ActiveJob::Base
 
           import_speed = (counter / (Time.now - start_time)).round(2)
           event = Event.find_by_id(args[:event])
-          event.store_speed!(import_speed) if event
+          ImportTime.create(rows_per_second: import_speed, event: event, site: site) if event
 
           Rails.logger.debug("IMPORT RESULTS: #{counter} entries imported #{((Time.now - start_time) / 60).round(2)} minutes (#{import_speed} entries/second)")
         end
