@@ -28,8 +28,9 @@ class ApplicationController < ActionController::Base
     event.platform = ua.platform
     event.ip_address = request.remote_ip
     event.user = current_user if current_user
-
     event.save
+
+    event
   end
 
   def beta
