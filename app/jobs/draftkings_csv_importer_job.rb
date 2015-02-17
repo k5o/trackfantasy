@@ -74,17 +74,15 @@ class DraftkingsCsvImporterJob < ActiveJob::Base
               next
             end
           end
-
           Entry.import(entries) # batch import all entries
 
           import_speed = (counter / (Time.now - start_time)).round(2)
           event = Event.find_by_id(args[:event])
           ImportTime.create(rows_per_second: import_speed, event: event, site: site) if event
-
           user.last_dk_pattern = CSV.foreach(full_path).first(ROWS_TO_CHECK+1).last(ROWS_TO_CHECK).map do |row|
             Digest::SHA1.hexdigest(row.join(''))
           end
-          user.save!
+          user.save!(validate: false)
 
           ImportHelper.delete_files!(filename) # delete temp and s3 files
 
