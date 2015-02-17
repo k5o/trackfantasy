@@ -38,9 +38,8 @@ class DraftkingsCsvImporterJob < ActiveJob::Base
               next if places_paid == "Places_Paid" # Skip headers
               next if score.blank? || winnings.blank? || entry_fee.blank? # Required
               entry_id = Base64.encode64("#{contest_title}#{date}")
-              binding.pry
               next if user.entries.where(site_entry_id: entry_id).any? && last_entry_date && Date.strptime(date[0..9], '%Y-%m-%d') < last_entry_date # Skip if already imported
-              binding.pry
+
               # Pre-formatting
               entry_fee = entry_fee.gsub(/[^\d\.]/, '').to_f * 100
               winnings_ticket = winnings_ticket.gsub(/[^\d\.]/, '').to_f
@@ -83,6 +82,11 @@ class DraftkingsCsvImporterJob < ActiveJob::Base
           event = Event.find_by_id(args[:event])
           event.store_speed!(import_speed) if event
 
+          user.last_dk_pattern = CSV.foreach(full_path).first(ROWS_TO_CHECK+1).last(ROWS_TO_CHECK).map do |row|
+            Digest::SHA1.hexdigest(row.join(''))
+          end
+          user.save!
+
           Rails.logger.debug("IMPORT RESULTS: #{counter} entries imported #{((Time.now - start_time) / 60).round(2)} minutes (#{import_speed} entries/second)")
         end
       rescue StandardError => e
@@ -93,13 +97,6 @@ class DraftkingsCsvImporterJob < ActiveJob::Base
       if errors.length > 1
         ExceptionMailer.csv_import_errors_email(errors).deliver_later
       end
-
-      user.last_dk_pattern = CSV.foreach(full_path).first(ROWS_TO_CHECK+1).last(ROWS_TO_CHECK).map do |row|
-        Digest::SHA1.hexdigest(row.join(''))
-      end
-      user.save!
-
-      File.delete(full_path)
     end
   end
 

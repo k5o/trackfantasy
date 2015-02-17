@@ -27,7 +27,7 @@ class ApplicationController < ActionController::Base
     event.browser_version = ua.version
     event.platform = ua.platform
     event.ip_address = request.remote_ip
-    event.user = current_user if current_user
+    event.user_id = current_user.id if current_user
     event.save
 
     event

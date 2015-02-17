@@ -20,7 +20,7 @@ class CsvController < ApplicationController
         if filename.include?("fanduel")
           FanduelCsvImporterJob.perform_later({filename: filename, user: @user_id, event: event.id})
         elsif filename.include?("draftkings")
-          DraftkingsCsvImporterJob.perform_now({filename: filename, user: @user_id, event: event.id})
+          DraftkingsCsvImporterJob.perform_later({filename: filename, user: @user_id, event: event.id})
         end
       end
 
