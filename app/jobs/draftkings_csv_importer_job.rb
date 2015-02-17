@@ -76,7 +76,6 @@ class DraftkingsCsvImporterJob < ActiveJob::Base
           end
 
           Entry.import(entries) # batch import all entries
-          ImportHelper.delete_files!(filename) # delete temp and s3 files
 
           import_speed = (counter / (Time.now - start_time)).round(2)
           event = Event.find_by_id(args[:event])
@@ -86,6 +85,8 @@ class DraftkingsCsvImporterJob < ActiveJob::Base
             Digest::SHA1.hexdigest(row.join(''))
           end
           user.save!
+
+          ImportHelper.delete_files!(filename) # delete temp and s3 files
 
           Rails.logger.debug("IMPORT RESULTS: #{counter} entries imported #{((Time.now - start_time) / 60).round(2)} minutes (#{import_speed} entries/second)")
         end
