@@ -44,6 +44,7 @@ group :development, :test do
   gem 'rspec-rails'
   gem 'binding_of_caller'
   gem 'benchmark-ips'
+  gem 'quiet_assets'
 end
 
 group :test do
