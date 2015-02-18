@@ -13,7 +13,7 @@ class DraftkingsCsvImporterJob < ActiveJob::Base
       start_time = Time.now
       counter = 0
       full_path = "#{Constants::TEMP_PATH}#{filename}"
-      number_rows_to_import = pattern_finder(user.last_dk_pattern, full_path) if user.last_dk_pattern
+      number_rows_to_import = (pattern_finder(user.last_dk_pattern, full_path) if user.last_dk_pattern) || 9999999
 
       begin
         if ImportHelper.store_s3_file!(filename)
@@ -74,7 +74,7 @@ class DraftkingsCsvImporterJob < ActiveJob::Base
           import_speed = (counter / (Time.now - start_time)).round(2)
           event = Event.find_by_id(args[:event])
           ImportTime.create(rows_per_second: import_speed, event: event, site: site) if event
-          user.last_dk_pattern = CSV.foreach(full_path).first(ROWS_TO_CHECK+1).last(ROWS_TO_CHECK).map do |row|
+          user.last_dk_pattern = CSV.parse(ImportHelper.s3_file_value(filename)).first(ROWS_TO_CHECK + 1)[1..-1].map do |row|
             Digest::SHA1.hexdigest(row.join(''))
           end
           user.save!(validate: false)
@@ -91,13 +91,6 @@ class DraftkingsCsvImporterJob < ActiveJob::Base
       if errors.length > 1
         ExceptionMailer.csv_import_errors_email(errors).deliver_later
       end
-
-      user.last_dk_pattern = CSV.foreach(full_path).first(ROWS_TO_CHECK + 1)[1..-1].map do |row|
-        Digest::SHA1.hexdigest(row.join(''))
-      end
-      user.save!
-
-      File.delete(full_path)
     end
   end
 
@@ -110,7 +103,7 @@ class DraftkingsCsvImporterJob < ActiveJob::Base
       if Digest::SHA1.hexdigest(row.join('')) == pattern[index_at]
         index_at += 1
         if index_at == pattern_row_count
-          last_index_found = i - pattern_row_count
+          last_index_found = i - pattern_row_count + 1
         end
       end
     end
