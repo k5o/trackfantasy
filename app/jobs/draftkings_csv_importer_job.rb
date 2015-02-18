@@ -36,7 +36,6 @@ class DraftkingsCsvImporterJob < ActiveJob::Base
               next if row.length != 11 # Validate that we're on the right CSV version
               next if places_paid == "Places_Paid" # Skip headers
               next if score.blank? || winnings.blank? || entry_fee.blank? # Required
-
               # Pre-formatting
               entry_fee = entry_fee.gsub(/[^\d\.]/, '').to_f * 100
               winnings_ticket = winnings_ticket.gsub(/[^\d\.]/, '').to_f
@@ -92,18 +91,26 @@ class DraftkingsCsvImporterJob < ActiveJob::Base
       if errors.length > 1
         ExceptionMailer.csv_import_errors_email(errors).deliver_later
       end
+
+      user.last_dk_pattern = CSV.foreach(full_path).first(ROWS_TO_CHECK + 1)[1..-1].map do |row|
+        Digest::SHA1.hexdigest(row.join(''))
+      end
+      user.save!
+
+      File.delete(full_path)
     end
   end
 
   def pattern_finder(pattern, csv)
     index_at = 0
     last_index_found = -1
+    pattern_row_count = pattern.count
     CSV.foreach(csv).each_with_index do |row, i|
       next unless last_index_found == -1
       if Digest::SHA1.hexdigest(row.join('')) == pattern[index_at]
         index_at += 1
-        if index_at == ROWS_TO_CHECK
-          last_index_found = i - ROWS_TO_CHECK
+        if index_at == pattern_row_count
+          last_index_found = i - pattern_row_count
         end
       end
     end
