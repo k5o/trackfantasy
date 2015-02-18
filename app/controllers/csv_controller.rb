@@ -4,21 +4,23 @@ class CsvController < ApplicationController
   def upload
     # Check for file presence AND handle dropzone submission (normal form submission won't have any files attached)
     files = params[:file]
-    store_event!(Event::CSV_IMPORT)
 
     if files
+      event = store_event!(Event::CSV_IMPORT)
+
       files.each_pair do |file_index, file|
-        filename = "#{@user_id}-#{file_index}-#{file.original_filename}"
+        filename = "#{@user_id}-#{event.id}-#{file_index}-#{file.original_filename}"
+        full_path = "#{Constants::TEMP_PATH}#{filename}"
         contents = file.read
 
-        File.open("#{Rails.root.to_s}/tmp/#{filename}", 'wb') do |f|
+        File.open(full_path, 'wb') do |f|
           f.write contents
         end
 
         if filename.include?("fanduel")
-          FanduelCsvImporterJob.perform_later({filename: filename, user: @user_id})
+          FanduelCsvImporterJob.perform_later({filename: filename, user: @user_id, event: event.id})
         elsif filename.include?("draftkings")
-          DraftkingsCsvImporterJob.perform_later({filename: filename, user: @user_id})
+          DraftkingsCsvImporterJob.perform_later({filename: filename, user: @user_id, event: event.id})
         end
       end
 

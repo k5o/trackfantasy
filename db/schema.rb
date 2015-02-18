@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150202023456) do
+ActiveRecord::Schema.define(version: 20150216082031) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -93,6 +93,14 @@ ActiveRecord::Schema.define(version: 20150202023456) do
     t.datetime "updated_at"
   end
 
+  create_table "import_times", force: :cascade do |t|
+    t.float    "rows_per_second"
+    t.integer  "event_id"
+    t.integer  "site_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "sites", force: :cascade do |t|
     t.string   "name"
     t.string   "domain"
@@ -102,10 +110,11 @@ ActiveRecord::Schema.define(version: 20150202023456) do
 
   create_table "users", force: :cascade do |t|
     t.string   "email"
-    t.string   "password_digest",      null: false
+    t.string   "password_digest",                   null: false
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "reset_password_token"
+    t.string   "last_dk_pattern",      default: [],              array: true
   end
 
 end
