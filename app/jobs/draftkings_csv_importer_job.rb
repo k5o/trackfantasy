@@ -17,7 +17,8 @@ class DraftkingsCsvImporterJob < ActiveJob::Base
 
       begin
         if ImportHelper.store_s3_file!(filename)
-          CSV.parse(ImportHelper.s3_file_value(filename)).first(number_rows_to_import).each do |row|
+          data = ImportHelper.s3_file_value(filename)
+          CSV.parse(data).first(number_rows_to_import).each do |row|
             begin
               # Define the CSV
               sport           = row[0]
@@ -74,7 +75,7 @@ class DraftkingsCsvImporterJob < ActiveJob::Base
           import_speed = (counter / (Time.now - start_time)).round(2)
           event = Event.find_by_id(args[:event])
           ImportTime.create(rows_per_second: import_speed, event: event, site: site) if event
-          user.last_dk_pattern = CSV.parse(ImportHelper.s3_file_value(filename)).first(ROWS_TO_CHECK + 1)[1..-1].map do |row|
+          user.last_dk_pattern = CSV.parse(data).first(ROWS_TO_CHECK + 1)[1..-1].map do |row|
             Digest::SHA1.hexdigest(row.join(''))
           end
           user.save!(validate: false)
@@ -89,7 +90,7 @@ class DraftkingsCsvImporterJob < ActiveJob::Base
       end
 
       if errors.length > 1
-        ExceptionMailer.csv_import_errors_email(errors).deliver_later
+        ExceptionMailer.csv_import_errors_email(errors).deliver_now
       end
     end
   end

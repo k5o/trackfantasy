@@ -86,7 +86,7 @@ class FanduelCsvImporterJob < ActiveJob::Base
       end
 
       if errors.length > 1
-        ExceptionMailer.csv_import_errors_email(errors).deliver_later
+        ExceptionMailer.csv_import_errors_email(errors).deliver_now
       end
     end
   end
