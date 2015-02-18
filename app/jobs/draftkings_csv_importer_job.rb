@@ -8,7 +8,6 @@ class DraftkingsCsvImporterJob < ActiveJob::Base
       filename = args[:filename]
       user = User.find(args[:user])
       site = Site.where(name: "draftkings").first_or_create
-      last_entry_date = user.entries.maximum(:entered_on)
       errors = [user.email]
       entries = []
       start_time = Time.now
@@ -37,8 +36,6 @@ class DraftkingsCsvImporterJob < ActiveJob::Base
               next if row.length != 11 # Validate that we're on the right CSV version
               next if places_paid == "Places_Paid" # Skip headers
               next if score.blank? || winnings.blank? || entry_fee.blank? # Required
-              entry_id = Base64.encode64("#{contest_title}#{date}")
-              next if user.entries.where(site_entry_id: entry_id).any? && last_entry_date && Date.strptime(date[0..9], '%Y-%m-%d') < last_entry_date # Skip if already imported
 
               # Pre-formatting
               entry_fee = entry_fee.gsub(/[^\d\.]/, '').to_f * 100
@@ -52,7 +49,6 @@ class DraftkingsCsvImporterJob < ActiveJob::Base
               entry = Entry.new(
                 site_id: site.id,
                 user_id: user.id,
-                site_entry_id: entry_id,
                 game_type: Entry.define_game_type(contest_title.downcase, total_entries),
                 sport: sport.downcase,
                 score: score,
