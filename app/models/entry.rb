@@ -6,7 +6,7 @@ class Entry < ActiveRecord::Base
   belongs_to :user
   belongs_to :site
 
-  validates :site_entry_id, uniqueness: true, if: :fanduel?
+  validates :site_entry_id, uniqueness: true, allow_nil: true
 
   def self.define_game_type(name, entries)
     if name.include?("head")
