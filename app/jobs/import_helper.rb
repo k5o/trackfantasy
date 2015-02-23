@@ -7,9 +7,12 @@ module ImportHelper
     AWS::S3::S3Object.value(filename, Constants::S3_BUCKET)
   end
 
-  def self.delete_files!(filename)
-    File.delete(full_path(filename)) # Delete tmp file
-    AWS::S3::S3Object.delete(filename, Constants::S3_BUCKET) # Delete file on S3
+  def self.delete_tmp_file!(filename)
+    File.delete(full_path(filename))
+  end
+
+  def self.delete_s3_file!(filename)
+    AWS::S3::S3Object.delete(filename, Constants::S3_BUCKET)
   end
 
   def self.full_path(filename)

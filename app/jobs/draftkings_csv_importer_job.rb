@@ -80,7 +80,8 @@ class DraftkingsCsvImporterJob < ActiveJob::Base
           end
           user.save!(validate: false)
 
-          ImportHelper.delete_files!(filename) # delete temp and s3 files
+          ImportHelper.delete_tmp_file!(filename)
+          ImportHelper.delete_s3_file!(filename) unless errors.length > 1
 
           Rails.logger.debug("IMPORT RESULTS: #{counter} entries imported #{((Time.now - start_time) / 60).round(2)} minutes (#{import_speed} entries/second)")
         end
