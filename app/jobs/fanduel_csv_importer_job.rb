@@ -10,6 +10,7 @@ class FanduelCsvImporterJob < ActiveJob::Base
       start_time = Time.now
       counter = 0
       full_path = "#{Constants::TEMP_PATH}#{filename}"
+      date_format = nil
 
       begin
         if ImportHelper.store_s3_file!(filename)
@@ -41,6 +42,8 @@ class FanduelCsvImporterJob < ActiveJob::Base
               entry_fee = entry_fee.to_f * 100
               winnings = winnings.to_f * 100
               profit = winnings - entry_fee
+              date_format ||= date[0..1] == '20' ? '%Y/%m/%d' : '%m/%d/%Y'
+              entered_on = Date.strptime(date, date_format)
 
               # Creation
               entry = Entry.new(
@@ -58,7 +61,7 @@ class FanduelCsvImporterJob < ActiveJob::Base
                 winnings_in_cents: winnings,
                 link: link,
                 profit: profit,
-                entered_on: Date.strptime(date, '%Y/%m/%d')
+                entered_on: entered_on
               )
 
               entries << entry
@@ -72,7 +75,8 @@ class FanduelCsvImporterJob < ActiveJob::Base
           end
 
           Entry.import(entries) # batch import all entries
-          ImportHelper.delete_files!(filename) # delete temp and s3 files
+          ImportHelper.delete_tmp_file!(filename)
+          ImportHelper.delete_s3_file!(filename) if errors.length > 1
 
           import_speed = (counter / (Time.now - start_time)).round(2)
           event = Event.find_by_id(args[:event])
@@ -86,6 +90,7 @@ class FanduelCsvImporterJob < ActiveJob::Base
       end
 
       if errors.length > 1
+        errors.unshift(filename) # Append filename to error email so admin can retrieve it on S3
         ExceptionMailer.csv_import_errors_email(errors).deliver_now
       end
     end
