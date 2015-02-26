@@ -4,7 +4,7 @@ class EntryWipeJob < ActiveJob::Base
     ActiveRecord::Base.connection_pool.with_connection do
       user = User.find_by_id(args[:user_id])
 
-      user.entries.destroy_all
+      user.entries.delete_all
     end
   end
 
