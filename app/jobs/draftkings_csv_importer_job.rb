@@ -14,6 +14,7 @@ class DraftkingsCsvImporterJob < ActiveJob::Base
       counter = 0
       full_path = "#{Constants::TEMP_PATH}#{filename}"
       number_rows_to_import = (pattern_finder(user.last_dk_pattern, full_path) if user.last_dk_pattern) || 9999999
+      date_format = nil
 
       begin
         if ImportHelper.store_s3_file!(filename)
@@ -43,7 +44,8 @@ class DraftkingsCsvImporterJob < ActiveJob::Base
               winnings = winnings_ticket > 0 ? winnings_ticket * 100 : winnings.gsub(/[^\d\.]/, '').to_f * 100
               profit = winnings - entry_fee
               opponent_username = contest_title.include?("vs.") ? contest_title.split('vs. ').last : "Tournament"
-              entered_on = Date.strptime(date[0..9], '%Y-%m-%d')
+              date_format ||= date[0..1] == '20' ? '%Y/%m/%d' : '%m/%d/%Y'
+              entered_on = Date.strptime(date[0..9], date_format)
 
               # Creation
               entry = Entry.new(
