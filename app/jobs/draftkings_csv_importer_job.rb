@@ -45,7 +45,7 @@ class DraftkingsCsvImporterJob < ActiveJob::Base
               profit = winnings - entry_fee
               opponent_username = contest_title.include?("vs.") ? contest_title.split('vs. ').last : "Tournament"
               date_format ||= date[0..1] == '20' ? '%Y/%m/%d' : '%m/%d/%Y'
-              entered_on = Date.strptime(date[0..9], date_format)
+              entered_on = Date.strptime(date[0..9].tr('-', '/'), date_format)
 
               # Creation
               entry = Entry.new(
